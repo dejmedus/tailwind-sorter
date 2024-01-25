@@ -2,6 +2,7 @@
   "name": "tailwind-sorter",
   "displayName": "Tailwind Sorter",
   "description": "Sort your tailwind classes in a predictable way",
+  "icon": "icon.png",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -18,7 +19,7 @@
     "configuration": {
       "title": "Tailwind Sorter",
       "properties": {
-        "autoTerm.sortOrder": {
+        "tailwindSorter.sortOrder": {
           "type": "object",
           "default": {
             "sortOrder": [
@@ -36,7 +37,7 @@
           },
           "description": "Sort order of Tailwind categories"
         },
-        "autoTerm.categories": {
+        "tailwindSorter.categories": {
           "type": "object",
           "default": {
             "box": [
@@ -49,7 +50,12 @@
               "z-",
               "float",
               "clear",
-              "box-border"
+              "box-border",
+              "static",
+              "fixed",
+              "absolute",
+              "sticky",
+              "inset-"
             ],
             "grid": [
               "grid",
@@ -86,10 +92,14 @@
             ],
             "margins": [
               "m-",
+              "mx-",
+              "my-",
               "mt-",
               "mr-",
               "mb-",
               "ml-",
+              "px-",
+              "py-",
               "p-",
               "pt-",
               "pr-",
@@ -133,6 +143,10 @@
             ],
             "bg-visual": [
               "bg-",
+              "bg-gradient",
+              "from-",
+              "via-",
+              "to-",
               "bg-opacity-",
               "bg-cover",
               "bg-contain",
@@ -144,7 +158,8 @@
               "bg-left",
               "opacity-",
               "shadow",
-              "text-shadow"
+              "text-shadow",
+              "backdrop-"
             ],
             "transformations": [
               "transform",
