@@ -20,11 +20,7 @@ export default function getClassesMap() {
     for (let i = 0; i < sortOrder.length; i++) {
       if (!Object.keys(categories).includes(sortOrder[i])) {
         validConfig = false;
-        console.error(
-          "CSS Style Sorter: No category ",
-          sortOrder[i],
-          " found."
-        );
+        console.error("Tailwind Sorter: No category ", sortOrder[i], " found.");
 
         break;
       }
@@ -34,18 +30,18 @@ export default function getClassesMap() {
   // if config is invalid, use defaults
   if (!validConfig) {
     console.error(
-      "CSS Style Sorter: Invalid configuration. Please check sort order in settings. Using default sort order."
+      "Tailwind Sorter: Invalid configuration. Please check sort order in settings. Using default sort order."
     );
     categories = classesConfig.categories;
     sortOrder = classesConfig.order.sortOrder;
   }
 
-  let propertiesMap: { [property: string]: number } = {};
+  let classesMap: { [property: string]: number } = {};
   let index = 0;
   for (let i = 0; i < sortOrder.length; i++) {
     for (let j = 0; j < categories[sortOrder[i]].length; j++) {
-      propertiesMap[categories[sortOrder[i]][j]] = index++;
+      classesMap[categories[sortOrder[i]][j]] = index++;
     }
   }
-  return propertiesMap;
+  return classesMap;
 }
