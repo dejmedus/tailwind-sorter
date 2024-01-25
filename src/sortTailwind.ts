@@ -19,6 +19,12 @@ export default function sortTailwind(
     for (const baseClass of Object.keys(classGroups).sort((a, b) => {
       const aPrefix = findLongestPrefix(a, sortConfig);
       const bPrefix = findLongestPrefix(b, sortConfig);
+      if (!aPrefix) {
+        console.error(`Class not found in sortConfig: ${a}`);
+      }
+      if (!bPrefix) {
+        console.error(`Class not found in sortConfig: ${b}`);
+      }
       const aIndex = sortConfig[aPrefix] || Number.MAX_VALUE;
       const bIndex = sortConfig[bPrefix] || Number.MAX_VALUE;
       return aIndex - bIndex;
@@ -34,7 +40,6 @@ export default function sortTailwind(
     return match.replace(p2, sortedClasses.join(" "));
   });
 
-  console.log(newText);
   return newText;
 }
 
