@@ -1,0 +1,217 @@
+{
+  "name": "tailwind-sorter",
+  "displayName": "Tailwind Sorter",
+  "description": "Sort your tailwind classes in a predictable way",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:jsx",
+    "onLanguage:tsx",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:html",
+    "onLanguage:vue"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Tailwind Sorter",
+      "properties": {
+        "autoTerm.sortOrder": {
+          "type": "object",
+          "default": {
+            "sortOrder": [
+              "box",
+              "grid",
+              "flex",
+              "margins",
+              "borders",
+              "sizing",
+              "typography",
+              "bg-visual",
+              "transformations",
+              "other"
+            ]
+          },
+          "description": "Sort order of Tailwind categories"
+        },
+        "autoTerm.categories": {
+          "type": "object",
+          "default": {
+            "box": [
+              "block",
+              "relative",
+              "top",
+              "right",
+              "bottom",
+              "left",
+              "z-",
+              "float",
+              "clear",
+              "box-border"
+            ],
+            "grid": [
+              "grid",
+              "grid-cols",
+              "grid-rows",
+              "grid-flow-row",
+              "grid-flow-col",
+              "col-span-",
+              "col-start-",
+              "col-end-",
+              "gap-",
+              "row-span-",
+              "row-start-",
+              "row-end-",
+              "auto-cols-",
+              "auto-rows-",
+              "auto-flow-",
+              "grid-",
+              "gap-"
+            ],
+            "flex": [
+              "flex",
+              "flex-row",
+              "flex-grow",
+              "flex-shrink",
+              "flex-basis",
+              "justify-items-",
+              "items-",
+              "place-items-",
+              "justify-",
+              "content-",
+              "place-content-",
+              "order-"
+            ],
+            "margins": [
+              "m-",
+              "mt-",
+              "mr-",
+              "mb-",
+              "ml-",
+              "p-",
+              "pt-",
+              "pr-",
+              "pb-",
+              "pl-"
+            ],
+            "sizing": [
+              "w-",
+              "min-w-",
+              "max-w-",
+              "h-",
+              "min-h-",
+              "max-h-"
+            ],
+            "borders": [
+              "border",
+              "border-t",
+              "border-r",
+              "border-b",
+              "border-l",
+              "rounded",
+              "rounded-tl",
+              "rounded-tr",
+              "rounded-bl",
+              "rounded-br"
+            ],
+            "typography": [
+              "text-",
+              "font-",
+              "font-family",
+              "text-",
+              "font-style",
+              "font-weight",
+              "text-",
+              "text-decoration",
+              "uppercase",
+              "text-indent",
+              "leading-",
+              "tracking-",
+              "whitespace-"
+            ],
+            "bg-visual": [
+              "bg-",
+              "bg-opacity-",
+              "bg-cover",
+              "bg-contain",
+              "bg-no-repeat",
+              "bg-center",
+              "bg-top",
+              "bg-right",
+              "bg-bottom",
+              "bg-left",
+              "opacity-",
+              "shadow",
+              "text-shadow"
+            ],
+            "transformations": [
+              "transform",
+              "origin-",
+              "transition",
+              "animate",
+              "animate-",
+              "duration-",
+              "delay-",
+              "ease-",
+              "animate-repeat",
+              "animate-direction",
+              "animate-fill"
+            ],
+            "other": [
+              "cursor-",
+              "invisible",
+              "overflow-",
+              "overflow-x-",
+              "overflow-y-",
+              "list-",
+              "list-type-",
+              "list-position-",
+              "list-image-",
+              "pointer-events-",
+              "select-"
+            ]
+          },
+          "description": "List of classes in each category"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "tailwind-sorter.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8"
+  }
+}
