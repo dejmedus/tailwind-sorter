@@ -113,6 +113,7 @@ export default {
       "opacity-",
       "shadow",
       "text-shadow",
+      "backdrop-",
     ],
     transformations: [
       "transform",
