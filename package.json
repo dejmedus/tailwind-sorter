@@ -26,11 +26,11 @@
               "box",
               "grid",
               "flex",
+              "bg-visual",
               "margins",
               "borders",
               "sizing",
               "typography",
-              "bg-visual",
               "transformations",
               "other"
             ]
@@ -66,29 +66,30 @@
               "col-span-",
               "col-start-",
               "col-end-",
-              "gap-",
               "row-span-",
               "row-start-",
               "row-end-",
               "auto-cols-",
               "auto-rows-",
               "auto-flow-",
-              "grid-",
-              "gap-"
+              "grid-"
             ],
             "flex": [
               "flex",
+              "flex-col",
               "flex-row",
               "flex-grow",
               "flex-shrink",
               "flex-basis",
+              "flex-",
               "justify-items-",
               "items-",
               "place-items-",
               "justify-",
               "content-",
               "place-content-",
-              "order-"
+              "order-",
+              "gap-"
             ],
             "margins": [
               "m-",
