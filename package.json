@@ -41,6 +41,7 @@
           "type": "object",
           "default": {
             "box": [
+              "group",
               "block",
               "relative",
               "top",
@@ -63,6 +64,7 @@
               "grid-rows",
               "grid-flow-row",
               "grid-flow-col",
+              "grid-",
               "col-span-",
               "col-start-",
               "col-end-",
@@ -71,8 +73,7 @@
               "row-end-",
               "auto-cols-",
               "auto-rows-",
-              "auto-flow-",
-              "grid-"
+              "auto-flow-"
             ],
             "flex": [
               "flex",
@@ -90,57 +91,6 @@
               "place-content-",
               "order-",
               "gap-"
-            ],
-            "margins": [
-              "m-",
-              "mx-",
-              "my-",
-              "mt-",
-              "mr-",
-              "mb-",
-              "ml-",
-              "px-",
-              "py-",
-              "p-",
-              "pt-",
-              "pr-",
-              "pb-",
-              "pl-"
-            ],
-            "sizing": [
-              "w-",
-              "min-w-",
-              "max-w-",
-              "h-",
-              "min-h-",
-              "max-h-"
-            ],
-            "borders": [
-              "border",
-              "border-t",
-              "border-r",
-              "border-b",
-              "border-l",
-              "rounded",
-              "rounded-tl",
-              "rounded-tr",
-              "rounded-bl",
-              "rounded-br"
-            ],
-            "typography": [
-              "text-",
-              "font-",
-              "font-family",
-              "text-",
-              "font-style",
-              "font-weight",
-              "text-",
-              "text-decoration",
-              "uppercase",
-              "text-indent",
-              "leading-",
-              "tracking-",
-              "whitespace-"
             ],
             "bg-visual": [
               "bg-",
@@ -160,12 +110,67 @@
               "opacity-",
               "shadow",
               "text-shadow",
-              "backdrop-"
+              "backdrop-",
+              "blur"
+            ],
+            "margins": [
+              "m-",
+              "mx-",
+              "my-",
+              "mt-",
+              "mr-",
+              "mb-",
+              "ml-",
+              "px-",
+              "py-",
+              "p-",
+              "pt-",
+              "pr-",
+              "pb-",
+              "pl-"
+            ],
+            "borders": [
+              "border",
+              "border-t",
+              "border-r",
+              "border-b",
+              "border-l",
+              "border-",
+              "rounded-",
+              "rounded-tl",
+              "rounded-tr",
+              "rounded-bl",
+              "rounded-br"
+            ],
+            "sizing": [
+              "w-",
+              "min-w-",
+              "max-w-",
+              "h-",
+              "min-h-",
+              "max-h-"
+            ],
+            "typography": [
+              "text-",
+              "font-",
+              "font-family",
+              "text-",
+              "font-style",
+              "font-weight",
+              "text-",
+              "text-decoration",
+              "uppercase",
+              "text-indent",
+              "leading-",
+              "tracking-",
+              "whitespace-"
             ],
             "transformations": [
+              "invert",
               "transform",
               "origin-",
               "transition",
+              "translate",
               "animate",
               "animate-",
               "duration-",
