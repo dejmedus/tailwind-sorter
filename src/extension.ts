@@ -13,11 +13,11 @@ export function activate(context: vscode.ExtensionContext) {
 
     if (languages.includes(event.document.languageId)) {
       // get current configuration settings
-      const sortConfig = getClassesMap();
+      const { classesMap, pseudoSortOrder } = getClassesMap();
 
       // get tailwind from file and sort
       const text = event.document.getText();
-      const sortedTailwind = sortTailwind(text, sortConfig);
+      const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
 
       // onWillSave + waitUntil prevents looping
       event.waitUntil(

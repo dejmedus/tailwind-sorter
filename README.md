@@ -15,15 +15,19 @@ Custom sort order and categories can be configured in settings.
    - Press `Ctrl+` (Windows/Linux) / `Cmd+` (Mac).
 2. Search for "Tailwind Sorter" in the search bar at the top of the settings window.
 3. Modify the settings according to your preferences:
-   - `Tailwind Sorter: Sort Order`: Defines the order in which categories will be sorted.
+   - `Tailwind Sorter: Category Order`: Defines the order that categories will be sorted.
    - `Tailwind Sorter: Categories`: Defines which style classes will belong to which category and in what order.
+   - `Tailwind Sorter: Pseudo Classes Order`: Defines how pseudo-classes should be ordered.
 
-The default sort order is: `Box Model, Grid, Flexbox, Background, Margin and Padding, Border, Width and Height, Typography, Transformations and Animations, and Other`
+**The default category order is**: box model, grid, flexbox, background, margins and padding, borders, width and height, typography, transformations, and other`
+
+**The default order for pseudo-classes order is**: screens (sm, md, lg, xl, 2xl), before and after pseudo-elements, states (hover, focus, active, visited, disabled), dark mode, child selectors (first, last, odd, even), group states (group-over, group-focus), and motion preferences (motion-safe, motion-reduce).
 
 Category example:
 
 ```json
 "box": [
+      "group",
       "block",
       "relative",
       "top",

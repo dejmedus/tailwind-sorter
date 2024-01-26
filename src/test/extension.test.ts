@@ -9,13 +9,14 @@ import defaultClassesMap from "../getClassesMap";
 
 suite("Extension Test Suite", () => {
   vscode.window.showInformationMessage("Start all tests.");
+  const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
   test('Correct sort class=""', () => {
     const sortedString = `class="flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold" blah blah`;
     const unsortedString = `class="font-semibold after:content-[''] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[''] items-center" blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, defaultClassesMap()),
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
   });
@@ -25,7 +26,7 @@ suite("Extension Test Suite", () => {
     const unsortedString = `blah blah className='fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl lg:border dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30'`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, defaultClassesMap()),
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
   });
@@ -35,7 +36,7 @@ suite("Extension Test Suite", () => {
     const unsortedString = `blah blah className="top-0 left-10 left-0 lg:static fixed flex justify-center left-0"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, defaultClassesMap()),
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
   });

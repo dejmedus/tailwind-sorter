@@ -19,7 +19,7 @@
     "configuration": {
       "title": "Tailwind Sorter",
       "properties": {
-        "tailwindSorter.sortOrder": {
+        "tailwindSorter.categoryOrder": {
           "type": "object",
           "default": {
             "sortOrder": [
@@ -36,6 +36,34 @@
             ]
           },
           "description": "Sort order of Tailwind categories"
+        },
+        "tailwindSorter.pseudoClassesOrder": {
+          "type": "object",
+          "default": {
+            "sortOrder": [
+              "sm",
+              "md",
+              "lg",
+              "xl",
+              "2xl",
+              "before",
+              "after",
+              "hover",
+              "focus",
+              "active",
+              "visited",
+              "disabled",
+              "dark",
+              "first",
+              "last",
+              "odd",
+              "even",
+              "group-over",
+              "group-focus",
+              "motion-safe",
+              "motion-reduce"
+            ]
+          }
         },
         "tailwindSorter.categories": {
           "type": "object",

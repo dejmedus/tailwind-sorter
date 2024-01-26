@@ -5,12 +5,16 @@ export default function getClassesMap() {
   // get config from workspace or use default properties and sort order
   const config = vscode.workspace.getConfiguration("Tailwind Sorter");
   let categories: { [category: string]: string[] } = config.get(
-    "Categories",
+    "categories",
     classesConfig.categories
   );
   let sortOrder: string[] = config.get(
-    "Sort Order",
+    "categoryOrder",
     classesConfig.order
+  ).sortOrder;
+  let pseudoSortOrder: string[] = config.get(
+    "pseudoClassesOrder",
+    classesConfig.pseudoOrder
   ).sortOrder;
 
   // ensure valid config files - categories in sort order must exist in categories list
@@ -28,12 +32,13 @@ export default function getClassesMap() {
   }
 
   // if config is invalid, use defaults
-  if (!validConfig) {
+  if (!validConfig || !pseudoSortOrder) {
     console.error(
       "Tailwind Sorter: Invalid configuration. Please check sort order in settings. Using default sort order."
     );
     categories = classesConfig.categories;
     sortOrder = classesConfig.order.sortOrder;
+    pseudoSortOrder = classesConfig.pseudoOrder.sortOrder;
   }
 
   let classesMap: { [property: string]: number } = {};
@@ -43,12 +48,13 @@ export default function getClassesMap() {
       classesMap[categories[sortOrder[i]][j]] = index++;
     }
   }
-  return classesMap;
+  return { classesMap, pseudoSortOrder };
 }
 
 export function defaultClassesMap() {
   const categories: { [category: string]: string[] } = classesConfig.categories;
   const sortOrder = classesConfig.order.sortOrder;
+  const pseudoSortOrder = classesConfig.pseudoOrder.sortOrder;
 
   let classesMap: { [property: string]: number } = {};
   let index = 0;
@@ -57,5 +63,5 @@ export function defaultClassesMap() {
       classesMap[categories[sortOrder[i]][j]] = index++;
     }
   }
-  return classesMap;
+  return { classesMap, pseudoSortOrder };
 }
