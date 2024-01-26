@@ -2,53 +2,89 @@ export default function sortTailwind(
   text: string,
   sortConfig: { [key: string]: number }
 ) {
-  const regex = /class(Name)?=["']([^"']*)["']/g;
-  const newText = text.replace(regex, (match, p1, p2) => {
-    const originalClasses = p2.split(/\s+/);
-    const classGroups: { [key: string]: string[] } = {};
-    for (const cls of originalClasses) {
-      const parts = cls.split(":");
-      const baseClass = parts.pop() || "";
-      const pseudoClass = parts.join(":");
-      if (!classGroups[baseClass]) {
-        classGroups[baseClass] = [];
-      }
-      classGroups[baseClass].push(pseudoClass);
+  const regex = /class(Name)?=("([^"]*)"|'([^']*)')/g;
+
+  const newText = text.replace(
+    regex,
+    (match, g1, g2, doubleQuotesGroup, singleQuotesGroup) => {
+      const originalString = singleQuotesGroup || doubleQuotesGroup;
+      const originalClasses = originalString.split(/\s+/);
+
+      const sortedClasses = originalClasses.sort(
+        (aClass: string, bClass: string) => {
+          const a = findLongestMatch(aClass, sortConfig);
+          const b = findLongestMatch(bClass, sortConfig);
+          if (!a) {
+            console.error(`Class not found in sortConfig: ${aClass}`);
+          }
+          if (!b) {
+            console.error(`Class not found in sortConfig: ${bClass}`);
+          }
+          const aIsPseudo = aClass.includes(":");
+          const bIsPseudo = bClass.includes(":");
+          const aIndex = aIsPseudo
+            ? sortConfig[a] + 0.5
+            : sortConfig[a] || Number.MAX_VALUE;
+          const bIndex = bIsPseudo
+            ? sortConfig[b] + 0.5
+            : sortConfig[b] || Number.MAX_VALUE;
+
+          if (aIndex === bIndex) {
+            // if same index, sort alphabetically
+            //  unless they are pseudo classes, then sort by sm, md, lg, xl, 2xl, hover, focus, active, visited, disabled, dark, first, last, odd, even, group-over, group-focus, motion-safe, motion-reduce
+            if (aIsPseudo && bIsPseudo) {
+              const pseudoClasses = [
+                "sm",
+                "md",
+                "lg",
+                "xl",
+                "2xl",
+                "before",
+                "after",
+                "hover",
+                "focus",
+                "active",
+                "visited",
+                "disabled",
+                "dark",
+                "first",
+                "last",
+                "odd",
+                "even",
+                "group-over",
+                "group-focus",
+                "motion-safe",
+                "motion-reduce",
+              ];
+              const aPseudo = pseudoClasses.find((c) => aClass.includes(c));
+              const bPseudo = pseudoClasses.find((c) => bClass.includes(c));
+              if (aPseudo && bPseudo) {
+                return (
+                  pseudoClasses.indexOf(aPseudo) -
+                  pseudoClasses.indexOf(bPseudo)
+                );
+              }
+            }
+            return aClass.localeCompare(bClass);
+          }
+
+          return aIndex - bIndex;
+        }
+      );
+
+      return match.replace(originalString, sortedClasses.join(" "));
     }
-    const sortedClasses = [];
-    for (const baseClass of Object.keys(classGroups).sort((a, b) => {
-      const aPrefix = findLongestPrefix(a, sortConfig);
-      const bPrefix = findLongestPrefix(b, sortConfig);
-      if (!aPrefix) {
-        console.error(`Class not found in sortConfig: ${a}`);
-      }
-      if (!bPrefix) {
-        console.error(`Class not found in sortConfig: ${b}`);
-      }
-      const aIndex = sortConfig[aPrefix] || Number.MAX_VALUE;
-      const bIndex = sortConfig[bPrefix] || Number.MAX_VALUE;
-      return aIndex - bIndex;
-    })) {
-      const pseudoClasses = classGroups[baseClass];
-      pseudoClasses.sort();
-      for (const pseudoClass of pseudoClasses) {
-        sortedClasses.push(
-          pseudoClass ? `${pseudoClass}:${baseClass}` : baseClass
-        );
-      }
-    }
-    return match.replace(p2, sortedClasses.join(" "));
-  });
+  );
 
   return newText;
 }
 
-function findLongestPrefix(str: string, sortConfig: { [key: string]: number }) {
-  let longestPrefix = "";
-  for (const prefix in sortConfig) {
-    if (str.startsWith(prefix) && prefix.length > longestPrefix.length) {
-      longestPrefix = prefix;
+function findLongestMatch(str: string, sortConfig: { [key: string]: number }) {
+  let longestMatch = "";
+  for (const key in sortConfig) {
+    if (str.includes(key) && key.length > longestMatch.length) {
+      longestMatch = key;
     }
   }
-  return longestPrefix;
+  return longestMatch;
 }
