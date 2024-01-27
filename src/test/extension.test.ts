@@ -3,11 +3,11 @@ import * as assert from "assert";
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from "vscode";
-// import * as myExtension from '../../extension';
 import sortTailwind from "../sortTailwind";
-import defaultClassesMap from "../getClassesMap";
+import getClassesMap, { defaultClassesMap } from "../getClassesMap";
+import * as sinon from "sinon";
 
-suite("Extension Test Suite", () => {
+suite("Extension", () => {
   vscode.window.showInformationMessage("Start all tests.");
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
@@ -34,6 +34,18 @@ suite("Extension Test Suite", () => {
   test("Repeat classes", () => {
     const sortedString = `blah blah className="top-0 left-0 left-0 left-10 lg:static fixed flex justify-center"`;
     const unsortedString = `blah blah className="top-0 left-10 left-0 lg:static fixed flex justify-center left-0"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Dynamic styles", () => {
+    const sortedString =
+      "className={`${sm && 'text-sm'} flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold`}` blah blah";
+    const unsortedString =
+      "className={`${sm && 'text-sm'} flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold`}` blah blah";
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -81,5 +93,46 @@ suite("Extension Test Suite", () => {
       ` blah blah blah class="relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl" blah >`,
       "relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl"
     );
+  });
+});
+
+suite("VS Code Configuration", () => {
+  let getConfigurationStub: sinon.SinonStub;
+
+  setup(() => {
+    getConfigurationStub = sinon.stub(vscode.workspace, "getConfiguration");
+  });
+
+  teardown(() => {
+    getConfigurationStub.restore();
+  });
+
+  test("getClassesMap respects config", () => {
+    getConfigurationStub.returns({
+      get: (configName: string) => {
+        if (configName === "categories") {
+          return {
+            category1: ["class1", "class2"],
+            category2: ["class3", "class4"],
+          };
+        }
+        if (configName === "categoryOrder") {
+          return { sortOrder: ["category1", "category2"] };
+        }
+        if (configName === "pseudoClassesOrder") {
+          return { sortOrder: ["pseudo1", "pseudo2"] };
+        }
+      },
+    });
+
+    const { classesMap, pseudoSortOrder } = getClassesMap();
+
+    assert.deepStrictEqual(classesMap, {
+      class1: 0,
+      class2: 1,
+      class3: 2,
+      class4: 3,
+    });
+    assert.deepStrictEqual(pseudoSortOrder, ["pseudo1", "pseudo2"]);
   });
 });
