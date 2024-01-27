@@ -4,8 +4,6 @@
 
 Automatically sort Tailwind classes on save. Use your preferred sort order to keep your classes organized.
 
-<!-- <img width="627" alt="beforeandafter" src="https://github.com/dejmedus/css-style-sorter/assets/59973863/3c79e2f6-81ea-4920-bb11-143bb56d2e6d"> -->
-
 ## Extension Settings
 
 Custom sort order and categories can be configured in settings.
@@ -19,7 +17,7 @@ Custom sort order and categories can be configured in settings.
    - `Tailwind Sorter: Categories`: Defines which style classes will belong to which category and in what order.
    - `Tailwind Sorter: Pseudo Classes Order`: Defines how pseudo-classes should be ordered.
 
-**The default category order is**: box model, grid, flexbox, background, margins and padding, borders, width and height, typography, transformations, and other`
+**The default category order is**: box model, grid, flexbox, background, margins and padding, borders, width and height, typography, transformations, and other`.
 
 **The default order for pseudo-classes order is**: screens (sm, md, lg, xl, 2xl), before and after pseudo-elements, states (hover, focus, active, visited, disabled), dark mode, child selectors (first, last, odd, even), group states (group-over, group-focus), and motion preferences (motion-safe, motion-reduce).
 
