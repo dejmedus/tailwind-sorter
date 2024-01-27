@@ -1,9 +1,9 @@
 # Change Log
 
-All notable changes to the "tailwind-sorter" extension will be documented in this file.
+## Upcoming
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- handle dynamic styling
 
-## [Unreleased]
+## 0.0.1
 
 - Initial release
