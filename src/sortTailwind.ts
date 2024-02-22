@@ -15,12 +15,12 @@ export default function sortTailwind(
         (aClass: string, bClass: string) => {
           const a = findLongestMatch(aClass, sortConfig);
           const b = findLongestMatch(bClass, sortConfig);
-          if (!a) {
-            console.error(`Class not found in sortConfig: ${aClass}`);
-          }
-          if (!b) {
-            console.error(`Class not found in sortConfig: ${bClass}`);
-          }
+          // if (!a) {
+          //   console.error(`Class not found in sortConfig: ${aClass}`);
+          // }
+          // if (!b) {
+          //   console.error(`Class not found in sortConfig: ${bClass}`);
+          // }
           const aIsPseudo = aClass.includes(":");
           const bIsPseudo = bClass.includes(":");
           const aIndex = aIsPseudo
