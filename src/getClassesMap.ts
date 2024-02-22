@@ -1,5 +1,9 @@
 import * as vscode from "vscode";
-import classesConfig from "./lib/classesConfig";
+import {
+  defaultCategories,
+  defaultSortOrder,
+  defaultPseudoSortOrder,
+} from "./lib/defaultConfig";
 
 export default function getClassesMap() {
   // get config from workspace or use default properties and sort order
@@ -39,26 +43,10 @@ export default function getClassesMap() {
     console.error(
       "Tailwind Sorter: Invalid configuration. Please check settings. Using default sort order."
     );
-    categories = classesConfig.categories;
-    sortOrder = classesConfig.order.sortOrder;
-    pseudoSortOrder = classesConfig.pseudoOrder.sortOrder;
+    categories = defaultCategories;
+    sortOrder = defaultSortOrder;
+    pseudoSortOrder = defaultPseudoSortOrder;
   }
-
-  let classesMap: { [property: string]: number } = {};
-  let index = 0;
-  for (let i = 0; i < sortOrder.length; i++) {
-    for (let j = 0; j < categories[sortOrder[i]].length; j++) {
-      classesMap[categories[sortOrder[i]][j]] = index++;
-    }
-  }
-  return { classesMap, pseudoSortOrder };
-}
-
-export function defaultClassesMap() {
-  // this is just for testing purposes
-  const categories: { [category: string]: string[] } = classesConfig.categories;
-  const sortOrder = classesConfig.order.sortOrder;
-  const pseudoSortOrder = classesConfig.pseudoOrder.sortOrder;
 
   let classesMap: { [property: string]: number } = {};
   let index = 0;
