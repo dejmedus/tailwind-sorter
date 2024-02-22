@@ -44,6 +44,11 @@ Category example:
     ],
 ```
 
+#### With Prettier
+
+- Using prettier-plugin-tailwindcss alongside Tailwind Sorter causes classes to "flash" on save.
+- To prevent this, remove `prettier-plugin-tailwindcss` from `plugins: []` in your prettier.config file and reload window.
+
 <!-- ## Release Notes
 
 ### 1.0.0
