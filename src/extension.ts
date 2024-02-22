@@ -8,7 +8,6 @@ import sortTailwind from "./sortTailwind";
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   let sortDisposable = vscode.workspace.onWillSaveTextDocument((event) => {
-    console.log("language", event.document.languageId);
     const languages = ["html", "vue", "javascriptreact", "typescriptreact"];
 
     if (languages.includes(event.document.languageId)) {
@@ -19,18 +18,16 @@ export function activate(context: vscode.ExtensionContext) {
       const text = event.document.getText();
       const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
 
-      // onWillSave + waitUntil prevents looping
-      event.waitUntil(
-        Promise.resolve([
-          new vscode.TextEdit(
-            new vscode.Range(
-              event.document.positionAt(0),
-              event.document.positionAt(text.length)
-            ),
-            sortedTailwind
-          ),
-        ])
+      const textEdit = new vscode.TextEdit(
+        new vscode.Range(
+          event.document.positionAt(0),
+          event.document.positionAt(text.length)
+        ),
+        sortedTailwind
       );
+
+      // onWillSave + waitUntil prevents looping
+      event.waitUntil(Promise.resolve([textEdit]));
     }
   });
 
