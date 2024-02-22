@@ -18,16 +18,18 @@ export function activate(context: vscode.ExtensionContext) {
       const text = event.document.getText();
       const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
 
-      const textEdit = new vscode.TextEdit(
-        new vscode.Range(
-          event.document.positionAt(0),
-          event.document.positionAt(text.length)
-        ),
-        sortedTailwind
-      );
-
       // onWillSave + waitUntil prevents looping
-      event.waitUntil(Promise.resolve([textEdit]));
+      event.waitUntil(
+        Promise.resolve([
+          new vscode.TextEdit(
+            new vscode.Range(
+              event.document.positionAt(0),
+              event.document.positionAt(text.length)
+            ),
+            sortedTailwind
+          ),
+        ])
+      );
     }
   });
 
