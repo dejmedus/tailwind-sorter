@@ -42,6 +42,7 @@ suite("Extension", () => {
   });
 
   test("Dynamic styles", () => {
+    // to do
     const sortedString =
       "className={`${sm && 'text-sm'} flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold`}` blah blah";
     const unsortedString =
@@ -52,6 +53,8 @@ suite("Extension", () => {
       sortedString
     );
   });
+
+  // dynamic style type 2 className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}
 
   function checkEquals(fullString: string, correctMatch: string) {
     const regex = /class(Name)?=("([^"]*)"|'([^']*)')/g;
