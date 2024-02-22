@@ -4,7 +4,8 @@ import * as assert from "assert";
 // as well as import your extension to test it
 import * as vscode from "vscode";
 import sortTailwind from "../sortTailwind";
-import getClassesMap, { defaultClassesMap } from "../getClassesMap";
+import getClassesMap from "../getClassesMap";
+import { defaultClassesMap } from "./defaultClassMap";
 import * as sinon from "sinon";
 
 suite("Extension", () => {
@@ -34,6 +35,16 @@ suite("Extension", () => {
   test("Repeat classes", () => {
     const sortedString = `blah blah className="top-0 left-0 left-0 left-10 lg:static fixed flex justify-center"`;
     const unsortedString = `blah blah className="top-0 left-10 left-0 lg:static fixed flex justify-center left-0"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Pseudo classes", () => {
+    const sortedString = `className="bg-black hover:bg-black dark:bg-purple-500 dark:hover:bg-white"`;
+    const unsortedString = `className="dark:bg-purple-500 hover:bg-black bg-black dark:hover:bg-white"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
