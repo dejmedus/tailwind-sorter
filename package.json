@@ -3,17 +3,10 @@
   "displayName": "Tailwind Sorter",
   "description": "Sort your tailwind classes in a predictable way",
   "icon": "icon.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "pricing": "Free",
   "engines": {
     "vscode": "^1.85.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dejmedus/tailwind-sorter"
-  },
-  "bugs": {
-    "url": "https://github.com/dejmedus/tailwind-sorter/issues"
   },
   "publisher": "dejmedus",
   "keywords": [
