@@ -15,12 +15,12 @@ export default function sortTailwind(
         (aClass: string, bClass: string) => {
           const a = findLongestMatch(aClass, sortConfig);
           const b = findLongestMatch(bClass, sortConfig);
-          if (!a) {
-            console.error(`Class not found in sortConfig: ${aClass}`);
-          }
-          if (!b) {
-            console.error(`Class not found in sortConfig: ${bClass}`);
-          }
+          // if (!a) {
+          //   console.error(`Class not found in sortConfig: ${aClass}`);
+          // }
+          // if (!b) {
+          //   console.error(`Class not found in sortConfig: ${bClass}`);
+          // }
           const aIsPseudo = aClass.includes(":");
           const bIsPseudo = bClass.includes(":");
           const aIndex = aIsPseudo
@@ -32,7 +32,7 @@ export default function sortTailwind(
 
           if (aIndex === bIndex) {
             // if same index, sort alphabetically
-            //  unless they are pseudo classes, then sort by sm, md, lg, xl, 2xl, hover, focus, active, visited, disabled, dark, first, last, odd, even, group-over, group-focus, motion-safe, motion-reduce
+            //  unless they are pseudo classes, then sort by pseudo config or default: sm, md, lg, xl, 2xl, hover, focus, active, visited, disabled, dark, first, last, odd, even, group-over, group-focus, motion-safe, motion-reduce
             if (aIsPseudo && bIsPseudo) {
               const aPseudo = pseudoClasses.find((c) => aClass.includes(c));
               const bPseudo = pseudoClasses.find((c) => bClass.includes(c));

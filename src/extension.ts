@@ -8,7 +8,6 @@ import sortTailwind from "./sortTailwind";
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   let sortDisposable = vscode.workspace.onWillSaveTextDocument((event) => {
-    console.log("language", event.document.languageId);
     const languages = ["html", "vue", "javascriptreact", "typescriptreact"];
 
     if (languages.includes(event.document.languageId)) {
