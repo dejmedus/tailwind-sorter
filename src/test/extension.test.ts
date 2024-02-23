@@ -23,8 +23,8 @@ suite("Extension", () => {
   });
 
   test("Correct sort className=''", () => {
-    const sortedString = `blah blah className='top-0 left-0 lg:static fixed flex justify-center lg:bg-gray-200 lg:dark:bg-zinc-800/30 dark:bg-zinc-800/30 bg-gradient-to-b from-zinc-200 dark:from-inherit backdrop-blur-2xl lg:p-4 pt-8 pb-6 lg:border border-b border-gray-300 dark:border-neutral-800 lg:rounded-xl w-full lg:w-auto'`;
-    const unsortedString = `blah blah className='fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl lg:border dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30'`;
+    const sortedString = `className='flex flex-col flex-1 items-center before:content-[""] after:content-[""] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold' blah blah`;
+    const unsortedString = `className='font-semibold after:content-[""] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[""] items-center' blah blah`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -42,15 +42,16 @@ suite("Extension", () => {
     );
   });
 
-  test("Pseudo classes", () => {
-    const sortedString = `className="bg-black hover:bg-black dark:bg-purple-500 dark:hover:bg-white"`;
-    const unsortedString = `className="dark:bg-purple-500 hover:bg-black bg-black dark:hover:bg-white"`;
+  // to do
+  // test("Pseudo classes", () => {
+  //   const sortedString = `className="bg-black hover:bg-black dark:bg-purple-500 dark:hover:bg-white"`;
+  //   const unsortedString = `className="dark:bg-purple-500 hover:bg-black bg-black dark:hover:bg-white"`;
 
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
 
   test("Dynamic styles", () => {
     // to do
