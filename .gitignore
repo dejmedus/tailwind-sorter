@@ -4,5 +4,5 @@ node_modules
 .vscode-test/
 *.vsix
 
-
+.github/workflows/tests.yml
 rules.txt
