@@ -4,6 +4,8 @@
 
 Automatically sort Tailwind classes on save. Use your preferred sort order to keep your classes organized.
 
+![Demo](https://github.com/dejmedus/tailwind-sorter/blob/main/demo.gif?raw=true)
+
 ## Extension Settings
 
 Custom sort order and categories can be configured in settings.
