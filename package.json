@@ -8,6 +8,9 @@
   "engines": {
     "vscode": "^1.85.0"
   },
+  "bugs": {
+    "email": "hi@juliab.dev"
+  },
   "publisher": "dejmedus",
   "keywords": [
     "tailwind",
