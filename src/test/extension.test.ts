@@ -42,7 +42,7 @@ suite("Extension", () => {
     );
   });
 
-  // to do
+  // to do, update pseudo class logic
   // test("Pseudo classes", () => {
   //   const sortedString = `className="bg-black hover:bg-black dark:bg-purple-500 dark:hover:bg-white"`;
   //   const unsortedString = `className="dark:bg-purple-500 hover:bg-black bg-black dark:hover:bg-white"`;
@@ -53,12 +53,11 @@ suite("Extension", () => {
   //   );
   // });
 
-  test("Dynamic styles", () => {
-    // to do
+  test("Dynamic styles class={` ternary: do not change", () => {
     const sortedString =
-      "className={`${sm && 'text-sm'} flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold`}` blah blah";
+      "class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
     const unsortedString =
-      "className={`${sm && 'text-sm'} flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold`}` blah blah";
+      "class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -66,8 +65,171 @@ suite("Extension", () => {
     );
   });
 
-  // dynamic style type 2 className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}
+  test("Dynamic styles className={`: do not change", () => {
+    const sortedString =
+      "className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
+    const unsortedString =
+      "className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
 
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("clsx syntax: do not change", () => {
+    const sortedString = `clsx('rounded bg-blue-500 px-4 py-2 text-base text-white', { 'bg-blue-700 text-gray-100': isHovering })`;
+    const unsortedString = `clsx('rounded bg-blue-500 px-4 py-2 text-base text-white', { 'bg-blue-700 text-gray-100': isHovering })`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("cva syntax: do not change", () => {
+    const sortedString = `cva('rounded bg-blue-500 px-4 py-2 text-base text-white', { 'bg-blue-700 text-gray-100': isHovering })`;
+    const unsortedString = `cva('rounded bg-blue-500 px-4 py-2 text-base text-white', { 'bg-blue-700 text-gray-100': isHovering })`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("tw syntax: do not change", () => {
+    const sortedString = "tw`bg-white p-4 dark:bg-black`";
+    const unsortedString = "tw`bg-white p-4 dark:bg-black`";
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Vue.js syntax", () => {
+    const sortedString = `class="bg-blue-500 text-white"`;
+    const unsortedString = `class="text-white bg-blue-500"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  // test("Dynamic Vue.js syntax", () => {
+  //   const sortedString = `:class="{ 'bg-blue-500': isActive, 'text-white': isActive }"`;
+  //   const unsortedString = `:class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
+
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
+  test("Dynamic Vue.js syntax: do not change", () => {
+    const sortedString = `:class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
+    const unsortedString = `:class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  // array with :class to combine static classes with dynamic ones
+  // test("Array with Vue.js :class", () => {
+  //   const sortedString = `:class="[{ 'bg-blue-500': isActive, 'bg-red-500': !isActive }, 'text-white']`;
+  //   const unsortedString = `:class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
+
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
+  test("Vue.js :class array: do not change", () => {
+    const sortedString = `:class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
+    const unsortedString = `:class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  // <!-- Angular Examples -->
+  test("Angular syntax", () => {
+    const sortedString = `class="bg-blue-500 text-white"`;
+    const unsortedString = `class="text-white bg-blue-500"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  // test("Conditional Classes with Angular-style syntax", () => {
+  //   const sortedString = `[class.bg-blue-500]="isPrimary" [class.text-white]="isPrimary"`;
+  //   const unsortedString = `[class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
+
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
+  test("Conditional Angular syntax: do not change", () => {
+    const sortedString = `[class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
+    const unsortedString = `[class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Nunjucks syntax, keep proper brackets", () => {
+    const sortedString = `class="case-video-container waiting appear appear-video-playing {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+    const unsortedString = `class="case-video-container waiting appear appear-video-playing {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("HTMX syntax: do not change", () => {
+    const sortedString = `data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
+    const unsortedString = `data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Alpine.js syntax: do not change", () => {
+    // const sortedString = `x-data="{ isActive: true, isPrimary: true }"`;
+    const unsortedString = `x-data="{ isPrimary: true, isActive: true }"`;
+    const sortedString = `x-data="{ isPrimary: true, isActive: true }"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Svelte syntax: do not change", () => {
+    const sortedString = `class:isActive="text-white bg-blue-500"`;
+    // const sortedString = `class:isActive="bg-blue-500 text-white"`;
+    const unsortedString = `class:isActive="text-white bg-blue-500"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+});
+
+suite("Correct Regex", () => {
   function checkEquals(fullString: string, correctMatch: string) {
     const regex = /class(Name)?=("([^"]*)"|'([^']*)')/g;
     let match = regex.exec(fullString);
