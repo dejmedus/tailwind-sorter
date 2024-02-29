@@ -2,7 +2,16 @@
 
 ## Upcoming
 
-- handle dynamic styling
+- handle dynamic styling (cva, clsx, tw, nunjucks, react/vue/etc. conditional syntax)
+- defaults matching tailwind recommendations
+
+### 0.0.6
+
+- Fix: no longer breaks Nunjacks, Vue
+
+### 0.0.3 - 0.0.5
+
+- Documentation
 
 ## 0.0.2
 
