@@ -8,7 +8,7 @@ import getClassesMap from "../getClassesMap";
 import { defaultClassesMap } from "./defaultClassMap";
 import * as sinon from "sinon";
 
-suite("Extension", () => {
+suite("Sorting", () => {
   vscode.window.showInformationMessage("Start all tests.");
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
@@ -187,8 +187,8 @@ suite("Extension", () => {
   });
 
   test("Nunjucks syntax, keep proper brackets", () => {
-    const sortedString = `class="case-video-container waiting appear appear-video-playing {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
-    const unsortedString = `class="case-video-container waiting appear appear-video-playing {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+    const sortedString = `class="bg-blue text-lg appear appear-video-playing case-video-container waiting {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+    const unsortedString = `class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg "`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
