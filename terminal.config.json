@@ -30,7 +30,7 @@
         "echo '1. Update CHANGELOG.md. 2. Up version in package.json. 3. Ensure tests pass. 4. vsce publish'",
         ""
       ],
-      "description": "upgrade"
+      "description": "before upgrade to do list"
     },
     {
       "name": "test",
