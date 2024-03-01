@@ -3,7 +3,7 @@
   "displayName": "Tailwind Sorter",
   "description": "Sort your tailwind classes in a predictable way",
   "icon": "icon.png",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "pricing": "Free",
   "engines": {
     "vscode": "^1.85.0"
@@ -14,7 +14,8 @@
   "publisher": "dejmedus",
   "keywords": [
     "tailwind",
-    "sorting"
+    "sorting",
+    "TailwindCSS"
   ],
   "categories": [
     "Formatters",

@@ -8,8 +8,21 @@ export default function sortTailwind(
   const newText = text.replace(
     regex,
     (match, g1, g2, doubleQuotesGroup, singleQuotesGroup) => {
-      const originalString = singleQuotesGroup || doubleQuotesGroup;
-      const originalClasses = originalString.split(/\s+/);
+      const quotesGroup = singleQuotesGroup || doubleQuotesGroup;
+
+      // remove all dynamic classes from sort
+      const { originalString, unsortedClasses } =
+        getUnsortedClasses(quotesGroup);
+
+      const originalClasses = originalString
+        .split(/\s+/)
+        .filter((className) => className.trim() !== "");
+
+      if (!originalClasses.length) {
+        // if there is nothing to sort, return the original string
+        // same as return match;
+        return match.replace(quotesGroup, unsortedClasses);
+      }
 
       const sortedClasses = originalClasses.sort(
         (aClass: string, bClass: string) => {
@@ -50,7 +63,11 @@ export default function sortTailwind(
         }
       );
 
-      return match.replace(originalString, sortedClasses.join(" "));
+      const newString = unsortedClasses
+        ? sortedClasses.join(" ") + " " + unsortedClasses
+        : sortedClasses.join(" ");
+
+      return match.replace(quotesGroup, newString);
     }
   );
 
@@ -65,4 +82,33 @@ function findLongestMatch(str: string, sortConfig: { [key: string]: number }) {
     }
   }
   return longestMatch;
+}
+
+function getUnsortedClasses(text: string) {
+  // const doubleBrackets = text.matchAll(/{{.*?}}/g);
+  // const singleBrackets = text.matchAll(/{.*?}/g);
+  // console.log(
+  //   "doubleBrackets:",
+  //   doubleBrackets,
+  //   "singleBrackets:",
+  //   singleBrackets
+  // );
+
+  if (!text.includes("{")) {
+    return { originalString: text, unsortedClasses: "" };
+  }
+
+  let brackets = Array.from(text.matchAll(/{{.*?}}|{.*?}/g));
+
+  if (brackets.length === 0) {
+    return { originalString: text, unsortedClasses: "" };
+  }
+
+  let joinedString = brackets.map((match) => match[0]).join(" ");
+
+  text = text.replaceAll(/{{.*?}}/g, "");
+  text = text.replaceAll(/{.*?}/g, "");
+
+  // console.log("text:", text, "unsorted:", joinedString);
+  return { originalString: text, unsortedClasses: joinedString };
 }
