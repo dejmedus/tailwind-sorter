@@ -3,15 +3,20 @@
   "displayName": "Tailwind Sorter",
   "description": "Sort your tailwind classes in a predictable way",
   "icon": "icon.png",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "pricing": "Free",
   "engines": {
     "vscode": "^1.85.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dejmedus/tailwind-sorter"
+  },
   "bugs": {
-    "email": "hi@juliab.dev"
+    "url": "https://github.com/dejmedus/tailwind-sorter/issues"
   },
   "publisher": "dejmedus",
+  "license": "MIT",
   "keywords": [
     "tailwind",
     "sorting",
@@ -280,14 +285,9 @@
           "description": "List of classes in each category"
         }
       }
-    },
-    "commands": [
-      {
-        "command": "tailwind-sorter.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    }
   },
+  "type": "module",
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
