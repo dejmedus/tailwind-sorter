@@ -11,7 +11,8 @@ export default function sortTailwind(
   sortConfig: { [key: string]: number },
   pseudoClasses: string[]
 ) {
-  const regex = /class(Name)?=("([^"]*)"|'([^']*)')/g;
+  // look for " class=" or " className=" and ignore complex syntax
+  const regex = /\sclass(Name)?=("([^"]*)"|'([^']*)')/g;
 
   const newText = text.replace(
     regex,
