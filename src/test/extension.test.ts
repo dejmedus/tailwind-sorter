@@ -13,8 +13,8 @@ suite("Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
   test('Correct sort class=""', () => {
-    const sortedString = `class="flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold" blah blah`;
-    const unsortedString = `class="font-semibold after:content-[''] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[''] items-center" blah blah`;
+    const sortedString = `<div class="flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold" blah blah`;
+    const unsortedString = `<div class="font-semibold after:content-[''] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[''] items-center" blah blah`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -23,8 +23,18 @@ suite("Sorting", () => {
   });
 
   test("Correct sort className=''", () => {
-    const sortedString = `className='flex flex-col flex-1 items-center before:content-[""] after:content-[""] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold' blah blah`;
-    const unsortedString = `className='font-semibold after:content-[""] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[""] items-center' blah blah`;
+    const sortedString = `<div className='flex flex-col flex-1 items-center before:content-[""] after:content-[""] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold' blah blah`;
+    const unsortedString = `<div className='font-semibold after:content-[""] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[""] items-center' blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("One word sort", () => {
+    const sortedString = `<div className='flex' blah blah`;
+    const unsortedString = `<div className='flex' blah blah`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -33,8 +43,8 @@ suite("Sorting", () => {
   });
 
   test("Repeat classes", () => {
-    const sortedString = `blah blah className="top-0 left-0 left-0 left-10 lg:static fixed flex justify-center"`;
-    const unsortedString = `blah blah className="top-0 left-10 left-0 lg:static fixed flex justify-center left-0"`;
+    const sortedString = `<div className="top-0 left-0 left-0 left-10 lg:static fixed flex justify-center"`;
+    const unsortedString = `<div className="top-0 left-10 left-0 lg:static fixed flex justify-center left-0"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -53,11 +63,23 @@ suite("Sorting", () => {
   //   );
   // });
 
-  test("Dynamic styles class={` ternary: do not change", () => {
+  test("Dynamic styles class={` ternary ': do not change", () => {
     const sortedString =
-      "class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
+      "<div class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
     const unsortedString =
-      "class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
+      "<div class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test('Dynamic styles class={` ternary ": do not change', () => {
+    const sortedString =
+      '<div class={`button ${isActive ? "button-active" : "button-inactive"}`}';
+    const unsortedString =
+      '<div class={`button ${isActive ? "button-active" : "button-inactive"}`}';
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -67,9 +89,9 @@ suite("Sorting", () => {
 
   test("Dynamic styles className={`: do not change", () => {
     const sortedString =
-      "className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
+      "<div className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
     const unsortedString =
-      "className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
+      "<div className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -108,8 +130,8 @@ suite("Sorting", () => {
   });
 
   test("Vue.js syntax", () => {
-    const sortedString = `class="bg-blue-500 text-white"`;
-    const unsortedString = `class="text-white bg-blue-500"`;
+    const sortedString = `<div class="bg-blue-500 text-white"`;
+    const unsortedString = `<div class="text-white bg-blue-500"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -127,8 +149,8 @@ suite("Sorting", () => {
   //   );
   // });
   test("Dynamic Vue.js syntax: do not change", () => {
-    const sortedString = `:class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
-    const unsortedString = `:class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
+    const sortedString = `<div :class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
+    const unsortedString = `<div :class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -147,8 +169,8 @@ suite("Sorting", () => {
   //   );
   // });
   test("Vue.js :class array: do not change", () => {
-    const sortedString = `:class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
-    const unsortedString = `:class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
+    const sortedString = `<div :class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
+    const unsortedString = `<div :class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -158,8 +180,8 @@ suite("Sorting", () => {
 
   // <!-- Angular Examples -->
   test("Angular syntax", () => {
-    const sortedString = `class="bg-blue-500 text-white"`;
-    const unsortedString = `class="text-white bg-blue-500"`;
+    const sortedString = `<div class="bg-blue-500 text-white"`;
+    const unsortedString = `<div class="text-white bg-blue-500"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -177,8 +199,8 @@ suite("Sorting", () => {
   //   );
   // });
   test("Conditional Angular syntax: do not change", () => {
-    const sortedString = `[class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
-    const unsortedString = `[class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
+    const sortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
+    const unsortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -187,8 +209,18 @@ suite("Sorting", () => {
   });
 
   test("Nunjucks syntax, keep proper brackets", () => {
-    const sortedString = `class="bg-blue text-lg appear appear-video-playing case-video-container waiting {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
-    const unsortedString = `class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg "`;
+    const sortedString = `<div class="bg-blue text-lg appear appear-video-playing case-video-container waiting {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+    const unsortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg "`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Nunjucks syntax, only brackets", () => {
+    const sortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+    const unsortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -197,8 +229,27 @@ suite("Sorting", () => {
   });
 
   test("HTMX syntax: do not change", () => {
-    const sortedString = `data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
-    const unsortedString = `data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
+    const sortedString = `<div data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
+    const unsortedString = `<div data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  const isActive = true;
+  test("HTMX dynamic syntax: do not change", () => {
+    const sortedString = `<div data-htmx-class="${
+      isActive
+        ? "bg-blue-500:text-white:bg-gray-300"
+        : "bg-white:text-gray-500:bg-blue-300"
+    }"`;
+    const unsortedString = `<div data-htmx-class="${
+      isActive
+        ? "bg-blue-500:text-white:bg-gray-300"
+        : "bg-white:text-gray-500:bg-blue-300"
+    }"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -208,8 +259,19 @@ suite("Sorting", () => {
 
   test("Alpine.js syntax: do not change", () => {
     // const sortedString = `x-data="{ isActive: true, isPrimary: true }"`;
-    const unsortedString = `x-data="{ isPrimary: true, isActive: true }"`;
-    const sortedString = `x-data="{ isPrimary: true, isActive: true }"`;
+    const unsortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
+    const sortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Alpine.js dynamic syntax: do not change", () => {
+    // const sortedString = `x-data="{ isActive: true, isPrimary: true }"`;
+    const unsortedString = `<div x-bind:class="basketItem.quantity  === 1 ? 'bg-slate-200' : ''"`;
+    const sortedString = `<div x-bind:class="basketItem.quantity  === 1 ? 'bg-slate-200' : ''"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -218,9 +280,19 @@ suite("Sorting", () => {
   });
 
   test("Svelte syntax: do not change", () => {
-    const sortedString = `class:isActive="text-white bg-blue-500"`;
+    const sortedString = `<div class:isActive="text-white bg-blue-500"`;
     // const sortedString = `class:isActive="bg-blue-500 text-white"`;
-    const unsortedString = `class:isActive="text-white bg-blue-500"`;
+    const unsortedString = `<div class:isActive="text-white bg-blue-500"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Svelte dynamic syntax: do not change", () => {
+    const sortedString = `<div class:isActive={isActive ? "text-white bg-blue-500" : "text-gray-500 bg-white"}`;
+    const unsortedString = `<div class:isActive={isActive ? "text-white bg-blue-500" : "text-gray-500 bg-white"}`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -246,28 +318,28 @@ suite("Correct Regex", () => {
 
   test(`Correct regex className=''`, () => {
     checkEquals(
-      ` blah blah blah className='relative before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[""]' blah >`,
+      `<div blah blah blah className='relative before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[""]' blah >`,
       'relative before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[""]'
     );
   });
 
   test(`Correct regex className=""`, () => {
     checkEquals(
-      ` blah blah blah className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]" blah >`,
+      `<div blah blah blah className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]" blah >`,
       "relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]"
     );
   });
 
   test(`Correct regex class=''`, () => {
     checkEquals(
-      ` blah blah blah class='before:content-[""] relative before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl' blah >`,
+      `<div blah blah blah class='before:content-[""] relative before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl' blah >`,
       'before:content-[""] relative before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl'
     );
   });
 
   test(`Correct regex class=""`, () => {
     checkEquals(
-      ` blah blah blah class="relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl" blah >`,
+      `<div blah blah blah class="relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl" blah >`,
       "relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl"
     );
   });
@@ -299,6 +371,7 @@ suite("VS Code Configuration", () => {
         if (configName === "pseudoClassesOrder") {
           return { sortOrder: ["pseudo1", "pseudo2"] };
         }
+        return {};
       },
     });
 
