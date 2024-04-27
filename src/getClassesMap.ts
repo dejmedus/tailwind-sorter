@@ -5,24 +5,54 @@ import {
   defaultPseudoSortOrder,
 } from "./lib/defaultConfig";
 
+/**
+ * Retrieves the classes map and pseudo class sort order from the workspace configuration.
+ * If the configuration is invalid or missing, default values are used.
+ *
+ * @returns An object containing the classes map and pseudo class sort order.
+ */
 export default function getClassesMap() {
-  // get config from workspace or use default properties and sort order
   const config = vscode.workspace.getConfiguration("tailwindSorter");
 
   let categories: { [category: string]: string[] } = config.get(
     "categories",
     {}
   );
+  if (!categories || Object.keys(categories).length === 0) {
+    categories = defaultCategories;
+    console.error(
+      "Tailwind Sorter: No categories found in settings. Using default categories."
+    );
+  }
   const categoryOrder: { [category: string]: string[] } = config.get(
     "categoryOrder",
     {}
   );
-  let sortOrder: string[] = categoryOrder.sortOrder;
+  let sortOrder: string[] = categoryOrder.sortOrder || defaultSortOrder;
+  if (
+    !categoryOrder ||
+    !categoryOrder.sortOrder ||
+    categoryOrder.sortOrder.length === 0
+  ) {
+    console.error(
+      "Tailwind Sorter: No category order found in settings. Using default category order."
+    );
+  }
   const pseudoClassesOrder: { [category: string]: string[] } = config.get(
     "pseudoClassesOrder",
     {}
   );
-  let pseudoSortOrder: string[] = pseudoClassesOrder.sortOrder;
+  let pseudoSortOrder: string[] =
+    pseudoClassesOrder.sortOrder || defaultPseudoSortOrder;
+  if (
+    !pseudoClassesOrder ||
+    !pseudoClassesOrder.sortOrder ||
+    pseudoClassesOrder.sortOrder.length === 0
+  ) {
+    console.error(
+      "Tailwind Sorter: No pseudo class order found in settings. Using default pseudo class order."
+    );
+  }
 
   // ensure valid config files - categories in sort order must exist in categories list
   let validConfig = Object.keys(categories).length === sortOrder.length;
