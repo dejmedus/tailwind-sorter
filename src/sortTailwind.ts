@@ -1,3 +1,11 @@
+/**
+ * Sorts the tailwind classes in the given file text based on the provided sort config.
+ *
+ * @param text - The file text to be sorted.
+ * @param sortConfig - The sort config object that maps style classes to their sort order index.
+ * @param pseudoClasses - An array of pseudo classes to sort by.
+ * @returns The file text with sorted style classes.
+ */
 export default function sortTailwind(
   text: string,
   sortConfig: { [key: string]: number },
@@ -10,30 +18,28 @@ export default function sortTailwind(
     (match, g1, g2, doubleQuotesGroup, singleQuotesGroup) => {
       const quotesGroup = singleQuotesGroup || doubleQuotesGroup;
 
-      // remove all dynamic classes from sort
-      const { originalString, unsortedClasses } =
-        getUnsortedClasses(quotesGroup);
+      if (!quotesGroup || !quotesGroup.includes(" ")) {
+        return match;
+      }
 
-      const originalClasses = originalString
+      // remove all dynamic classes from sort
+      const { classesToSort, unchangingClasses } =
+        getUnchangingClasses(quotesGroup);
+
+      const unsortedClasses = classesToSort
         .split(/\s+/)
         .filter((className) => className.trim() !== "");
 
-      if (!originalClasses.length) {
-        // if there is nothing to sort, return the original string
-        // same as return match;
-        return match.replace(quotesGroup, unsortedClasses);
+      if (!unsortedClasses.length) {
+        return match;
       }
 
-      const sortedClasses = originalClasses.sort(
+      const sortedClasses = unsortedClasses.sort(
         (aClass: string, bClass: string) => {
           const a = findLongestMatch(aClass, sortConfig);
           const b = findLongestMatch(bClass, sortConfig);
-          // if (!a) {
-          //   console.error(`Class not found in sortConfig: ${aClass}`);
-          // }
-          // if (!b) {
-          //   console.error(`Class not found in sortConfig: ${bClass}`);
-          // }
+
+          // assign each class its sortConfig index, add .5 if it's a pseudo class, and default to Number.MAX_VALUE so classes not in sortConfig are placed at the end
           const aIsPseudo = aClass.includes(":");
           const bIsPseudo = bClass.includes(":");
           const aIndex = aIsPseudo
@@ -45,7 +51,7 @@ export default function sortTailwind(
 
           if (aIndex === bIndex) {
             // if same index, sort alphabetically
-            //  unless they are pseudo classes, then sort by pseudo config or default: sm, md, lg, xl, 2xl, hover, focus, active, visited, disabled, dark, first, last, odd, even, group-over, group-focus, motion-safe, motion-reduce
+            //  unless they are pseudo classes, then sort by pseudo config
             if (aIsPseudo && bIsPseudo) {
               const aPseudo = pseudoClasses.find((c) => aClass.includes(c));
               const bPseudo = pseudoClasses.find((c) => bClass.includes(c));
@@ -63,8 +69,8 @@ export default function sortTailwind(
         }
       );
 
-      const newString = unsortedClasses
-        ? sortedClasses.join(" ") + " " + unsortedClasses
+      const newString = unchangingClasses
+        ? sortedClasses.join(" ") + " " + unchangingClasses
         : sortedClasses.join(" ");
 
       return match.replace(quotesGroup, newString);
@@ -74,34 +80,41 @@ export default function sortTailwind(
   return newText;
 }
 
-function findLongestMatch(str: string, sortConfig: { [key: string]: number }) {
+/**
+ * Finds the matching style class in sortConfig. eg. overflow-x-12 returns overflow-x-
+ *
+ * @param styleClass - The style class to find a match for. (overflow-x-12)
+ * @param sortConfig - The sort config object.
+ * @returns The longest matching sortConfig key. (overflow-x-)
+ */
+function findLongestMatch(
+  styleClass: string,
+  sortConfig: { [key: string]: number }
+) {
   let longestMatch = "";
   for (const key in sortConfig) {
-    if (str.includes(key) && key.length > longestMatch.length) {
+    if (styleClass.includes(key) && key.length > longestMatch.length) {
       longestMatch = key;
     }
   }
   return longestMatch;
 }
 
-function getUnsortedClasses(text: string) {
-  // const doubleBrackets = text.matchAll(/{{.*?}}/g);
-  // const singleBrackets = text.matchAll(/{.*?}/g);
-  // console.log(
-  //   "doubleBrackets:",
-  //   doubleBrackets,
-  //   "singleBrackets:",
-  //   singleBrackets
-  // );
-
+/**
+ * Separates classes we don't want to sort from those we do.
+ *
+ * @param text - The text to extract classes we don't want to sort.
+ * @returns The classes to sort and the classes we wont sort.
+ */
+function getUnchangingClasses(text: string) {
   if (!text.includes("{")) {
-    return { originalString: text, unsortedClasses: "" };
+    return { classesToSort: text, unchangingClasses: "" };
   }
 
   let brackets = Array.from(text.matchAll(/{{.*?}}|{.*?}/g));
 
   if (brackets.length === 0) {
-    return { originalString: text, unsortedClasses: "" };
+    return { classesToSort: text, unchangingClasses: "" };
   }
 
   let joinedString = brackets.map((match) => match[0]).join(" ");
@@ -109,6 +122,5 @@ function getUnsortedClasses(text: string) {
   text = text.replaceAll(/{{.*?}}/g, "");
   text = text.replaceAll(/{.*?}/g, "");
 
-  // console.log("text:", text, "unsorted:", joinedString);
-  return { originalString: text, unsortedClasses: joinedString };
+  return { classesToSort: text, unchangingClasses: joinedString };
 }
