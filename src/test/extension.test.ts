@@ -178,7 +178,6 @@ suite("Sorting", () => {
     );
   });
 
-  // <!-- Angular Examples -->
   test("Angular syntax", () => {
     const sortedString = `<div class="bg-blue-500 text-white"`;
     const unsortedString = `<div class="text-white bg-blue-500"`;
@@ -258,7 +257,6 @@ suite("Sorting", () => {
   });
 
   test("Alpine.js syntax: do not change", () => {
-    // const sortedString = `x-data="{ isActive: true, isPrimary: true }"`;
     const unsortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
     const sortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
 
@@ -269,7 +267,6 @@ suite("Sorting", () => {
   });
 
   test("Alpine.js dynamic syntax: do not change", () => {
-    // const sortedString = `x-data="{ isActive: true, isPrimary: true }"`;
     const unsortedString = `<div x-bind:class="basketItem.quantity  === 1 ? 'bg-slate-200' : ''"`;
     const sortedString = `<div x-bind:class="basketItem.quantity  === 1 ? 'bg-slate-200' : ''"`;
 
@@ -281,7 +278,6 @@ suite("Sorting", () => {
 
   test("Svelte syntax: do not change", () => {
     const sortedString = `<div class:isActive="text-white bg-blue-500"`;
-    // const sortedString = `class:isActive="bg-blue-500 text-white"`;
     const unsortedString = `<div class:isActive="text-white bg-blue-500"`;
 
     assert.strictEqual(

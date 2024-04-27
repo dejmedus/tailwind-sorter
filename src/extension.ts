@@ -14,7 +14,6 @@ export function activate(context: vscode.ExtensionContext) {
       // get current configuration settings
       const { classesMap, pseudoSortOrder } = getClassesMap();
 
-      // get tailwind from file and sort
       const text = event.document.getText();
       const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
 
