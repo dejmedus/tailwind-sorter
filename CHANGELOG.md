@@ -3,7 +3,12 @@
 ## Upcoming
 
 - handle dynamic styling (cva, clsx, tw, nunjucks, react/vue/etc. conditional syntax)
-- defaults matching tailwind recommendations
+
+### 0.0.7
+
+- Better comments/code documentation
+- Config validation
+- Prevent sorting dynamic alpinejs
 
 ### 0.0.6
 
