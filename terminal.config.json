@@ -28,7 +28,8 @@
       "name": "upgrade",
       "commands": [
         "echo '1. Update CHANGELOG.md. 2. Up version in package.json. 3. Ensure tests pass. 4. vsce publish'",
-        ""
+        "code CHANGELOG.md",
+        "code package.json"
       ],
       "description": "before upgrade to do list"
     },
@@ -36,6 +37,11 @@
       "name": "test",
       "commands": ["npm run test"],
       "description": "run tests"
+    },
+    {
+      "name": "test repo",
+      "commands": ["cd ..", "code tailwind-sorter-test-repo"],
+      "description": "check it works in the test repo"
     }
   ]
 }
