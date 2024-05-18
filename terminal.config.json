@@ -37,11 +37,6 @@
       "name": "test",
       "commands": ["npm run test"],
       "description": "run tests"
-    },
-    {
-      "name": "test repo",
-      "commands": ["cd ..", "code tailwind-sorter-test-repo"],
-      "description": "check it works in the test repo"
     }
   ]
 }
