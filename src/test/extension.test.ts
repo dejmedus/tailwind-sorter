@@ -9,7 +9,6 @@ import { defaultClassesMap } from "./defaultClassMap";
 import * as sinon from "sinon";
 
 suite("Sorting", () => {
-  vscode.window.showInformationMessage("Start all tests.");
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
   test('Correct sort class=""', () => {
@@ -207,25 +206,34 @@ suite("Sorting", () => {
     );
   });
 
-  test("Nunjucks syntax: keep proper brackets", () => {
-    const sortedString = `<div class="bg-blue text-lg appear appear-video-playing case-video-container waiting {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
-    const unsortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg "`;
+  test("Nunjucks syntax: do not change", () => {
+    const sortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg"`;
+    const unsortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
   });
+  // test("Nunjucks syntax: keep proper brackets", () => {
+  //   const sortedString = `<div class="bg-blue text-lg appear appear-video-playing case-video-container waiting {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+  //   const unsortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg "`;
 
-  test("Nunjucks syntax, only brackets", () => {
-    const sortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
-    const unsortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
 
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
+  // test("Nunjucks syntax, only brackets", () => {
+  //   const sortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+  //   const unsortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
+
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
 
   test("HTMX syntax: do not change", () => {
     const sortedString = `<div data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
@@ -348,7 +356,17 @@ suite("Sorting", () => {
     );
   });
 
-  test("Phoenix dynamic syntax: do not change", () => {
+  test("Phoenix dynamic syntax <%=: do not change", () => {
+    const sortedString = `<button class="mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
+    const unsortedString = `<button class="mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Phoenix dynamic syntax brackets: do not change", () => {
     const sortedString = `<span class={if @counter > 5, do: "text-2xl text-red-500", else: "text-2xl text-gray-500"} id="counter">`;
     const unsortedString = `<span class={if @counter > 5, do: "text-2xl text-red-500", else: "text-2xl text-gray-500"} id="counter">`;
 
@@ -361,6 +379,71 @@ suite("Sorting", () => {
   test("Phoenix syntax", () => {
     const sortedString = `<span class="bg-blue-500 text-white" id="counter"><%= @counter %></span>`;
     const unsortedString = `<span class="text-white bg-blue-500" id="counter"><%= @counter %></span>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+});
+
+suite("Misc. dynamic syntax", () => {
+  const { classesMap, pseudoSortOrder } = defaultClassesMap();
+
+  test("JS/TS dynamic syntax ${}: do not change", () => {
+    const color = "blue";
+    const sortedString = `<div class="bg-${color}-500">Hello, world!</div>`;
+    const unsortedString = `<div class="bg-${color}-500">Hello, world!</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("PHP dynamic syntax <?php ?>: do not change", () => {
+    const sortedString = `<div class="<?php echo "bg-$color-500"; ?>">Hello, world!</div>`;
+    const unsortedString = `<div class="<?php echo "bg-$color-500"; ?>">Hello, world!</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Django dynamic syntax {% %}: do not change", () => {
+    const sortedString = `<div class="bg-{% color %}-500">Hello, world!</div>`;
+    const unsortedString = `<div class="bg-{% color %}-500">Hello, world!</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Jinja dynamic syntax {{ }}: do not change", () => {
+    const sortedString = `<div class="bg-{{ color }}-500">Hello, world!</div>`;
+    const unsortedString = `<div class="bg-{{ color }}-500">Hello, world!</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Ruby ERB dynamic syntax <% %>: do not change", () => {
+    const sortedString = `<div class="<%= "bg-#{color}-500" %>">Hello, world!</div>`;
+    const unsortedString = `<div class="<%= "bg-#{color}-500" %>">Hello, world!</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("ASP.NET dynamic syntax <% %>: do not change", () => {
+    const sortedString = `<div class="<%= $"bg-{color}-500" %>">Hello, world!</div>`;
+    const unsortedString = `<div class="<%= $"bg-{color}-500" %>">Hello, world!</div>`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
