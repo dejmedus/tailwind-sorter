@@ -1,3 +1,5 @@
+import dynamicSyntaxMarkers from "./lib/dynamicSyntax";
+
 /**
  * Sorts the tailwind classes in the given file text based on the provided sort config.
  *
@@ -19,7 +21,15 @@ export default function sortTailwind(
     (match, g1, g2, doubleQuotesGroup, singleQuotesGroup) => {
       const quotesGroup = singleQuotesGroup || doubleQuotesGroup;
 
-      if (!quotesGroup || !quotesGroup.includes(" ")) {
+      const groupContainsDynamicSyntax = dynamicSyntaxMarkers.some((syntax) =>
+        quotesGroup.includes(syntax)
+      );
+
+      if (
+        !quotesGroup ||
+        !quotesGroup.includes(" ") ||
+        groupContainsDynamicSyntax
+      ) {
         return match;
       }
 
