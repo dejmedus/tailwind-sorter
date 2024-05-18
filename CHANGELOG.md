@@ -5,6 +5,10 @@
 - handle dynamic styling (cva, clsx, tw, nunjucks, react/vue/etc. conditional syntax)
 
 
+### 0.0.72
+
+- Fix: ignore dynamic syntax inside quotes
+
 ### 0.0.71
 
 - Add elixir and phoenix-heex target languages
