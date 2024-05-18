@@ -207,7 +207,7 @@ suite("Sorting", () => {
     );
   });
 
-  test("Nunjucks syntax, keep proper brackets", () => {
+  test("Nunjucks syntax: keep proper brackets", () => {
     const sortedString = `<div class="bg-blue text-lg appear appear-video-playing case-video-container waiting {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
     const unsortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg "`;
 
@@ -289,6 +289,78 @@ suite("Sorting", () => {
   test("Svelte dynamic syntax: do not change", () => {
     const sortedString = `<div class:isActive={isActive ? "text-white bg-blue-500" : "text-gray-500 bg-white"}`;
     const unsortedString = `<div class:isActive={isActive ? "text-white bg-blue-500" : "text-gray-500 bg-white"}`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Elixir syntax", () => {
+    const sortedString = `
+    def card(assigns) do
+      ~L"""
+      <div class="bg-blue-500 text-white">
+        <.card_header {assigns} />
+        <.card_body {assigns} />
+        <.card_footer {assigns} />
+      </div>
+      """
+    end
+    `;
+    const unsortedString = `
+    def card(assigns) do
+      ~L"""
+      <div class="text-white bg-blue-500">
+        <.card_header {assigns} />
+        <.card_body {assigns} />
+        <.card_footer {assigns} />
+      </div>
+      """
+    end
+    `;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Elixir dynamic syntax: do not change", () => {
+    const sortedString = `
+    <li class={"#{case item.status do
+      :pending -> "bg-yellow-100"
+      :completed -> "bg-green-100"
+      :in_progress -> "bg-blue-100"
+    end} p-2 mb-2"}>
+    `;
+    const unsortedString = `
+    <li class={"#{case item.status do
+      :pending -> "bg-yellow-100"
+      :completed -> "bg-green-100"
+      :in_progress -> "bg-blue-100"
+    end} p-2 mb-2"}>
+    `;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Phoenix dynamic syntax: do not change", () => {
+    const sortedString = `<span class={if @counter > 5, do: "text-2xl text-red-500", else: "text-2xl text-gray-500"} id="counter">`;
+    const unsortedString = `<span class={if @counter > 5, do: "text-2xl text-red-500", else: "text-2xl text-gray-500"} id="counter">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Phoenix syntax", () => {
+    const sortedString = `<span class="bg-blue-500 text-white" id="counter"><%= @counter %></span>`;
+    const unsortedString = `<span class="text-white bg-blue-500" id="counter"><%= @counter %></span>`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
