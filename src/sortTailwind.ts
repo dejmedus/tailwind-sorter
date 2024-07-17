@@ -1,4 +1,4 @@
-import { classRegex, dynamicSyntaxMarkers } from "./lib/constants";
+import { createRegex, dynamicSyntaxMarkers } from "./lib/regex";
 
 /**
  * Sorts the tailwind classes in the given file text based on the provided sort config.
@@ -13,11 +13,20 @@ export default function sortTailwind(
   sortConfig: { [key: string]: number },
   pseudoClasses: string[]
 ) {
-  const regex = new RegExp(classRegex);
+  const regex = createRegex();
+
   const newText = text.replace(
     regex,
-    (match, g1, g2, doubleQuotesGroup, singleQuotesGroup) => {
-      const quotesGroup = singleQuotesGroup || doubleQuotesGroup;
+    (
+      match,
+      g1,
+      g2,
+      doubleQuotesGroup,
+      singleQuotesGroup,
+      backtickQuotesGroup
+    ) => {
+      const quotesGroup =
+        singleQuotesGroup || doubleQuotesGroup || backtickQuotesGroup;
 
       const groupContainsDynamicSyntax = dynamicSyntaxMarkers.some((syntax) =>
         quotesGroup.includes(syntax)
