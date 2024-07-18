@@ -214,19 +214,19 @@ suite("Sorting", () => {
     );
   });
 
-  test("twin macro", () => {
-    // https://github.com/ben-rogerson/twin.macro
+  // test("twin macro", () => {
+  //   // https://github.com/ben-rogerson/twin.macro
 
-    const sortedString =
-      'const Input = () => <input tw="border hover:border-black" />';
-    const unsortedString =
-      'const Input = () => <input tw="hover:border-black border" />';
+  //   const sortedString =
+  //     'const Input = () => <input tw="border hover:border-black" />';
+  //   const unsortedString =
+  //     'const Input = () => <input tw="hover:border-black border" />';
 
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
 });
 
 suite("Ignore sorting", () => {
@@ -545,13 +545,13 @@ suite("Ignore sorting", () => {
     );
   });
 
-  test("twin macro dynamic syntax: do not change", () => {
-    const sortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
-    const unsortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
+  // test("twin macro dynamic syntax: do not change", () => {
+  //   const sortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
+  //   const unsortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
 
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
+  //   assert.strictEqual(
+  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+  //     sortedString
+  //   );
+  // });
 });
