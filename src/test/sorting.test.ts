@@ -48,6 +48,46 @@ suite("Sorting", () => {
     );
   });
 
+  test("Only pseudo classes", () => {
+    const sortedString = `<div class="group-hover:text-blue-500 focus-within:ring focus-within:ring-blue-200" blah blah`;
+    const unsortedString = `<div class="focus-within:ring-blue-200 group-hover:text-blue-500 focus-within:ring" blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Arbitrary values", () => {
+    const sortedString = `<div className='bg-[#1a1a1a] w-[100px] h-[calc(100%-1rem)]' blah blah`;
+    const unsortedString = `<div className='h-[calc(100%-1rem)] w-[100px] bg-[#1a1a1a]' blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Negative margins", () => {
+    const sortedString = `<div className='z-10 -mt-5 -mb-5' blah blah`;
+    const unsortedString = `<div className='-mb-5 z-10 -mt-5' blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Style vars", () => {
+    const sortedString = `<div class="bg-[var(--my-color)] text-black"></div>`;
+    const unsortedString = `<div class="text-black bg-[var(--my-color)]"></div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Angular syntax", () => {
     const sortedString = `<div class="bg-blue-500 text-white"`;
     const unsortedString = `<div class="text-white bg-blue-500"`;
@@ -311,6 +351,16 @@ suite("Ignore sorting", () => {
   test("Conditional Angular syntax: do not change", () => {
     const sortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
     const unsortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Dynamic Angular: do not change", () => {
+    const sortedString = `<div class="'bg-' + (isActive ? 'green' : 'red') + '-500'"></div>`;
+    const unsortedString = `<div class="'bg-' + (isActive ? 'green' : 'red') + '-500'"></div>`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
