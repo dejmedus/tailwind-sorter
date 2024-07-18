@@ -19,6 +19,7 @@ export function createRegex() {
 
   const prefixes = `(${escapedPrefixes}|class=|className=)`;
 
+  // regex101 example: https://regex101.com/r/81bCmO/1
   // (?<=\\s|^) prefix should be preceded by a space or the start of the string
   // "([^"\(<{>]*)" matches everything inside quotes group unless there is dynamic syntax inside
   const regexStr = `(?<=\\s|^)${prefixes}("([^"\(<{>]*)"|'([^'\(<{>]*)'|\`([^\`\(<{>]*)\`)`;
