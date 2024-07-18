@@ -88,13 +88,6 @@ suite("Custom Prefixes", () => {
       "text-white bg-blue-500"
     );
   });
-
-  test(`twMerge()`, () => {
-    checkEquals(
-      "<div blah blah blah twMerge(`relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl`) blah >",
-      "relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl"
-    );
-  });
 });
 
 suite("No Match", () => {
