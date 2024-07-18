@@ -48,7 +48,16 @@ Custom sort order and categories can be configured in settings.
     ],
 ```
 
-**Custom Prefixes**: The extension checks for `class=` and `className=` attributes as well as any custom prefixes defined in settings. Default custom prefixes include: `twMerge(`, `cva(`, and `clsx(`
+**Custom Prefixes**: Tailwind Sorter checks for `class=` and `className=` as well as any custom prefixes defined in settings. Default custom prefixes include: `twMerge(`, `cva(`, and `clsx(`
+
+#### Sorting
+
+The extension sorts any strings that are preceded by a prefix and do not included dynamic syntax
+
+- *Strings:* `""` `''` ` `` `
+- *Prefixes:* `Custom prefixes` `class=`  `className=`
+- *Dynamic Syntax:* `?` `<` `>` `{`
+
 
 #### With Prettier
 
