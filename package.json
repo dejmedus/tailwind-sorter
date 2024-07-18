@@ -270,7 +270,11 @@
               "divide-dotted",
               "divide-transparent",
               "divide-current",
-              "divide-"
+              "divide-",
+              "ring",
+              "ring-",
+              "ring-inset",
+              "ring-offset"
             ],
             "sizing": [
               "w-",

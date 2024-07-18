@@ -8,6 +8,7 @@
 ### 0.0.8
 
 - Support for additional prefixes ex. `twMerge(`, `cva(` and `clsx(`
+- Add missing classes: ring, ring-inset, ring-offset to borders category
 
 ### 0.0.72
 
