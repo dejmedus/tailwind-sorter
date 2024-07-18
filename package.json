@@ -34,6 +34,18 @@
     "configuration": {
       "title": "Tailwind Sorter",
       "properties": {
+        "tailwindSorter.customPrefixes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "default": [
+            "twMerge(",
+            "clsx(",
+            "cva("
+          ]
+        },
         "tailwindSorter.categoryOrder": {
           "type": "object",
           "properties": {
