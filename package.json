@@ -44,7 +44,8 @@
             "twMerge(",
             "clsx(",
             "cva("
-          ]
+          ],
+          "description": "Custom prefixes to identify tailwind class strings. Example: clsx( or tw="
         },
         "tailwindSorter.categoryOrder": {
           "type": "object",
