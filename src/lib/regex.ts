@@ -1,4 +1,4 @@
-import { log } from "console";
+import * as vscode from "vscode";
 
 /**
  * Creates a regex pattern to select style classes after a prefix inside '' "" or ``
@@ -7,8 +7,11 @@ import { log } from "console";
  * @returns The regex pattern
  */
 export function createRegex() {
-  // custom prefix must be a string + ( or =
-  const customPrefixes = ["twMerge(", "clsx(", "tw=", "cva("];
+  const config = vscode.workspace.getConfiguration("tailwindSorter");
+
+  // custom prefix should be a string + ( or =
+  // defaults: ["twMerge(", "clsx(", "tw=", "cva("];
+  let customPrefixes: string[] = config.get("customPrefixes", []);
 
   const escapedPrefixes = customPrefixes
     .map((prefix) => prefix.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"))
@@ -16,8 +19,8 @@ export function createRegex() {
 
   const prefixes = `(${escapedPrefixes}|class=|className=)`;
 
-  // (?<=\\s|^) - prefix should be preceded by a space or the start of the string
-  // "([^"\(<{>]*)" - matches everything inside quotes group unless there is dynamic syntax inside
+  // (?<=\\s|^) prefix should be preceded by a space or the start of the string
+  // "([^"\(<{>]*)" matches everything inside quotes group unless there is dynamic syntax inside
   const regexStr = `(?<=\\s|^)${prefixes}("([^"\(<{>]*)"|'([^'\(<{>]*)'|\`([^\`\(<{>]*)\`)`;
 
   return new RegExp(regexStr, "g");
