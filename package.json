@@ -3,7 +3,7 @@
   "displayName": "Tailwind Sorter",
   "description": "Sort your tailwind classes in a predictable way",
   "icon": "icon.png",
-  "version": "0.0.72",
+  "version": "0.0.8",
   "pricing": "Free",
   "engines": {
     "vscode": "^1.85.0"
@@ -34,6 +34,19 @@
     "configuration": {
       "title": "Tailwind Sorter",
       "properties": {
+        "tailwindSorter.customPrefixes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "default": [
+            "twMerge(",
+            "clsx(",
+            "cva("
+          ],
+          "description": "Custom prefixes to identify tailwind class strings. Example: clsx( or tw="
+        },
         "tailwindSorter.categoryOrder": {
           "type": "object",
           "properties": {
@@ -257,7 +270,11 @@
               "divide-dotted",
               "divide-transparent",
               "divide-current",
-              "divide-"
+              "divide-",
+              "ring",
+              "ring-",
+              "ring-inset",
+              "ring-offset"
             ],
             "sizing": [
               "w-",

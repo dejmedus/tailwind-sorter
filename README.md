@@ -12,18 +12,20 @@ Custom sort order and categories can be configured in settings.
 
 1. Open settings
    - Click the gear icon in the bottom left corner, or
-   - Press `Ctrl+` (Windows/Linux) / `Cmd+` (Mac).
+   - Navigate to `File > Preferences > Settings`
 2. Search for "Tailwind Sorter" in the search bar at the top of the settings window.
 3. Modify the settings according to your preferences:
-   - `Tailwind Sorter: Category Order`: Defines the order that categories will be sorted.
-   - `Tailwind Sorter: Categories`: Defines which style classes will belong to which category and in what order.
-   - `Tailwind Sorter: Pseudo Classes Order`: Defines how pseudo-classes should be ordered.
+   - `Tailwind Sorter: Category Order`: The order categories will be sorted.
+   - `Tailwind Sorter: Categories`: Which style classes will belong to which category and in what order.
+   - `Tailwind Sorter: Pseudo Classes Order`: How pseudo-classes should be ordered.
+   - `Tailwind Sorter: Custom Prefixes`: Prefixes that identify class strings other than the default `class=` and `className=`.
+
 
 **The default category order is**: box model, grid, flexbox, background, margins and padding, borders, width and height, typography, transformations, and other`.
 
 **The default order for pseudo-classes order is**: screens (sm, md, lg, xl, 2xl), before and after pseudo-elements, states (hover, focus, active, visited, disabled), dark mode, child selectors (first, last, odd, even), group states (group-over, group-focus), and motion preferences (motion-safe, motion-reduce).
 
-Category example:
+**Category example:**
 
 ```json
 "box": [
@@ -45,6 +47,17 @@ Category example:
       "inset-",
     ],
 ```
+
+**Custom Prefixes**: Tailwind Sorter checks for `class=` and `className=` as well as any custom prefixes defined in settings. Default custom prefixes include: `twMerge(`, `cva(`, and `clsx(`
+
+#### Sorting
+
+The extension sorts any strings that are preceded by a prefix and do not included dynamic syntax
+
+- *Strings:* `""` `''` ` `` `
+- *Prefixes:* `Custom prefixes` `class=`  `className=`
+- *Dynamic Syntax:* `?` `<` `>` `{`
+
 
 #### With Prettier
 

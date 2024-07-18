@@ -177,6 +177,10 @@ export const defaultConfig = {
       "divide-transparent",
       "divide-current",
       "divide-",
+      "ring",
+      "ring-",
+      "ring-inset",
+      "ring-offset",
     ],
     sizing: ["w-", "min-w-", "max-w-", "h-", "min-h-", "max-h-"],
     typography: [
