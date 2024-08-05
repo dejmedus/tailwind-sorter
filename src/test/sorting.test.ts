@@ -68,6 +68,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("Dot in class", () => {
+    const sortedString = `class="bg-[url('image.jpg')] text-black"`;
+    const unsortedString = `class="text-black bg-[url('image.jpg')]"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Negative margins", () => {
     const sortedString = `<div className='z-10 -mt-5 -mb-5' blah blah`;
     const unsortedString = `<div className='-mb-5 z-10 -mt-5' blah blah`;
@@ -180,6 +190,70 @@ suite("Sorting", () => {
     );
   });
 
+  test(`Inside brackets twMerge(`, () => {
+    const sortedString = `<aside className={twMerge('flex p-4')}>`;
+    const unsortedString = `<aside className={twMerge(' p-4     flex    ')}>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test(`Inside brackets w space twMerge(`, () => {
+    const sortedString = `<aside className={ twMerge('flex p-4')}>`;
+    const unsortedString = `<aside className={ twMerge(' p-4     flex    ')}>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test(`Newline twMerge(`, () => {
+    const sortedString = `const classes = {
+      container: twMerge(
+        "grid-cols-2 lg:grid-cols-[1fr, auto]"
+      ),
+    };`;
+    const unsortedString = `const classes = {
+      container: twMerge(
+        "lg:grid-cols-[1fr, auto] grid-cols-2"
+      ),
+    };`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test(`Complex newline clsx(`, () => {
+    const sortedString = `<span
+        className={clsx(
+          "px-2 py-1",
+          {
+            "bg-gray-100 text-gray-500": status === "pending",
+            "bg-green-500 text-white": status === "paid",
+          }
+        )}
+      ></span>`;
+    const unsortedString = `<span
+        className={clsx(
+          "py-1 px-2",
+          {
+            "bg-gray-100 text-gray-500": status === "pending",
+            "bg-green-500 text-white": status === "paid",
+          }
+        )}
+      ></span>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("clsx multi", () => {
     // https://github.com/lukeed/clsx#readme
     // ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
@@ -195,7 +269,7 @@ suite("Sorting", () => {
 
   test("clsx", () => {
     const sortedString = `clsx('bg-blue-500 text-base')`;
-    const unsortedString = `clsx('text-base bg-blue-500')`;
+    const unsortedString = `clsx('text-base           bg-blue-500     ')`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
