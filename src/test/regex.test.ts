@@ -61,10 +61,38 @@ suite("Custom Prefixes", () => {
     assert.strictEqual(group, correctMatch);
   }
 
+  test(`Newline twMerge(`, () => {
+    checkEquals(
+      `const classes = {
+  container: twMerge(
+    "flex flex-col items-stretch mt-4 text-[20px] lg:text-red-500"
+  ),
+};`,
+      "flex flex-col items-stretch mt-4 text-[20px] lg:text-red-500"
+    );
+  });
+
   test(`twMerge(`, () => {
     checkEquals(
       `<div blah blah blah twMerge("relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl") blah >`,
       "relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl"
+    );
+  });
+
+  test(`Inside brackets twMerge(`, () => {
+    checkEquals(
+      `<aside className={twMerge('fixed bottom-0 right-0 p-4')}>`,
+      "fixed bottom-0 right-0 p-4"
+    );
+  });
+
+  test(`Multiline brackets twMerge(`, () => {
+    checkEquals(
+      `className={twMerge(
+        "relative h-full font-sans antialiased", 
+        inter.className
+        )}>`,
+      "relative h-full font-sans antialiased"
     );
   });
 
@@ -79,6 +107,28 @@ suite("Custom Prefixes", () => {
     checkEquals(
       `<div blah blah blah clsx('relative before:rounded-full before:content-[""] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl') blah >`,
       'relative before:rounded-full before:content-[""] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl'
+    );
+  });
+
+  test(`Newline clsx(`, () => {
+    checkEquals(
+      `<span
+        className={clsx(
+          "px-2 items-center rounded-full inline-flex py-1 text-sm",
+          {
+            "bg-gray-100 text-gray-500": status === "pending",
+            "bg-green-500 text-white": status === "paid",
+          }
+        )}
+      ></span>`,
+      "px-2 items-center rounded-full inline-flex py-1 text-sm"
+    );
+  });
+
+  test(`Whitespace clsx(`, () => {
+    checkEquals(
+      `clsx(   'text-base          bg-blue-500          ')`,
+      "text-base          bg-blue-500          "
     );
   });
 
