@@ -68,6 +68,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("Dot in class", () => {
+    const sortedString = `class="bg-[url('image.jpg')] text-black"`;
+    const unsortedString = `class="text-black bg-[url('image.jpg')]"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Negative margins", () => {
     const sortedString = `<div className='z-10 -mt-5 -mb-5' blah blah`;
     const unsortedString = `<div className='-mb-5 z-10 -mt-5' blah blah`;
