@@ -58,6 +58,9 @@ The extension sorts any strings that are preceded by a prefix and do not include
 - *Prefixes:* `Custom prefixes` `class=`  `className=`
 - *Dynamic Syntax:* `?` `<` `>` `{`
 
+#### Language Support
+
+Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.vue`, and `.astro` files. If you would like to see support for an additional language, please open an issue.
 
 #### With Prettier
 
@@ -66,8 +69,3 @@ If you don't need control over the sort order, [the prettier plugin](https://tai
 - Using prettier-plugin-tailwindcss alongside Tailwind Sorter causes classes to "flash" on save.
 - To prevent this, remove `prettier-plugin-tailwindcss` from `plugins: []` in your prettier config file and reload window.
 
-<!-- ## Changes
-
-### 1.0.0
-
-Initial release -->
