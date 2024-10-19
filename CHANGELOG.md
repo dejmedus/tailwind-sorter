@@ -6,6 +6,10 @@
 
 ### 0.0.81
 
+- Add Astro target language
+
+### 0.0.81
+
 - Fix: allow for brackets/spaces before/after prefixes
 
 ### 0.0.8
