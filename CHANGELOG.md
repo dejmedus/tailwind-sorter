@@ -4,6 +4,10 @@
 
 - handle dynamic styling 
 
+### 0.0.82
+
+- Add Astro target language
+
 ### 0.0.81
 
 - Fix: allow for brackets/spaces before/after prefixes
