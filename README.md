@@ -60,7 +60,7 @@ The extension sorts any strings that are preceded by a prefix and do not include
 
 #### Language Support
 
-Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.vue`, and `.astro` files. If you would like to see support for an additional language, please open an issue.
+Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.vue`, `.rs`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
 
 #### With Prettier
 
