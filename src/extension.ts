@@ -16,6 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
       "elixir",
       "phoenix-heex",
       "astro",
+      "rust",
     ];
 
     if (languages.includes(event.document.languageId)) {
