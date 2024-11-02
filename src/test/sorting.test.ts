@@ -148,6 +148,26 @@ suite("Sorting", () => {
     );
   });
 
+  test("Leptos syntax", () => {
+    const sortedString = `<button class="flex flex-row" on:click=on_click>"Welcome to Leptos!"</button>`;
+    const unsortedString = `<button class="flex-row flex" on:click=on_click>"Welcome to Leptos!"</button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Yew syntax", () => {
+    const sortedString = `<button class="bg-blue-500 text-white" onclick={ctx.link().callback(|_| Msg::Random)}>{ "Random" }</button>`;
+    const unsortedString = `<button class="text-white bg-blue-500" onclick={ctx.link().callback(|_| Msg::Random)}>{ "Random" }</button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Tailwind merge concat strings", () => {
     // https://github.com/dcastil/tailwind-merge
 
@@ -327,20 +347,6 @@ suite("Sorting", () => {
       sortedString
     );
   });
-
-  // test("twin macro", () => {
-  //   // https://github.com/ben-rogerson/twin.macro
-
-  //   const sortedString =
-  //     'const Input = () => <input tw="border hover:border-black" />';
-  //   const unsortedString =
-  //     'const Input = () => <input tw="hover:border-black border" />';
-
-  //   assert.strictEqual(
-  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-  //     sortedString
-  //   );
-  // });
 });
 
 suite("Ignore sorting", () => {

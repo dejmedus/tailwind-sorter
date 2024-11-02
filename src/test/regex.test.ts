@@ -174,4 +174,21 @@ suite("No Match", () => {
       false
     );
   });
+
+  test(`Ignore dynamic rust yew`, () => {
+    hasMatch('<div class={css!("color: red;")}>{"Hello World!"}</div>', false);
+    hasMatch(
+      '<div key={idx} class={classes!("game-cellule", cellule_status)}></div>',
+      false
+    );
+  });
+
+  test(`Ignore dynamic rust leptos`, () => {
+    hasMatch(
+      '<button class=("button-20", move || count() % 2 == 1) >"Click Me"</button>',
+      false
+    );
+    hasMatch("<div class:red=move || count() % 2 == 1 ></div>", false);
+    hasMatch("<div class=style::jumbotron/>", false);
+  });
 });
