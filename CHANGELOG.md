@@ -4,6 +4,10 @@
 
 - handle dynamic styling 
 
+### 0.0.83
+
+- Add Rust target language
+
 ### 0.0.82
 
 - Add Astro target language
