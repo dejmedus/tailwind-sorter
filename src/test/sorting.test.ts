@@ -38,6 +38,26 @@ suite("Sorting", () => {
     );
   });
 
+  test("Empty string present", () => {
+    const sortedString = `<div className=''></div><div className='flex flex-col' blah blah`;
+    const unsortedString = `<div className=''></div><div className='flex-col flex' blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Multi string types", () => {
+    const sortedString = `<div className="flex flex-col"></div><div className='flex flex-col' blah blah`;
+    const unsortedString = `<div className="flex-col flex"></div><div className='flex-col flex' blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Repeat classes", () => {
     const sortedString = `<div className="top-0 left-0 left-0 left-10 lg:static fixed flex justify-center"`;
     const unsortedString = `<div className="top-0 left-10 left-0 lg:static fixed flex justify-center left-0"`;
