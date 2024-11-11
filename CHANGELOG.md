@@ -4,6 +4,10 @@
 
 - handle dynamic styling 
 
+### 0.0.84
+
+- Fix: stop empty strings from preventing class sorting
+
 ### 0.0.83
 
 - Add Rust target language
