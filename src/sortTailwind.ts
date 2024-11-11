@@ -28,15 +28,15 @@ export default function sortTailwind(
       const quotesGroup =
         singleQuotesGroup || doubleQuotesGroup || backtickQuotesGroup;
 
+      if (!quotesGroup) {
+        return match;
+      }
+
       const groupContainsDynamicSyntax = dynamicSyntaxMarkers.some((syntax) =>
         quotesGroup.includes(syntax)
       );
 
-      if (
-        !quotesGroup ||
-        !quotesGroup.includes(" ") ||
-        groupContainsDynamicSyntax
-      ) {
+      if (!quotesGroup.includes(" ") || groupContainsDynamicSyntax) {
         return match;
       }
 
