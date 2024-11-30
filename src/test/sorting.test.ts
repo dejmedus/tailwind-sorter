@@ -3,7 +3,7 @@ import * as assert from "assert";
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import sortTailwind from "../sortTailwind";
-import { defaultClassesMap } from "./defaultClassMap";
+import { defaultClassesMap } from "./_defaultClassMap";
 
 suite("Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
@@ -369,218 +369,19 @@ suite("Sorting", () => {
   });
 });
 
-suite("Ignore sorting", () => {
+suite("@apply Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
-  test("Dynamic styles class={` ternary ': do not change", () => {
-    const sortedString =
-      "<div class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
-    const unsortedString =
-      "<div class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test('Dynamic styles class={` ternary ": do not change', () => {
-    const sortedString =
-      '<div class={`button ${isActive ? "button-active" : "button-inactive"}`}';
-    const unsortedString =
-      '<div class={`button ${isActive ? "button-active" : "button-inactive"}`}';
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Dynamic styles className={`: do not change", () => {
-    const sortedString =
-      "<div className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
-    const unsortedString =
-      "<div className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 ${buttonClasses.DEFAULT}`}";
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Vue.js syntax", () => {
-    const sortedString = `<div class="bg-blue-500 text-white"`;
-    const unsortedString = `<div class="text-white bg-blue-500"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  // test("Dynamic Vue.js syntax", () => {
-  //   const sortedString = `:class="{ 'bg-blue-500': isActive, 'text-white': isActive }"`;
-  //   const unsortedString = `:class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
-
-  //   assert.strictEqual(
-  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-  //     sortedString
-  //   );
-  // });
-
-  test("Dynamic Vue.js syntax: do not change", () => {
-    const sortedString = `<div :class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
-    const unsortedString = `<div :class="{ 'text-white': isActive, 'bg-blue-500': isActive }"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Vue.js :class array: do not change", () => {
-    const sortedString = `<div :class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
-    const unsortedString = `<div :class="[{ 'bg-red-500': !isActive, 'bg-blue-500': isActive }, 'text-white']`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Conditional Angular syntax: do not change", () => {
-    const sortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
-    const unsortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Dynamic Angular: do not change", () => {
-    const sortedString = `<div class="'bg-' + (isActive ? 'green' : 'red') + '-500'"></div>`;
-    const unsortedString = `<div class="'bg-' + (isActive ? 'green' : 'red') + '-500'"></div>`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Nunjucks syntax: do not change", () => {
-    const sortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg"`;
-    const unsortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  // test("Nunjucks syntax: keep proper brackets", () => {
-  //   const sortedString = `<div class="bg-blue text-lg appear appear-video-playing case-video-container waiting {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
-  //   const unsortedString = `<div class="bg-blue {{ widget.size }}  case-video-container {{ widget.marginTop }} {{ widget.marginBottom }} waiting appear appear-video-playing text-lg "`;
-
-  //   assert.strictEqual(
-  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-  //     sortedString
-  //   );
-  // });
-
-  // test("Nunjucks syntax, only brackets", () => {
-  //   const sortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
-  //   const unsortedString = `<div class="{{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"`;
-
-  //   assert.strictEqual(
-  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-  //     sortedString
-  //   );
-  // });
-
-  test("HTMX syntax: do not change", () => {
-    const sortedString = `<div data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
-    const unsortedString = `<div data-htmx-class="bg-blue-500:text-white:bg-gray-300"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  const isActive = true;
-  test("HTMX dynamic syntax: do not change", () => {
-    const sortedString = `<div data-htmx-class="${
-      isActive
-        ? "bg-blue-500:text-white:bg-gray-300"
-        : "bg-white:text-gray-500:bg-blue-300"
-    }"`;
-    const unsortedString = `<div data-htmx-class="${
-      isActive
-        ? "bg-blue-500:text-white:bg-gray-300"
-        : "bg-white:text-gray-500:bg-blue-300"
-    }"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Alpine.js syntax: do not change", () => {
-    const unsortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
-    const sortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Alpine.js dynamic syntax: do not change", () => {
-    const unsortedString = `<div x-bind:class="basketItem.quantity  === 1 ? 'bg-slate-200' : ''"`;
-    const sortedString = `<div x-bind:class="basketItem.quantity  === 1 ? 'bg-slate-200' : ''"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Svelte syntax: do not change", () => {
-    const sortedString = `<div class:isActive="text-white bg-blue-500"`;
-    const unsortedString = `<div class:isActive="text-white bg-blue-500"`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Svelte dynamic syntax: do not change", () => {
-    const sortedString = `<div class:isActive={isActive ? "text-white bg-blue-500" : "text-gray-500 bg-white"}`;
-    const unsortedString = `<div class:isActive={isActive ? "text-white bg-blue-500" : "text-gray-500 bg-white"}`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Elixir dynamic syntax: do not change", () => {
-    const sortedString = `
-    <li class={"#{case item.status do
-      :pending -> "bg-yellow-100"
-      :completed -> "bg-green-100"
-      :in_progress -> "bg-blue-100"
-    end} p-2 mb-2"}>
-    `;
+  test("css", () => {
     const unsortedString = `
-    <li class={"#{case item.status do
-      :pending -> "bg-yellow-100"
-      :completed -> "bg-green-100"
-      :in_progress -> "bg-blue-100"
-    end} p-2 mb-2"}>
+    .btn {
+      @apply hover:bg-blue-700 bg-blue-500;
+    }
+    `;
+    const sortedString = `
+    .btn {
+      @apply bg-blue-500 hover:bg-blue-700;
+    }
     `;
 
     assert.strictEqual(
@@ -589,9 +390,17 @@ suite("Ignore sorting", () => {
     );
   });
 
-  test("Phoenix dynamic syntax <%=: do not change", () => {
-    const sortedString = `<button class="mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
-    const unsortedString = `<button class="mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
+  test("nested css", () => {
+    const unsortedString = `
+    .btn {
+    button{@apply hover:bg-blue-700 bg-blue-500;}
+    }
+    `;
+    const sortedString = `
+    .btn {
+    button{@apply bg-blue-500 hover:bg-blue-700;}
+    }
+    `;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -599,9 +408,29 @@ suite("Ignore sorting", () => {
     );
   });
 
-  test("Phoenix dynamic syntax brackets: do not change", () => {
-    const sortedString = `<span class={if @counter > 5, do: "text-2xl text-red-500", else: "text-2xl text-gray-500"} id="counter">`;
-    const unsortedString = `<span class={if @counter > 5, do: "text-2xl text-red-500", else: "text-2xl text-gray-500"} id="counter">`;
+  test("nested scss", () => {
+    const unsortedString = `
+    .card {
+      @apply text-white bg-black;
+      &__header {
+        @apply text-white bg-black;
+      }
+      &__content {
+        @apply py-4 px-6 ;
+      }
+    }
+    `;
+    const sortedString = `
+    .card {
+      @apply bg-black text-white;
+      &__header {
+        @apply bg-black text-white;
+      }
+      &__content {
+        @apply px-6 py-4;
+      }
+    }
+    `;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -609,39 +438,27 @@ suite("Ignore sorting", () => {
     );
   });
 
-  test("Tailwind merge vars only: do not change", () => {
-    const sortedString =
-      "<button {...props} className={twMerge(BTN_PRIMARY_CLASSNAMES, props.className)} />";
-
-    const unsortedString =
-      "<button {...props} className={twMerge(BTN_PRIMARY_CLASSNAMES, props.className)} />";
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Tailwind merge dynamic: do not change", () => {
-    const sortedString = `<div
-            className={twMerge(
-                TYPOGRAPHY_STYLES_LABEL_SMALL,
-                'grid w-max gap-2',
-                forceHover ? 'bg-gray-200' : ['bg-white', !disabled && 'hover:bg-gray-200'],
-                isMuted && 'text-gray-600',
-                className,
-            )}
-        >`;
-
-    const unsortedString = `<div
-            className={twMerge(
-                TYPOGRAPHY_STYLES_LABEL_SMALL,
-                'grid w-max gap-2',
-                forceHover ? 'bg-gray-200' : ['bg-white', !disabled && 'hover:bg-gray-200'],
-                isMuted && 'text-gray-600',
-                className,
-            )}
-        >`;
+  test("style block", () => {
+    const unsortedString = `
+    <template>
+      <button class="btn">Click me</button>
+    </template>
+    <style lang="postcss">
+    .btn {
+      @apply py-2 px-4;
+    }
+    </style>
+    `;
+    const sortedString = `
+    <template>
+      <button class="btn">Click me</button>
+    </template>
+    <style lang="postcss">
+    .btn {
+      @apply px-4 py-2;
+    }
+    </style>
+    `;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -649,9 +466,21 @@ suite("Ignore sorting", () => {
     );
   });
 
-  test("clsx dynamic syntax: do not change", () => {
-    const sortedString = `clsx({ foo:true }, { bar:false }, null, { '--foobar':'hello' })`;
-    const unsortedString = `clsx({ foo:true }, { bar:false }, null, { '--foobar':'hello' })`;
+  test("multiple applys", () => {
+    const unsortedString = `
+    .btn {
+      @apply flex-1 flex items-center;
+      @apply text-white bg-black;
+      @apply hover:bg-blue-700 bg-blue-500;
+    }
+    `;
+    const sortedString = `
+    .btn {
+      @apply flex flex-1 items-center;
+      @apply bg-black text-white;
+      @apply bg-blue-500 hover:bg-blue-700;
+    }
+    `;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -659,25 +488,29 @@ suite("Ignore sorting", () => {
     );
   });
 
-  test("cva array: do not sort", () => {
-    const sortedString = `const cardBase = cva(["card", "border-solid", "border-slate-300", "rounded"], {
-      variants: {
-        shadow: {
-          md: "drop-shadow-md",
-          lg: "drop-shadow-lg",
-          xl: "drop-shadow-xl",
-        },
-      },
-    })`;
-    const unsortedString = `const cardBase = cva(["card", "border-solid", "border-slate-300", "rounded"], {
-      variants: {
-        shadow: {
-          md: "drop-shadow-md",
-          lg: "drop-shadow-lg",
-          xl: "drop-shadow-xl",
-        },
-      },
-    })`;
+  test("media queries", () => {
+    const unsortedString = `
+    .container {
+      @apply text-white bg-black;
+      @screen sm {
+        @apply text-white bg-black;
+      }
+      @screen lg {
+        @apply text-white bg-black;
+      }
+    }
+    `;
+    const sortedString = `
+    .container {
+      @apply bg-black text-white;
+      @screen sm {
+        @apply bg-black text-white;
+      }
+      @screen lg {
+        @apply bg-black text-white;
+      }
+    }
+    `;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -685,9 +518,29 @@ suite("Ignore sorting", () => {
     );
   });
 
-  test("cva dynamic: do not sort", () => {
-    const sortedString = `cva({ 'bg-blue-700 text-gray-100': isHovering })`;
-    const unsortedString = `cva({ 'bg-blue-700 text-gray-100': isHovering })`;
+  test("pseudo-classes and modifiers", () => {
+    const unsortedString = `
+    .input {
+      @apply py-2 px-4;
+      &:focus {
+        @apply outline-none py-2;
+      }
+      &:disabled {
+        @apply outline-none py-2;
+      }
+    }
+    `;
+    const sortedString = `
+    .input {
+      @apply px-4 py-2;
+      &:focus {
+        @apply py-2 outline-none;
+      }
+      &:disabled {
+        @apply py-2 outline-none;
+      }
+    }
+    `;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -695,13 +548,105 @@ suite("Ignore sorting", () => {
     );
   });
 
-  // test("twin macro dynamic syntax: do not change", () => {
-  //   const sortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
-  //   const unsortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
+  test("complex selectors", () => {
+    const unsortedString = `
+    .form {
+      .label {
+        @apply text-white bg-black;
+      }
+      > .group {
+        @apply text-white bg-black;
+        + .group {
+          @apply text-white bg-black;
+        }
+      }
+    }
+    `;
+    const sortedString = `
+    .form {
+      .label {
+        @apply bg-black text-white;
+      }
+      > .group {
+        @apply bg-black text-white;
+        + .group {
+          @apply bg-black text-white;
+        }
+      }
+    }
+    `;
 
-  //   assert.strictEqual(
-  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-  //     sortedString
-  //   );
-  // });
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("empty lines", () => {
+    const unsortedString = `
+    .btn {
+      @apply text-white
+  
+             bg-blue-500;
+    }`;
+    const sortedString = `
+    .btn {
+      @apply bg-blue-500 text-white;
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("important modifier", () => {
+    const unsortedString = `
+    .btn {
+      @apply text-white !bg-blue-500;
+    }`;
+    const sortedString = `
+    .btn {
+      @apply !bg-blue-500 text-white;
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("complex arbitrary values", () => {
+    const unsortedString = `
+    .btn {
+      @apply text-[clamp(1rem,2vw,1.5rem)] bg-[rgb(0,0,0)];
+    }`;
+    const sortedString = `
+    .btn {
+      @apply bg-[rgb(0,0,0)] text-[clamp(1rem,2vw,1.5rem)];
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("apply and class sort", () => {
+    const unsortedString = `<style lang="postcss" class='text-white bg-black'>
+      .btn {
+        @apply py-2 px-4;
+      }
+      </style>`;
+    const sortedString = `<style lang="postcss" class='bg-black text-white'>
+      .btn {
+        @apply px-4 py-2;
+      }
+      </style>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
 });
