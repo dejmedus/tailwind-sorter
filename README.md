@@ -52,15 +52,15 @@ Custom sort order and categories can be configured in settings.
 
 #### Sorting
 
-The extension sorts any strings that are preceded by a prefix and do not included dynamic syntax
+The extension sorts `@apply` rules and any strings that are preceded by a prefix and do not include dynamic syntax
 
 - *Strings:* `""` `''` ` `` `
 - *Prefixes:* `Custom prefixes` `class=`  `className=`
-- *Dynamic Syntax:* `?` `<` `>` `{`
+- *Dynamic Syntax:* `?` `<` `{`
 
 #### Language Support
 
-Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.vue`, `.rs`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
+Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.vue`, `.rs`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
 
 #### With Prettier
 
