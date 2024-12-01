@@ -21,7 +21,7 @@ Custom sort order and categories can be configured in settings.
    - `Tailwind Sorter: Custom Prefixes`: Prefixes that identify class strings other than the default `class=` and `className=`.
 
 
-**The default category order is**: box model, grid, flexbox, background, margins and padding, borders, width and height, typography, transformations, and other`.
+**The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other`.
 
 **The default order for pseudo-classes order is**: screens (sm, md, lg, xl, 2xl), before and after pseudo-elements, states (hover, focus, active, visited, disabled), dark mode, child selectors (first, last, odd, even), group states (group-over, group-focus), and motion preferences (motion-safe, motion-reduce).
 
@@ -50,13 +50,18 @@ Custom sort order and categories can be configured in settings.
 
 **Custom Prefixes**: Tailwind Sorter checks for `class=` and `className=` as well as any custom prefixes defined in settings. Default custom prefixes include: `twMerge(`, `cva(`, and `clsx(`
 
+
 #### Sorting
 
-The extension sorts `@apply` rules and any strings that are preceded by a prefix and do not include dynamic syntax
+The extension sorts:
 
-- *Strings:* `""` `''` ` `` `
-- *Prefixes:* `Custom prefixes` `class=`  `className=`
-- *Dynamic Syntax:* `?` `<` `{`
+Any string that is preceded by a prefix and does not include dynamic syntax
+   
+  - *Strings:* `""` `''` ` `` `
+  - *Prefixes:* `Custom prefixes` `class=`  `className=`
+  - *Dynamic Syntax:* `?` `<` `{`
+
+Single line `@apply` rules ending with a semicolon that do not include dynamic syntax (`@` `/` `{`)
 
 #### Language Support
 

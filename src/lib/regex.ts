@@ -35,10 +35,10 @@ export function createRegex() {
  * @returns The regex pattern
  */
 export function createApplyRegex() {
-  // regex101 example: https://regex101.com/r/ygU2qk/2 (without escaped \s)
+  // regex101 example: https://regex101.com/r/ygU2qk/5 (without escaped \s)
   // (?<=\\s|{|^) @apply should be preceded by a space, bracket, or the start of the line
   // "([^{;@]+);" matches everything before the semicolon unless it contains brackets, semicolons, /, or @
-  const regexStr = `(?<=\\s|{|^)@apply\\s+([^{;@/]+);`;
+  const regexStr = `(?<=\\s|{|^)@apply\\s+([^{;/@\\n]+);`;
 
   return new RegExp(regexStr, "g");
 }
