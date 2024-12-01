@@ -376,11 +376,13 @@ suite("@apply Sorting", () => {
     const unsortedString = `
     .btn {
       @apply hover:bg-blue-700 bg-blue-500;
+      background-color: blue;
     }
     `;
     const sortedString = `
     .btn {
       @apply bg-blue-500 hover:bg-blue-700;
+      background-color: blue;
     }
     `;
 
@@ -582,24 +584,6 @@ suite("@apply Sorting", () => {
     );
   });
 
-  test("empty lines", () => {
-    const unsortedString = `
-    .btn {
-      @apply text-white
-  
-             bg-blue-500;
-    }`;
-    const sortedString = `
-    .btn {
-      @apply bg-blue-500 text-white;
-    }`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
   test("important modifier", () => {
     const unsortedString = `
     .btn {
@@ -633,16 +617,238 @@ suite("@apply Sorting", () => {
   });
 
   test("apply and class sort", () => {
-    const unsortedString = `<style lang="postcss" class='text-white bg-black'>
+    const unsortedString = `<style class='text-white bg-black'>
       .btn {
         @apply py-2 px-4;
       }
       </style>`;
-    const sortedString = `<style lang="postcss" class='bg-black text-white'>
+    const sortedString = `<style class='bg-black text-white'>
       .btn {
         @apply px-4 py-2;
       }
       </style>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("mixed CSS and @apply", () => {
+    const unsortedString = `
+    .btn {
+      position: relative;
+      transition: all 0.2s;
+      @apply text-white bg-blue-500;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }`;
+    const sortedString = `
+    .btn {
+      position: relative;
+      transition: all 0.2s;
+      @apply bg-blue-500 text-white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("css variables", () => {
+    const unsortedString = `
+    .card {
+      --card-padding: 1rem;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      
+      @apply flex-1 flex text-gray-800;
+      padding: var(--card-padding);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      
+      &:hover {
+        @apply text-white bg-blue-500;
+        transform: translateY(-2px);
+      }
+  
+      @media (min-width: 768px) {
+        @apply px-6 py-4;
+        --card-padding: 1.5rem;
+      }
+    }`;
+    const sortedString = `
+    .card {
+      --card-padding: 1rem;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      
+      @apply flex flex-1 text-gray-800;
+      padding: var(--card-padding);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      
+      &:hover {
+        @apply bg-blue-500 text-white;
+        transform: translateY(-2px);
+      }
+  
+      @media (min-width: 768px) {
+        @apply px-6 py-4;
+        --card-padding: 1.5rem;
+      }
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("realistic component styles", () => {
+    const unsortedString = `
+    .input-group {
+      position: relative;
+      display: flex;
+      
+      .input {
+        @apply py-2 flex-1 text-gray-700;
+        border: 1px solid #e2e8f0;
+        transition: border-color 0.15s ease-in-out;
+        
+        &::placeholder {
+          color: #a0aec0;
+          opacity: 1;
+        }
+        
+        &:focus {
+          @apply py-2 flex-1 text-gray-700;
+          border-color: #3b82f6;
+        }
+      }
+      
+      .icon {
+        @apply flex items-center px-3 text-gray-500;
+        background-color: #f7fafc;
+        border: 1px solid #e2e8f0;
+        border-left: none;
+      }
+    }`;
+    const sortedString = `
+    .input-group {
+      position: relative;
+      display: flex;
+      
+      .input {
+        @apply flex-1 py-2 text-gray-700;
+        border: 1px solid #e2e8f0;
+        transition: border-color 0.15s ease-in-out;
+        
+        &::placeholder {
+          color: #a0aec0;
+          opacity: 1;
+        }
+        
+        &:focus {
+          @apply flex-1 py-2 text-gray-700;
+          border-color: #3b82f6;
+        }
+      }
+      
+      .icon {
+        @apply flex items-center px-3 text-gray-500;
+        background-color: #f7fafc;
+        border: 1px solid #e2e8f0;
+        border-left: none;
+      }
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("nested @apply with @if", () => {
+    const unsortedString = `
+    $theme: 'dark';
+    .btn {
+      @apply py-2 px-4;
+      @if $theme == 'dark' {
+        @apply text-white bg-gray-800;
+        #{&}:hover {
+          @apply bg-gray-700 text-gray-100;
+        }
+      }
+    }`;
+    const sortedString = `
+    $theme: 'dark';
+    .btn {
+      @apply px-4 py-2;
+      @if $theme == 'dark' {
+        @apply bg-gray-800 text-white;
+        #{&}:hover {
+          @apply bg-gray-700 text-gray-100;
+        }
+      }
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("@apply with custom @", () => {
+    const unsortedString = `
+    @layer components {
+      .btn {
+        @apply text-white bg-blue-500;
+        border: none;
+      }
+    }
+    @responsive {
+      .card {
+        border: 1px solid white;
+        @apply py-2 px-4;
+      }
+    }`;
+    const sortedString = `
+    @layer components {
+      .btn {
+        @apply bg-blue-500 text-white;
+        border: none;
+      }
+    }
+    @responsive {
+      .card {
+        border: 1px solid white;
+        @apply px-4 py-2;
+      }
+    }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("mixed class formats", () => {
+    const unsortedString = `
+    <div 
+      class="text-sm flex-1"
+      :class="{ 'text-white bg-blue-500': isActive }"
+      [ngClass]="{'py-2 px-4': isPadded}"
+      className={clsx('hover:bg-blue-600 bg-blue-500 hover:text-white', className)}>
+    </div>`;
+    const sortedString = `
+    <div 
+      class="flex-1 text-sm"
+      :class="{ 'text-white bg-blue-500': isActive }"
+      [ngClass]="{'py-2 px-4': isPadded}"
+      className={clsx('bg-blue-500 hover:bg-blue-600 hover:text-white', className)}>
+    </div>`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),

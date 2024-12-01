@@ -393,6 +393,54 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("Apply without semicolon", () => {
+    const unsortedString = `
+    .btn {
+      background-color: blue;
+      @apply hover:bg-blue-700 bg-blue-500
+      border: 1px solid black;
+    }
+    `;
+    const sortedString = `
+    .btn {
+      background-color: blue;
+      @apply hover:bg-blue-700 bg-blue-500
+      border: 1px solid black;
+    }
+    `;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Multiline apply", () => {
+    const unsortedString = `
+    .btn {
+      background-color: blue;
+      @apply hover:bg-blue-700 
+      bg-blue-500
+      text-pink-500;
+      border: 1px solid black;
+    }
+    `;
+    const sortedString = `
+    .btn {
+      background-color: blue;
+      @apply hover:bg-blue-700 
+      bg-blue-500
+      text-pink-500;
+      border: 1px solid black;
+    }
+    `;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   // test("twin macro dynamic syntax: do not change", () => {
   //   const sortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
   //   const unsortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;

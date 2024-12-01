@@ -91,15 +91,4 @@ suite("Correct Apply Regex", () => {
       `bg-blue-500 text-white`
     );
   });
-
-  test("Apply with newlines", () => {
-    checkEquals(
-      `.btn {
-        @apply bg-blue-500
-               text-white;
-      }`,
-      `bg-blue-500
-               text-white`
-    );
-  });
 });
