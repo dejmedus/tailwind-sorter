@@ -1,8 +1,11 @@
-# Change Log
+## Change Log
 
-## Upcoming
 
-- handle dynamic styling 
+
+### 0.0.90
+
+- Support for @apply syntax
+- Add CSS and SCSS target languages
 
 ### 0.0.84
 
@@ -47,11 +50,11 @@
 
 - Documentation
 
-## 0.0.2
+### 0.0.2
 
 - Fix issue grabbing VS Code config
 - Add missing classes: hidden, inline, space-x/y, bg-repeat, underline, capitalize, etc.
 
-## 0.0.1
+### 0.0.1
 
 - Initial release

@@ -1,4 +1,8 @@
-import { createRegex, dynamicSyntaxMarkers } from "./lib/regex";
+import {
+  createApplyRegex,
+  createRegex,
+  dynamicSyntaxMarkers,
+} from "./lib/regex";
 
 /**
  * Sorts the tailwind classes in the given file text based on the provided sort config.
@@ -13,9 +17,13 @@ export default function sortTailwind(
   sortConfig: { [key: string]: number },
   pseudoClasses: string[]
 ) {
-  const regex = createRegex();
+  const applyRegex = createApplyRegex();
+  text = text.replace(applyRegex, (match, classesGroup) => {
+    return sortFoundTailwind(match, classesGroup, sortConfig, pseudoClasses);
+  });
 
-  const newText = text.replace(
+  const regex = createRegex();
+  text = text.replace(
     regex,
     (
       match,
@@ -28,74 +36,83 @@ export default function sortTailwind(
       const quotesGroup =
         singleQuotesGroup || doubleQuotesGroup || backtickQuotesGroup;
 
-      if (!quotesGroup) {
-        return match;
-      }
-
-      const groupContainsDynamicSyntax = dynamicSyntaxMarkers.some((syntax) =>
-        quotesGroup.includes(syntax)
-      );
-
-      if (!quotesGroup.includes(" ") || groupContainsDynamicSyntax) {
-        return match;
-      }
-
-      // remove all dynamic classes from sort
-      const { classesToSort, unchangingClasses } =
-        getUnchangingClasses(quotesGroup);
-
-      const unsortedClasses = classesToSort
-        .split(/\s+/)
-        .filter((className) => className.trim() !== "");
-
-      if (!unsortedClasses.length) {
-        return match;
-      }
-
-      const sortedClasses = unsortedClasses.sort(
-        (aClass: string, bClass: string) => {
-          const a = findLongestMatch(aClass, sortConfig);
-          const b = findLongestMatch(bClass, sortConfig);
-
-          // assign each class its sortConfig index, add .5 if it's a pseudo class, and default to Number.MAX_VALUE so classes not in sortConfig are placed at the end
-          const aIsPseudo = aClass.includes(":");
-          const bIsPseudo = bClass.includes(":");
-          const aIndex = aIsPseudo
-            ? sortConfig[a] + 0.5
-            : sortConfig[a] || Number.MAX_VALUE;
-          const bIndex = bIsPseudo
-            ? sortConfig[b] + 0.5
-            : sortConfig[b] || Number.MAX_VALUE;
-
-          if (aIndex === bIndex) {
-            // if same index, sort alphabetically
-            //  unless they are pseudo classes, then sort by pseudo config
-            if (aIsPseudo && bIsPseudo) {
-              const aPseudo = pseudoClasses.find((c) => aClass.includes(c));
-              const bPseudo = pseudoClasses.find((c) => bClass.includes(c));
-              if (aPseudo && bPseudo) {
-                return (
-                  pseudoClasses.indexOf(aPseudo) -
-                  pseudoClasses.indexOf(bPseudo)
-                );
-              }
-            }
-            return aClass.localeCompare(bClass);
-          }
-
-          return aIndex - bIndex;
-        }
-      );
-
-      const newString = unchangingClasses
-        ? sortedClasses.join(" ") + " " + unchangingClasses
-        : sortedClasses.join(" ");
-
-      return match.replace(quotesGroup, newString);
+      return sortFoundTailwind(match, quotesGroup, sortConfig, pseudoClasses);
     }
   );
 
-  return newText;
+  return text;
+}
+
+/**
+ * Sorts tailwind found by regex.
+ *
+ * @param match - The full match found by regex. ex: class="bg-blue-500 text-white"
+ * @param classesStr - The tailwind classes. ex: bg-blue-500 text-white
+ * @param sortConfig - The sort config object that maps style classes to their sort order index.
+ * @param pseudoClasses - An array of pseudo classes to sort by.
+ */
+function sortFoundTailwind(
+  match: string,
+  classesStr: string,
+  sortConfig: { [key: string]: number },
+  pseudoClasses: string[]
+) {
+  if (!classesStr || !classesStr.includes(" ")) {
+    return match;
+  }
+
+  const groupContainsDynamicSyntax = dynamicSyntaxMarkers.some((syntax) =>
+    classesStr.includes(syntax)
+  );
+
+  if (groupContainsDynamicSyntax) {
+    return match;
+  }
+
+  const unsortedClasses = classesStr
+    .split(/\s+/)
+    .filter((className) => className.trim() !== "");
+
+  if (!unsortedClasses.length) {
+    return match;
+  }
+
+  const sortedClasses = unsortedClasses.sort(
+    (aClass: string, bClass: string) => {
+      const a = findLongestMatch(aClass, sortConfig);
+      const b = findLongestMatch(bClass, sortConfig);
+
+      // assign each class its sortConfig index, add .5 if it's a pseudo class,
+      // and default to Number.MAX_VALUE so classes not in sortConfig are placed at the end
+      const aIsPseudo = aClass.includes(":");
+      const bIsPseudo = bClass.includes(":");
+      const aIndex =
+        (aIsPseudo ? sortConfig[a] + 0.5 : sortConfig[a]) || Number.MAX_VALUE;
+      const bIndex =
+        (bIsPseudo ? sortConfig[b] + 0.5 : sortConfig[b]) || Number.MAX_VALUE;
+
+      if (aIndex === bIndex) {
+        // if same index, sort alphabetically
+        //  unless they are pseudo classes, then sort by pseudo config
+        if (aIsPseudo && bIsPseudo) {
+          const aPseudo = pseudoClasses.find((c) => aClass.includes(c));
+          const bPseudo = pseudoClasses.find((c) => bClass.includes(c));
+          if (aPseudo && bPseudo) {
+            return (
+              pseudoClasses.indexOf(aPseudo) - pseudoClasses.indexOf(bPseudo)
+            );
+          }
+        }
+        return aClass.localeCompare(bClass);
+      }
+
+      return aIndex - bIndex;
+    }
+  );
+
+  const sortedClassesStr = sortedClasses.join(" ");
+
+  return match.replace(classesStr, sortedClassesStr);
 }
 
 /**
@@ -116,29 +133,4 @@ function findLongestMatch(
     }
   }
   return longestMatch;
-}
-
-/**
- * Separates classes we don't want to sort from those we do.
- *
- * @param text - The text to extract classes we don't want to sort.
- * @returns The classes to sort and the classes we wont sort.
- */
-function getUnchangingClasses(text: string) {
-  if (!text.includes("{")) {
-    return { classesToSort: text, unchangingClasses: "" };
-  }
-
-  let brackets = Array.from(text.matchAll(/{{.*?}}|{.*?}/g));
-
-  if (brackets.length === 0) {
-    return { classesToSort: text, unchangingClasses: "" };
-  }
-
-  let joinedString = brackets.map((match) => match[0]).join(" ");
-
-  text = text.replaceAll(/{{.*?}}/g, "");
-  text = text.replaceAll(/{.*?}/g, "");
-
-  return { classesToSort: text, unchangingClasses: joinedString };
 }

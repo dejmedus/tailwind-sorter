@@ -7,11 +7,13 @@ import {
 
 export function defaultClassesMap() {
   let classesMap: { [property: string]: number } = {};
+
   let index = 0;
-  for (let i = 0; i < defaultSortOrder.length; i++) {
-    for (let j = 0; j < defaultCategories[defaultSortOrder[i]].length; j++) {
-      classesMap[defaultCategories[defaultSortOrder[i]][j]] = index++;
-    }
-  }
+  defaultSortOrder.forEach((category) => {
+    defaultCategories[category].forEach((className) => {
+      classesMap[className] = index++;
+    });
+  });
+
   return { classesMap, pseudoSortOrder: defaultPseudoSortOrder };
 }

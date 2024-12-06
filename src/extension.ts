@@ -17,6 +17,8 @@ export function activate(context: vscode.ExtensionContext) {
       "phoenix-heex",
       "astro",
       "rust",
+      "css",
+      "scss",
     ];
 
     if (languages.includes(event.document.languageId)) {
