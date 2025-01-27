@@ -476,6 +476,30 @@ suite("Misc. Ignore syntax", () => {
     );
   });
 
+  test("PHP dynamic syntax <?= ?>: do not change", () => {
+    const sortedString = `<?php
+$isActive = true;
+$bgClass = $isActive ? 'bg-green-500' : 'bg-red-500';
+?>
+
+<div class="p-4 <?= $bgClass ?> text-white rounded-lg">
+    <?= $isActive ? 'Active' : 'Inactive' ?>
+</div>`;
+    const unsortedString = `<?php
+$isActive = true;
+$bgClass = $isActive ? 'bg-green-500' : 'bg-red-500';
+?>
+
+<div class="p-4 <?= $bgClass ?> text-white rounded-lg">
+    <?= $isActive ? 'Active' : 'Inactive' ?>
+</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Django dynamic syntax {% %}: do not change", () => {
     const sortedString = `<div class="bg-{% color %}-500">Hello, world!</div>`;
     const unsortedString = `<div class="bg-{% color %}-500">Hello, world!</div>`;

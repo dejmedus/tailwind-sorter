@@ -147,11 +147,15 @@ suite("No Match", () => {
     assert.equal(!!group, hasMatch);
   }
 
-  test(`Ignore dynamic PHP`, () => {
+  test(`Ignore dynamic PHP <?php`, () => {
     hasMatch(
       '<div class="<?php echo "bg-$color-500"; ?>">IGNORE THIS ONE</div>',
       false
     );
+  });
+
+  test(`Ignore dynamic PHP <?= `, () => {
+    hasMatch('<div class="<?= $themeClass ?> p-6 rounded-lg">', false);
   });
 
   test(`Ignore dynamic twMerge`, () => {
