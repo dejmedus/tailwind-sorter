@@ -10,6 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
   let sortDisposable = vscode.workspace.onWillSaveTextDocument((event) => {
     const languages = [
       "html",
+      "php",
       "vue",
       "javascriptreact",
       "typescriptreact",
