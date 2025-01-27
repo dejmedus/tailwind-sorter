@@ -239,6 +239,8 @@ export const defaultConfig = {
 
 export const defaultCategories: { [category: string]: string[] } =
   defaultConfig.categories;
+
 export const defaultSortOrder = defaultConfig.categoryOrder.sortOrder;
+
 export const defaultPseudoSortOrder =
   defaultConfig.pseudoClassesOrder.sortOrder;

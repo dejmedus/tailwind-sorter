@@ -1,8 +1,8 @@
-import * as assert from "assert";
-
 import * as vscode from "vscode";
-import getClassesMap from "../getClassesMap";
+import * as assert from "assert";
 import * as sinon from "sinon";
+
+import getClassesMap from "../getClassesMap";
 
 suite("VS Code Configuration", () => {
   let getConfigurationStub: sinon.SinonStub;

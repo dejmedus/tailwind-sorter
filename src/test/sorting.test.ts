@@ -188,6 +188,30 @@ suite("Sorting", () => {
     );
   });
 
+  test("PHP Laravel syntax", () => {
+    const sortedString = `<button wire:click="increment" class="bg-blue-500 text-white">
+        Increment Count
+    </button>`;
+    const unsortedString = `<button wire:click="increment" class="text-white bg-blue-500">
+        Increment Count
+    </button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("PHP syntax", () => {
+    const sortedString = `<button class="bg-blue-500 text-white" onclick="<?php echo $link; ?>"><?php echo $label; ?></button>`;
+    const unsortedString = `<button class="text-white bg-blue-500" onclick="<?php echo $link; ?>"><?php echo $label; ?></button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Tailwind merge concat strings", () => {
     // https://github.com/dcastil/tailwind-merge
 

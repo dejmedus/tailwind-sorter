@@ -86,10 +86,12 @@ function sortFoundTailwind(
       // and default to Number.MAX_VALUE so classes not in sortConfig are placed at the end
       const aIsPseudo = aClass.includes(":");
       const bIsPseudo = bClass.includes(":");
+
+      // nullish coalescing https://www.typescriptlang.org/play/?#example/nullish-coalescing
       const aIndex =
-        (aIsPseudo ? sortConfig[a] + 0.5 : sortConfig[a]) || Number.MAX_VALUE;
+        (aIsPseudo ? sortConfig[a] + 0.5 : sortConfig[a]) ?? Number.MAX_VALUE;
       const bIndex =
-        (bIsPseudo ? sortConfig[b] + 0.5 : sortConfig[b]) || Number.MAX_VALUE;
+        (bIsPseudo ? sortConfig[b] + 0.5 : sortConfig[b]) ?? Number.MAX_VALUE;
 
       if (aIndex === bIndex) {
         // if same index, sort alphabetically

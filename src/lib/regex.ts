@@ -54,6 +54,7 @@ export const dynamicSyntaxMarkers = [
   "%>",
   // PHP
   "<?php",
+  "<?=",
   "?>",
   // django
   "{%",
