@@ -28,6 +28,36 @@ suite("Sorting", () => {
     );
   });
 
+  test("Non tailwind classes keep their sort order", () => {
+    const sortedString = `<div class="flex flex-col flex-1 carrot banana apple" blah blah`;
+    const unsortedString = `<div class="flex-col carrot flex-1 banana flex apple" blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Non tailwind classes w duplicates keep their sort order", () => {
+    const sortedString = `<div class="flex flex-col flex-1 banana carrot-1 carrot-1 hover:carrot apple" blah blah`;
+    const unsortedString = `<div class="banana carrot-1 flex-col carrot-1 hover:carrot flex-1 apple flex" blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Non tailwind classes w prefix keep their sort order", () => {
+    const sortedString = `<div class="tw:px-4 tw-text-2xl foo bar"><div>`;
+    const unsortedString = `<div class="foo bar tw-text-2xl tw:px-4"><div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("One word sort", () => {
     const sortedString = `<div className='flex' blah blah`;
     const unsortedString = `<div className='flex' blah blah`;
