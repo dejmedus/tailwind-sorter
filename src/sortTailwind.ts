@@ -69,29 +69,38 @@ function sortFoundTailwind(
     return match;
   }
 
-  const unsortedClasses = classesStr
+  const classes = classesStr
     .split(/\s+/)
     .filter((className) => className.trim() !== "");
 
-  if (!unsortedClasses.length) {
+  if (!classes.length) {
     return match;
   }
+
+  const { unsortedClasses, nonSortedClasses } = classes.reduce(
+    (acc, className) => {
+      const match = findLongestMatch(className, sortConfig);
+
+      match
+        ? acc.unsortedClasses.push(className)
+        : acc.nonSortedClasses.push(className);
+
+      return acc;
+    },
+    { unsortedClasses: [] as string[], nonSortedClasses: [] as string[] }
+  );
 
   const sortedClasses = unsortedClasses.sort(
     (aClass: string, bClass: string) => {
       const a = findLongestMatch(aClass, sortConfig);
       const b = findLongestMatch(bClass, sortConfig);
 
-      // assign each class its sortConfig index, add .5 if it's a pseudo class,
-      // and default to Number.MAX_VALUE so classes not in sortConfig are placed at the end
       const aIsPseudo = aClass.includes(":");
       const bIsPseudo = bClass.includes(":");
 
-      // nullish coalescing https://www.typescriptlang.org/play/?#example/nullish-coalescing
-      const aIndex =
-        (aIsPseudo ? sortConfig[a] + 0.5 : sortConfig[a]) ?? Number.MAX_VALUE;
-      const bIndex =
-        (bIsPseudo ? sortConfig[b] + 0.5 : sortConfig[b]) ?? Number.MAX_VALUE;
+      // assign each class its sortConfig index, add .5 if it's a pseudo class
+      const aIndex = aIsPseudo ? sortConfig[a] + 0.5 : sortConfig[a];
+      const bIndex = bIsPseudo ? sortConfig[b] + 0.5 : sortConfig[b];
 
       if (aIndex === bIndex) {
         // if same index, sort alphabetically
@@ -112,7 +121,7 @@ function sortFoundTailwind(
     }
   );
 
-  const sortedClassesStr = sortedClasses.join(" ");
+  const sortedClassesStr = [...sortedClasses, ...nonSortedClasses].join(" ");
 
   return match.replace(classesStr, sortedClassesStr);
 }
