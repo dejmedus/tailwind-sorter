@@ -1,40 +1,41 @@
 {
   "open": [
     {
-      "name": "zsh",
+      "tab": "zsh",
       "commands": ["*CLOSE"],
       "description": "close current tab"
     },
     {
-      "name": "git",
+      "tab": "git",
       "commands": ["git branch"],
       "description": "open git tab"
     },
     {
-      "name": "test",
-      "commands": [],
+      "tab": "test",
+      "commands": ["# npm run test"],
       "description": "open test tab"
     }
   ],
   "test": [
     {
-      "name": "test",
+      "tab": "test",
       "commands": ["npm run test"],
       "description": "run tests"
     }
   ],
   "upgrade": [
     {
-      "name": "upgrade",
+      "tab": "upgrade",
       "commands": [
-        "echo '1. Update CHANGELOG.md. 2. Up version in package.json. 3. Ensure tests pass. 4. vsce publish'",
         "code CHANGELOG.md",
-        "code package.json"
+        "code package.json",
+        "code README.md",
+        "echo '1. Update CHANGELOG.md. 2. Up version in package.json. 3. Ensure tests pass. 4. vsce publish'"
       ],
       "description": "before upgrade to do list"
     },
     {
-      "name": "test",
+      "tab": "test",
       "commands": ["npm run test"],
       "description": "run tests"
     }
