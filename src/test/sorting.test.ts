@@ -188,6 +188,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("not variant w prefix", () => {
+    const sortedString = `<div class="tw:bg-black tw-hover:opacity-100 tw-not-hover:opacity-75 banana apple">`;
+    const unsortedString = `<div class="banana tw-not-hover:opacity-75 apple tw-hover:opacity-100 tw:bg-black">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("sizes", () => {
     const sortedString = `<div class="w-1/12 w-xs w-md hover:w-md w-2xl">`;
     const unsortedString = `<div class="w-md w-xs w-2xl w-1/12 hover:w-md">`;

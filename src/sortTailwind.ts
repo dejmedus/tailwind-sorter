@@ -98,8 +98,8 @@ function sortFoundTailwind(
       const aIsPseudo = aClass.includes(":");
       const bIsPseudo = bClass.includes(":");
 
-      const aIsNotVariant = aClass.startsWith("not-");
-      const bIsNotVariant = bClass.startsWith("not-");
+      const aIsNotVariant = aClass.includes("not-");
+      const bIsNotVariant = bClass.includes("not-");
 
       const aOffset = aIsPseudo
         ? aIsNotVariant
