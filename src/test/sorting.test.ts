@@ -9,7 +9,7 @@ suite("Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
   test('Correct sort class=""', () => {
-    const sortedString = `<div class="flex flex-col flex-1 items-center before:content-[''] after:content-[''] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold" blah blah`;
+    const sortedString = `<div class="flex flex-col flex-1 items-center gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold before:content-[''] after:content-['']" blah blah`;
     const unsortedString = `<div class="font-semibold after:content-[''] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[''] items-center" blah blah`;
 
     assert.strictEqual(
@@ -19,7 +19,7 @@ suite("Sorting", () => {
   });
 
   test("Correct sort className=''", () => {
-    const sortedString = `<div className='flex flex-col flex-1 items-center before:content-[""] after:content-[""] gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold' blah blah`;
+    const sortedString = `<div className='flex flex-col flex-1 items-center gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold before:content-[""] after:content-[""]' blah blah`;
     const unsortedString = `<div className='font-semibold after:content-[""] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[""] items-center' blah blah`;
 
     assert.strictEqual(
@@ -141,6 +141,56 @@ suite("Sorting", () => {
   test("Style vars", () => {
     const sortedString = `<div class="bg-[var(--my-color)] text-black"></div>`;
     const unsortedString = `<div class="text-black bg-[var(--my-color)]"></div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Custom boolean data attributes", () => {
+    const sortedString = `<div data-current class="bg-black opacity-75 data-current:opacity-100">`;
+    const unsortedString = `<div data-current class="data-current:opacity-100 bg-black opacity-75">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Container queries", () => {
+    const sortedString = `<div class="@min-md:@max-xl:hidden grid grid-cols-1 @sm:grid-cols-3 @lg:grid-cols-4">`;
+    const unsortedString = `<div class="grid @sm:grid-cols-3 @lg:grid-cols-4 @min-md:@max-xl:hidden grid-cols-1">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Container queries w arbitrary values", () => {
+    const sortedString = `<div class="@container max-[600px]:bg-sky-300 min-[320px]:text-center">`;
+    const unsortedString = `<div class="min-[320px]:text-center max-[600px]:bg-sky-300 @container">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("not variant", () => {
+    const sortedString = `<div class="bg-black hover:opacity-100 not-hover:opacity-75">`;
+    const unsortedString = `<div class="not-hover:opacity-75 hover:opacity-100 bg-black">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("sizes", () => {
+    const sortedString = `<div class="w-1/12 w-xs w-md hover:w-md w-2xl">`;
+    const unsortedString = `<div class="w-md w-xs w-2xl w-1/12 hover:w-md">`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),

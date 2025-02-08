@@ -1,5 +1,11 @@
 ## Change Log
 
+#### 0.1.0
+
+- Fix: keep non-tailwind classes sort order, rather than sorting alphabetically 
+- Handle `not-` classes
+- Add TailwindCSS v4.0 classes, including: "data-", "@container", and "bg-linear"
+- Add missing classes: "forced-color-adjust", "fill", "backdrop", etc.
 
 ### 0.0.91
 
