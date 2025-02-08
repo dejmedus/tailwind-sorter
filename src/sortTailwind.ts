@@ -98,9 +98,29 @@ function sortFoundTailwind(
       const aIsPseudo = aClass.includes(":");
       const bIsPseudo = bClass.includes(":");
 
-      // assign each class its sortConfig index, add .5 if it's a pseudo class
-      const aIndex = aIsPseudo ? sortConfig[a] + 0.5 : sortConfig[a];
-      const bIndex = bIsPseudo ? sortConfig[b] + 0.5 : sortConfig[b];
+      const aIsNotVariant = aClass.startsWith("not-");
+      const bIsNotVariant = bClass.startsWith("not-");
+
+      const aOffset = aIsPseudo
+        ? aIsNotVariant
+          ? 0.75
+          : 0.5
+        : aIsNotVariant
+        ? 0.25
+        : 0;
+
+      const bOffset = bIsPseudo
+        ? bIsNotVariant
+          ? 0.75
+          : 0.5
+        : bIsNotVariant
+        ? 0.25
+        : 0;
+
+      // assign each class its sortConfig index and add offset
+      // 0.25: not- class, 0.5: pseudo class, 0.75: not- pseudo class
+      const aIndex = sortConfig[a] + aOffset;
+      const bIndex = sortConfig[b] + bOffset;
 
       if (aIndex === bIndex) {
         // if same index, sort alphabetically
