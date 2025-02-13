@@ -16,6 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
       "typescriptreact",
       "elixir",
       "phoenix-heex",
+      "svelte",
       "astro",
       "rust",
       "css",
