@@ -138,6 +138,13 @@ suite("Custom Prefixes", () => {
       "text-white bg-blue-500"
     );
   });
+
+  test("Svelte w multiple class:", () => {
+    checkEquals(
+      `<div class:isActive={isActive} class:hasError={hasError} class:disabled={isDisabled} class="bg-blue-400 text-white bg-blue-500">`,
+      `bg-blue-400 text-white bg-blue-500`
+    );
+  });
 });
 
 suite("No Match", () => {
