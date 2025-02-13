@@ -1,5 +1,10 @@
 ## Change Log
 
+#### 0.1.10
+
+- Add Svelte target language
+- Fix: sort `not-` classes that are prefixed
+
 #### 0.1.0
 
 - Fix: keep non-tailwind classes sort order, rather than sorting alphabetically 

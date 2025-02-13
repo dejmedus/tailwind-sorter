@@ -21,7 +21,7 @@ Custom sort order and categories can be configured in settings.
    - `Tailwind Sorter: Custom Prefixes`: Prefixes that identify class strings other than the default `class=` and `className=`.
 
 
-**The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other`.
+**The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other.
 
 **The default order for pseudo-classes order is**: screens (sm, md, lg, xl, 2xl), before and after pseudo-elements, states (hover, focus, active, visited, disabled), dark mode, child selectors (first, last, odd, even), group states (group-over, group-focus), and motion preferences (motion-safe, motion-reduce).
 
@@ -65,7 +65,7 @@ Single line `@apply` rules ending with a semicolon that do not include dynamic s
 
 #### Language Support
 
-Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.vue`, `php`, `.rs`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
+Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.svelte`, `.vue`, `php`, `.rs`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
 
 #### With Prettier
 

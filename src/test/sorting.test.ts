@@ -302,6 +302,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("Svelte syntax", () => {
+    const sortedString = `<div class:isActive={isActive && !isDisabled} class="bg-blue-400 bg-blue-500 text-white">`;
+    const unsortedString = `<div class:isActive={isActive && !isDisabled} class="bg-blue-400 text-white bg-blue-500">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Tailwind merge concat strings", () => {
     // https://github.com/dcastil/tailwind-merge
 

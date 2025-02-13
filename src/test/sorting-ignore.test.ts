@@ -161,6 +161,26 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("Svelte dynamic styles: do not change", () => {
+    const sortedString = `<div class:isActive={isActive} class="bg-{color}-400 text-white">`;
+    const unsortedString = `<div class:isActive={isActive} class="bg-{color}-400 text-white">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Svelte multiple dynamic class: do not change", () => {
+    const sortedString = `<div class:isActive={isActive} class="bg-blue-400 text-white {isDisabled ? 'opacity-50' : ''}">`;
+    const unsortedString = `<div class:isActive={isActive} class="bg-blue-400 text-white {isDisabled ? 'opacity-50' : ''}">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Elixir dynamic syntax: do not change", () => {
     const sortedString = `
     <li class={"#{case item.status do
