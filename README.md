@@ -8,17 +8,17 @@ Automatically sort Tailwind classes on save. Use your preferred sort order to ke
 
 ## Extension Settings
 
-Custom sort order and categories can be configured in settings.
+Custom sort order and categories can be configured in settings
 
 1. Open settings
    - Click the gear icon in the bottom left corner, or
    - Navigate to `File > Preferences > Settings`
-2. Search for "Tailwind Sorter" in the search bar at the top of the settings window.
+2. Search for "Tailwind Sorter" in the search bar at the top of the settings window
 3. Modify the settings according to your preferences:
-   - `Tailwind Sorter: Category Order`: The order categories will be sorted.
-   - `Tailwind Sorter: Categories`: Which style classes will belong to which category and in what order.
-   - `Tailwind Sorter: Pseudo Classes Order`: How pseudo-classes should be ordered.
-   - `Tailwind Sorter: Custom Prefixes`: Prefixes that identify class strings other than the default `class=` and `className=`.
+- [Category Order](vscode://settings/tailwindSorter.categoryOrder): The order categories will be sorted.
+- [Categories](vscode://settings/tailwindSorter.categories): Which style classes will belong to which category and in what order.
+- [Pseudo Classes Order](vscode://settings/tailwindSorter.pseudoClassesOrder): How pseudo-classes should be ordered.
+- [Custom Prefixes](vscode://settings/tailwindSorter.customPrefixes): Prefixes that identify class strings other than the default `class=` and `className=`.
 
 
 **The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other.
@@ -65,7 +65,7 @@ Single line `@apply` rules ending with a semicolon that do not include dynamic s
 
 #### Language Support
 
-Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.svelte`, `.vue`, `php`, `.rs`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
+Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.twig`, `.svelte`, `.vue`, `php`, `.rs`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
 
 #### With Prettier
 
