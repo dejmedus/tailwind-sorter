@@ -299,6 +299,23 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("PHP Symfony cva; do not sort", () => {
+    const unsortedString = `{% set buttonVariants = cva({
+    base: 'inline-flex items-center justify-center gap-2 w-fit whitespace-nowrap rounded-md text-sm font-medium transition-colors',
+    variants: {
+        variant: {
+            default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        },
+    },
+}) %}`;
+    const sortedString = unsortedString;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("cva dynamic: do not sort", () => {
     const sortedString = `cva({ 'bg-blue-700 text-gray-100': isHovering })`;
     const unsortedString = `cva({ 'bg-blue-700 text-gray-100': isHovering })`;

@@ -302,6 +302,20 @@ suite("Sorting", () => {
     );
   });
 
+  test("PHP Symfony Twig syntax", () => {
+    const sortedString = `{% block sidebar %}
+       <a href="{{ path('homepage') }}" class="block px-4">Home</a>
+{% endblock %}`;
+    const unsortedString = `{% block sidebar %}
+       <a href="{{ path('homepage') }}" class="px-4 block">Home</a>
+{% endblock %}`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Svelte syntax", () => {
     const sortedString = `<div class:isActive={isActive && !isDisabled} class="bg-blue-400 bg-blue-500 text-white">`;
     const unsortedString = `<div class:isActive={isActive && !isDisabled} class="bg-blue-400 text-white bg-blue-500">`;
