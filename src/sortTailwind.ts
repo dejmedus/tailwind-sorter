@@ -77,17 +77,17 @@ function sortFoundTailwind(
     return match;
   }
 
-  const { unsortedClasses, nonSortedClasses } = classes.reduce(
+  const { unsortedClasses, ignoredClasses } = classes.reduce(
     (acc, className) => {
       const match = findLongestMatch(className, sortConfig);
 
       match
         ? acc.unsortedClasses.push(className)
-        : acc.nonSortedClasses.push(className);
+        : acc.ignoredClasses.push(className);
 
       return acc;
     },
-    { unsortedClasses: [] as string[], nonSortedClasses: [] as string[] }
+    { unsortedClasses: [] as string[], ignoredClasses: [] as string[] }
   );
 
   const sortedClasses = unsortedClasses.sort(
@@ -141,7 +141,7 @@ function sortFoundTailwind(
     }
   );
 
-  const sortedClassesStr = [...sortedClasses, ...nonSortedClasses].join(" ");
+  const sortedClassesStr = [...sortedClasses, ...ignoredClasses].join(" ");
 
   return match.replace(classesStr, sortedClassesStr);
 }

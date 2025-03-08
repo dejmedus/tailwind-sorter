@@ -10,7 +10,7 @@ export function createRegex() {
   const config = vscode.workspace.getConfiguration("tailwindSorter");
 
   // custom prefix should be a string + ( or =
-  // defaults: ["twMerge(", "clsx(", "tw=", "cva("];
+  // defaults: ["twMerge(", "clsx(", "cva("];
   let customPrefixes: string[] = config.get("customPrefixes", []);
 
   const escapedPrefixes = customPrefixes

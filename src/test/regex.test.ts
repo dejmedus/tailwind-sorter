@@ -1,4 +1,7 @@
+import * as vscode from "vscode";
 import * as assert from "assert";
+import * as sinon from "sinon";
+
 import { createRegex } from "../lib/regex";
 
 function findMatch(fullString: string) {
@@ -10,17 +13,17 @@ function findMatch(fullString: string) {
   return group;
 }
 
-suite("Correct Regex", () => {
-  function checkEquals(fullString: string, correctMatch: string) {
-    const group = findMatch(fullString);
+function checkEquals(fullString: string, correctMatch: string) {
+  const group = findMatch(fullString);
 
-    if (!group) {
-      assert.fail("No matching string");
-    }
-
-    assert.strictEqual(group, correctMatch);
+  if (!group) {
+    assert.fail("No matching string");
   }
 
+  assert.strictEqual(group, correctMatch);
+}
+
+suite("Correct Regex", () => {
   test(`Correct regex className=''`, () => {
     checkEquals(
       `<div blah blah blah className='relative before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[""]' blah >`,
@@ -48,19 +51,16 @@ suite("Correct Regex", () => {
       "relative before:rounded-full before:content-[''] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl"
     );
   });
+
+  test("Svelte w multiple class:", () => {
+    checkEquals(
+      `<div class:isActive={isActive} class:hasError={hasError} class:disabled={isDisabled} class="bg-blue-400 text-white bg-blue-500">`,
+      `bg-blue-400 text-white bg-blue-500`
+    );
+  });
 });
 
 suite("Custom Prefixes", () => {
-  function checkEquals(fullString: string, correctMatch: string) {
-    const group = findMatch(fullString);
-
-    if (!group) {
-      assert.fail("No matching string");
-    }
-
-    assert.strictEqual(group, correctMatch);
-  }
-
   test(`Newline twMerge(`, () => {
     checkEquals(
       `const classes = {
@@ -138,11 +138,41 @@ suite("Custom Prefixes", () => {
       "text-white bg-blue-500"
     );
   });
+});
 
-  test("Svelte w multiple class:", () => {
+suite("Non-Default Custom Prefixes", () => {
+  let getConfigurationStub: sinon.SinonStub;
+
+  setup(() => {
+    getConfigurationStub = sinon.stub(vscode.workspace, "getConfiguration");
+
+    getConfigurationStub.returns({
+      get: sinon.stub().callsFake((configName: string, defaultValue: any) => {
+        if (configName === "customPrefixes") {
+          return ["label_class|default(", "potato="];
+        }
+        return defaultValue;
+      }),
+      update: sinon.stub(),
+    });
+  });
+
+  teardown(() => {
+    getConfigurationStub.restore();
+  });
+
+  test("Potato :)", () => {
     checkEquals(
-      `<div class:isActive={isActive} class:hasError={hasError} class:disabled={isDisabled} class="bg-blue-400 text-white bg-blue-500">`,
-      `bg-blue-400 text-white bg-blue-500`
+      `potato=   'text-base          bg-blue-500          '`,
+      "text-base          bg-blue-500          "
+    );
+  });
+
+  // https://symfony.com/doc/current/form/tailwindcss.html
+  test("PHP Symfony form plugin", () => {
+    checkEquals(
+      `{%- set label_class = label_class|default('bg-blue-500 text-white') -%}`,
+      "bg-blue-500 text-white"
     );
   });
 });
@@ -159,6 +189,10 @@ suite("No Match", () => {
       '<div class="<?php echo "bg-$color-500"; ?>">IGNORE THIS ONE</div>',
       false
     );
+  });
+
+  test("Ignore dynamic Svelte", () => {
+    hasMatch("<div class:isActive={isActive}>", false);
   });
 
   test(`Ignore dynamic PHP <?= `, () => {
