@@ -49,20 +49,12 @@ export const dynamicSyntaxMarkers = [
   "}",
   "{{",
   "}}",
-  // elixir
+  "<%",
   "<%=",
   "%>",
-  // PHP
   "<?php",
   "<?=",
   "?>",
-  // django
   "{%",
   "%}",
-  // ruby
-  "<%",
-  "%>",
-  // ASP.NET
-  "<%",
-  "%>",
 ];

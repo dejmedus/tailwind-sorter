@@ -478,20 +478,6 @@ suite("Ignore sorting", () => {
     );
   });
 
-  // test("twin macro dynamic syntax: do not change", () => {
-  //   const sortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
-  //   const unsortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
-
-  //   assert.strictEqual(
-  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-  //     sortedString
-  //   );
-  // });
-});
-
-suite("Misc. Ignore syntax", () => {
-  const { classesMap, pseudoSortOrder } = defaultClassesMap();
-
   test("JS/TS dynamic syntax ${}: do not change", () => {
     const color = "blue";
     const sortedString = `<div class="bg-${color}-500">Hello, world!</div>`;

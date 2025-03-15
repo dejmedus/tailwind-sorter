@@ -60,7 +60,8 @@ export default function getClassesMap() {
     );
   }
 
-  // ensure valid config files - categories in sort order must exist in categories list
+  // ensure valid config files
+  // categories in sort order must exist in categories list
   const categoriesArr = Object.keys(categories);
   let validConfig = categoriesArr.length === sortOrder.length;
 

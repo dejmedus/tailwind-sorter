@@ -25,7 +25,6 @@ export function activate(context: vscode.ExtensionContext) {
     ];
 
     if (languages.includes(event.document.languageId)) {
-      // get current configuration settings
       const { classesMap, pseudoSortOrder } = getClassesMap();
 
       const text = event.document.getText();
