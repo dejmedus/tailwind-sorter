@@ -1,6 +1,7 @@
 import {
   createApplyRegex,
   createRegex,
+  colonRegex,
   dynamicSyntaxMarkers,
 } from "./lib/regex";
 
@@ -95,11 +96,14 @@ function sortFoundTailwind(
       const a = findLongestMatch(aClass, sortConfig);
       const b = findLongestMatch(bClass, sortConfig);
 
-      const aIsPseudo = aClass.includes(":");
-      const bIsPseudo = bClass.includes(":");
+      const aBaseClass = aClass.split(colonRegex).pop() || aClass;
+      const bBaseClass = bClass.split(colonRegex).pop() || bClass;
 
-      const aIsNotVariant = aClass.includes("not-");
-      const bIsNotVariant = bClass.includes("not-");
+      const aIsPseudo = aBaseClass !== aClass;
+      const bIsPseudo = bBaseClass !== bClass;
+
+      const aIsNotVariant = aBaseClass.includes("not-");
+      const bIsNotVariant = bBaseClass.includes("not-");
 
       const aOffset = aIsPseudo
         ? aIsNotVariant
@@ -152,7 +156,7 @@ export function findLongestMatch(
   styleClass: string,
   sortConfig: { [key: string]: number }
 ) {
-  const baseClass = styleClass.split(":").pop() || styleClass;
+  const baseClass = styleClass.split(colonRegex).pop() || styleClass;
 
   let longestMatch = "";
   for (const key in sortConfig) {
@@ -183,8 +187,8 @@ function comparePseudoClasses(
   bClass: string,
   pseudoClasses: string[]
 ) {
-  let aPseudoChain = aClass.split(":");
-  let bPseudoChain = bClass.split(":");
+  let aPseudoChain = aClass.split(colonRegex);
+  let bPseudoChain = bClass.split(colonRegex);
 
   const chainLen = Math.min(aPseudoChain.length, bPseudoChain.length);
 
@@ -194,6 +198,11 @@ function comparePseudoClasses(
 
     let aPseudo = pseudoClasses.find((c) => aPseudoClass.includes(c));
     let bPseudo = pseudoClasses.find((c) => bPseudoClass.includes(c));
+
+    if (pseudoClasses.includes("support-")) {
+      if (aPseudoClass.includes("support-")) aPseudo = "support-";
+      if (bPseudoClass.includes("support-")) bPseudo = "support-";
+    }
 
     if (pseudoClasses.includes("group-")) {
       if (aPseudoClass.includes("group-")) aPseudo = "group-";

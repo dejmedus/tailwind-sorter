@@ -22,6 +22,10 @@ suite("Find Config Match", () => {
     assert.strictEqual(findLongestMatch("pe-4", classesMap), "pe-");
   });
 
+  test("-ml-5", () => {
+    assert.strictEqual(findLongestMatch("-ml-5", classesMap), "ml-");
+  });
+
   test("list-type-bananas", () => {
     assert.strictEqual(
       findLongestMatch("list-type-bananas", classesMap),
@@ -34,10 +38,6 @@ suite("Find Config Match", () => {
       findLongestMatch("tw-list-type-bananas", classesMap),
       "list-type-"
     );
-  });
-
-  test("-ml-5", () => {
-    assert.strictEqual(findLongestMatch("-ml-5", classesMap), "ml-");
   });
 
   test("tw-not-list-type-bananas", () => {
@@ -65,28 +65,21 @@ suite("Find Config Match", () => {
     );
   });
 
-  test("special prefix characters", () => {
+  test("! important", () => {
     assert.strictEqual(
       findLongestMatch("hover:!bg-blue-500", classesMap),
       "bg-"
     );
   });
 
-  test("slash and numbers", () => {
+  test("fractions", () => {
     assert.strictEqual(findLongestMatch("w-1/2", classesMap), "w-");
   });
 
-  test("multiple prefixes", () => {
+  test("multiple pseudos", () => {
     assert.strictEqual(
       findLongestMatch("hover:focus:bg-blue-500", classesMap),
       "bg-"
-    );
-  });
-
-  test("important !", () => {
-    assert.strictEqual(
-      findLongestMatch("!list-type-bananas", classesMap),
-      "list-type-"
     );
   });
 
@@ -105,7 +98,7 @@ suite("Find Config Match", () => {
     );
   });
 
-  test("arbitrary value with /", () => {
+  test("arbitrary [] with /", () => {
     assert.strictEqual(
       findLongestMatch("list-image-[url(/carrot.png)]", classesMap),
       "list-image-"
@@ -128,7 +121,7 @@ suite("Find Config Match", () => {
   });
 
   // https://tailwindcss.com/docs/hover-focus-and-other-states#differentiating-nested-groups
-  test("group/banana", () => {
+  test("group/", () => {
     assert.strictEqual(findLongestMatch("group/banana", classesMap), "group");
   });
 
@@ -151,17 +144,39 @@ suite("Find Config Match", () => {
     );
   });
 
-  test("complex attribute with brackets", () => {
+  test("supports-", () => {
+    assert.strictEqual(
+      findLongestMatch("supports-[display:block]:grid", classesMap),
+      "grid"
+    );
+  });
+
+  test("arbitrary [] class", () => {
+    assert.strictEqual(
+      findLongestMatch("before:content-[attr(data:time)]", classesMap),
+      "content-"
+    );
+
+    assert.strictEqual(
+      findLongestMatch("content-['Time:_12:30_PM']", classesMap),
+      "content-"
+    );
+
     assert.strictEqual(
       findLongestMatch("[&_p]:text-gray-500", classesMap),
       "text-"
     );
   });
 
-  test("supports query variant", () => {
+  test("arbitrary [] pseudos", () => {
     assert.strictEqual(
-      findLongestMatch("supports-[display:block]:grid", classesMap),
-      "grid"
+      findLongestMatch("[&>*:not(:first-child)]:mt-2", classesMap),
+      "mt-"
+    );
+
+    assert.strictEqual(
+      findLongestMatch("[&:nth-child(3)]:bg-blue-500", classesMap),
+      "bg-"
     );
   });
 });

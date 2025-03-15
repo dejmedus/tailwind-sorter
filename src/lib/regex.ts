@@ -31,7 +31,6 @@ export function createRegex() {
 /**
  * Creates a regex pattern to select style classes after apply and before semicolon
  *
- *
  * @returns The regex pattern
  */
 export function createApplyRegex() {
@@ -42,6 +41,17 @@ export function createApplyRegex() {
 
   return new RegExp(regexStr, "g");
 }
+
+/**
+ * Finds all colons that are not inside square brackets.
+ * Preserves arbitrary values
+ *
+ * @example
+ * // matches ":" after hover, but not url
+ * // "hover:bg-[url:something]"
+ * @see https://regex101.com/r/K4qC3z/4
+ */
+export const colonRegex = /:(?![^\[\]]*\])/g;
 
 export const dynamicSyntaxMarkers = [
   "${",

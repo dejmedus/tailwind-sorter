@@ -412,6 +412,17 @@ suite("Ignore sorting", () => {
     );
   });
 
+  // https://tailwindcss.com/blog/tailwindcss-v3#arbitrary-properties
+  test("Arbitrary properties: do not change", () => {
+    const sortedString = `<div class="[mask-type:luminance] hover:[mask-type:alpha]">`;
+    const unsortedString = `<div class="[mask-type:luminance] hover:[mask-type:alpha]">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Multiline apply comments: do not change", () => {
     const unsortedString = `
     .btn {

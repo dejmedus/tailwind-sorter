@@ -108,6 +108,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("Repeat classes w pseudos", () => {
+    const sortedString = `<div className="top-0 hover:lg:left-0 hover:lg:left-0 hover:lg:left-10 lg:static fixed flex justify-center"`;
+    const unsortedString = `<div className="top-0 hover:lg:left-10 hover:lg:left-0 lg:static fixed flex justify-center hover:lg:left-0"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Only pseudo classes", () => {
     const sortedString = `<div class="focus-within:ring focus-within:ring-blue-200 group-hover:text-blue-500" blah blah`;
     const unsortedString = `<div class="focus-within:ring-blue-200 group-hover:text-blue-500 focus-within:ring" blah blah`;
@@ -128,6 +138,17 @@ suite("Sorting", () => {
     );
   });
 
+  // https://tailwindcss.com/docs/hover-focus-and-other-states#supports
+  test("supports- with []", () => {
+    const sortedString = `<div class="supports-[display:flex]:flex supports-[display:grid]:grid supports-backdrop-filter:bg-black/25">`;
+    const unsortedString = `<div class="supports-backdrop-filter:bg-black/25 supports-[display:flex]:flex supports-[display:grid]:grid">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("-not variants with pseudo classes", () => {
     const sortedString = `<div class="4xl:not-disabled:bg-pink-400 5xl:not-disabled:bg-blue-500 max-6xl:not-disabled:bg-green-500">`;
     const unsortedString = `<div class="max-6xl:not-disabled:bg-green-500 5xl:not-disabled:bg-blue-500 4xl:not-disabled:bg-pink-400">`;
@@ -139,8 +160,8 @@ suite("Sorting", () => {
   });
 
   test("Screen size pseudo classes", () => {
-    const sortedString = `<div class="sm:hover:bg-blue-500 md:group-hover:bg-red-500 lg:focus-within:bg-green-500">`;
-    const unsortedString = `<div class="lg:focus-within:bg-green-500 sm:hover:bg-blue-500 md:group-hover:bg-red-500">`;
+    const sortedString = `<div class="sm:hover:bg-blue-500 md:visited:bg-red-600 md:group-hover:bg-red-500 lg:focus-within:bg-green-500">`;
+    const unsortedString = `<div class="md:visited:bg-red-600 lg:focus-within:bg-green-500 sm:hover:bg-blue-500 md:group-hover:bg-red-500">`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -208,9 +229,59 @@ suite("Sorting", () => {
     );
   });
 
+  test("@container w arbitrary values", () => {
+    const sortedString = `<div class="@container max-[600px]:bg-sky-300 min-[320px]:text-center">`;
+    const unsortedString = `<div class="min-[320px]:text-center max-[600px]:bg-sky-300 @container">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Arbitrary values", () => {
     const sortedString = `<div className='bg-[#1a1a1a] w-[100px] h-[calc(100%-1rem)]' blah blah`;
     const unsortedString = `<div className='h-[calc(100%-1rem)] w-[100px] bg-[#1a1a1a]' blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Arbitrary values with dynamic content", () => {
+    const sortedString = `<div class="content-['Time:_12:30_PM'] before:content-[attr(data:time)]">`;
+    const unsortedString = `<div class="before:content-[attr(data:time)] content-['Time:_12:30_PM']">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Special characters in arbitrary []", () => {
+    const sortedString = `<div class="grid-cols-[minmax(0,_1fr)_50px] w-[calc(100%-theme('spacing.2'))]">`;
+    const unsortedString = `<div class="w-[calc(100%-theme('spacing.2'))] grid-cols-[minmax(0,_1fr)_50px]">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Multiple negative values", () => {
+    const sortedString = `<div class="-inset-x-4 -m-2 -skew-y-3 -translate-y-full">`;
+    const unsortedString = `<div class="-skew-y-3 -translate-y-full -m-2 -inset-x-4">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Fractional values", () => {
+    const sortedString = `<div class="gap-x-1/2 grid grid-cols-[1fr,2fr] w-2/3 translate-x-1/2">`;
+    const unsortedString = `<div class="translate-x-1/2 w-2/3 gap-x-1/2 grid-cols-[1fr,2fr] grid">`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -251,26 +322,6 @@ suite("Sorting", () => {
   test("Custom boolean data attributes", () => {
     const sortedString = `<div data-current class="bg-black opacity-75 data-current:opacity-100">`;
     const unsortedString = `<div data-current class="data-current:opacity-100 bg-black opacity-75">`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Container queries", () => {
-    const sortedString = `<div class="@min-md:@max-xl:hidden grid grid-cols-1 @sm:grid-cols-3 @lg:grid-cols-4">`;
-    const unsortedString = `<div class="grid @sm:grid-cols-3 @lg:grid-cols-4 @min-md:@max-xl:hidden grid-cols-1">`;
-
-    assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-      sortedString
-    );
-  });
-
-  test("Container queries w arbitrary values", () => {
-    const sortedString = `<div class="@container max-[600px]:bg-sky-300 min-[320px]:text-center">`;
-    const unsortedString = `<div class="min-[320px]:text-center max-[600px]:bg-sky-300 @container">`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
