@@ -123,17 +123,12 @@ function sortFoundTailwind(
       const bIndex = sortConfig[b] + bOffset;
 
       if (aIndex === bIndex) {
-        // if same index, sort alphabetically
-        //  unless they are pseudo classes, then sort by pseudo config
         if (aIsPseudo && bIsPseudo) {
-          const aPseudo = pseudoClasses.find((c) => aClass.includes(c));
-          const bPseudo = pseudoClasses.find((c) => bClass.includes(c));
-          if (aPseudo && bPseudo) {
-            return (
-              pseudoClasses.indexOf(aPseudo) - pseudoClasses.indexOf(bPseudo)
-            );
-          }
+          // sort pseudo classes by config order
+          return comparePseudoClasses(aClass, bClass, pseudoClasses);
         }
+
+        // otherwise sort alphabetically
         return aClass.localeCompare(bClass);
       }
 
@@ -153,15 +148,72 @@ function sortFoundTailwind(
  * @param sortConfig - The sort config object.
  * @returns The longest matching sortConfig key. (overflow-x-)
  */
-function findLongestMatch(
+export function findLongestMatch(
   styleClass: string,
   sortConfig: { [key: string]: number }
 ) {
+  const baseClass = styleClass.split(":").pop() || styleClass;
+
   let longestMatch = "";
   for (const key in sortConfig) {
-    if (styleClass.includes(key) && key.length > longestMatch.length) {
+    const keyInStyleClass =
+      baseClass.startsWith(key) ||
+      baseClass.includes("-" + key) ||
+      baseClass.includes(":" + key) ||
+      baseClass.includes("!" + key);
+
+    if (keyInStyleClass && key.length > longestMatch.length) {
       longestMatch = key;
     }
   }
   return longestMatch;
+}
+
+/**
+ * Compares two Tailwind classes with pseudo variants to determine their sort order
+ * Returns -1 if aClass should come before bClass, 1 if after, or alphabetical comparison if equal priority
+ *
+ * @param aClass - The first class to compare (hover:bg-blue-500)
+ * @param bClass - The second class to compare (focus:bg-green-500)
+ * @param pseudoClasses - Order to sort pseudo classes by
+ * @returns A comparison value to use in a sort function
+ */
+function comparePseudoClasses(
+  aClass: string,
+  bClass: string,
+  pseudoClasses: string[]
+) {
+  let aPseudoChain = aClass.split(":");
+  let bPseudoChain = bClass.split(":");
+
+  const chainLen = Math.min(aPseudoChain.length, bPseudoChain.length);
+
+  for (let i = 0; i < chainLen; i++) {
+    let aPseudoClass = aPseudoChain[i];
+    let bPseudoClass = bPseudoChain[i];
+
+    let aPseudo = pseudoClasses.find((c) => aPseudoClass.includes(c));
+    let bPseudo = pseudoClasses.find((c) => bPseudoClass.includes(c));
+
+    if (pseudoClasses.includes("group-")) {
+      if (aPseudoClass.includes("group-")) aPseudo = "group-";
+      if (bPseudoClass.includes("group-")) bPseudo = "group-";
+    }
+
+    if (pseudoClasses.includes("peer-")) {
+      if (aPseudoClass.includes("peer-")) aPseudo = "peer-";
+      if (bPseudoClass.includes("peer-")) bPseudo = "peer-";
+    }
+
+    if (aPseudo && bPseudo) {
+      if (aPseudo === bPseudo) {
+        continue;
+      }
+
+      return pseudoClasses.indexOf(aPseudo) - pseudoClasses.indexOf(bPseudo);
+    }
+  }
+
+  // otherwise sort alphabetically
+  return aClass.localeCompare(bClass);
 }

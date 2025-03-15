@@ -28,6 +28,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("Non tailwind classes with - sort to end", () => {
+    const sortedString = `<div className='relative flex justify-center self-center lg:self-start -ml-5 lg:ml-0 w-[375px] lg:w-[568px] h-[375px] lg:h-[568px] custom shape-wrapper'`;
+    const unsortedString = `<div className='lg:self-start -ml-5 relative justify-center custom self-center lg:ml-0 shape-wrapper w-[375px] lg:w-[568px] h-[375px] lg:h-[568px] flex'`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Non tailwind classes keep their sort order", () => {
     const sortedString = `<div class="flex flex-col flex-1 carrot banana apple" blah blah`;
     const unsortedString = `<div class="flex-col carrot flex-1 banana flex apple" blah blah`;
@@ -99,8 +109,98 @@ suite("Sorting", () => {
   });
 
   test("Only pseudo classes", () => {
-    const sortedString = `<div class="group-hover:text-blue-500 focus-within:ring focus-within:ring-blue-200" blah blah`;
+    const sortedString = `<div class="focus-within:ring focus-within:ring-blue-200 group-hover:text-blue-500" blah blah`;
     const unsortedString = `<div class="focus-within:ring-blue-200 group-hover:text-blue-500 focus-within:ring" blah blah`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("-not pseudo classes", () => {
+    const sortedString = `<div class="bg-indigo-600 hover:not-lg:bg-indigo-700 hover:not-xl:bg-indigo-700 hover:not-focus:bg-indigo-700"`;
+    const unsortedString = `<div class="hover:not-xl:bg-indigo-700 bg-indigo-600 hover:not-focus:bg-indigo-700 hover:not-lg:bg-indigo-700"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("-not variants with pseudo classes", () => {
+    const sortedString = `<div class="4xl:not-disabled:bg-pink-400 5xl:not-disabled:bg-blue-500 max-6xl:not-disabled:bg-green-500">`;
+    const unsortedString = `<div class="max-6xl:not-disabled:bg-green-500 5xl:not-disabled:bg-blue-500 4xl:not-disabled:bg-pink-400">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Screen size pseudo classes", () => {
+    const sortedString = `<div class="sm:hover:bg-blue-500 md:group-hover:bg-red-500 lg:focus-within:bg-green-500">`;
+    const unsortedString = `<div class="lg:focus-within:bg-green-500 sm:hover:bg-blue-500 md:group-hover:bg-red-500">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("group-", () => {
+    const sortedString = `<div class="hover:bg-pink-500 focus-within:bg-green-500 group-hover:bg-blue-500"`;
+    const unsortedString = `<div class="group-hover:bg-blue-500 focus-within:bg-green-500 hover:bg-pink-500"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Group and peer variants", () => {
+    const sortedString = `<div class="2xl:hover:bg-blue-400 hover:bg-blue-500 group-hover:bg-pink-500 peer-hover:bg-yellow-500">`;
+    const unsortedString = `<div class="peer-hover:bg-yellow-500 2xl:hover:bg-blue-400 group-hover:bg-pink-500 hover:bg-blue-500">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Group/ and group-hover/", () => {
+    const sortedString = `<a class="group/edit invisible group-hover/item:visible" href="tel:{person.phone}">`;
+    const unsortedString = `<a class="group-hover/item:visible invisible group/edit" href="tel:{person.phone}">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Data and aria attributes", () => {
+    const sortedString = `<div class="data-[open=true]:bg-blue-500 aria-[expanded=true]:bg-green-500 hover:bg-red-500">`;
+    const unsortedString = `<div class="hover:bg-red-500 aria-[expanded=true]:bg-green-500 data-[open=true]:bg-blue-500">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Chained container queries", () => {
+    const sortedString = `<div class="flex @sm:@max-md:flex-col @sm:@max-lg:flex-col"`;
+    const unsortedString = `<div class="@sm:@max-lg:flex-col @sm:@max-md:flex-col flex"`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Container queries", () => {
+    const sortedString = `<div class="flex @sm:flex @md:flex @lg:flex text-black group-hover:text-blue-500"`;
+    const unsortedString = `<div class="@lg:flex group-hover:text-blue-500 flex @md:flex @sm:flex text-black"`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
