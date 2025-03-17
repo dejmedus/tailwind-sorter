@@ -149,6 +149,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("Complex arbitrary []", () => {
+    const sortedString = `<div class="[&:nth-child(3)]:bg-blue-500 [&>*:not(:first-child)]:mt-2">`;
+    const unsortedString = `<div class="[&>*:not(:first-child)]:mt-2 [&:nth-child(3)]:bg-blue-500">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("-not variants with pseudo classes", () => {
     const sortedString = `<div class="4xl:not-disabled:bg-pink-400 5xl:not-disabled:bg-blue-500 max-6xl:not-disabled:bg-green-500">`;
     const unsortedString = `<div class="max-6xl:not-disabled:bg-green-500 5xl:not-disabled:bg-blue-500 4xl:not-disabled:bg-pink-400">`;
