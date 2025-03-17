@@ -1,5 +1,12 @@
 ## Change Log
 
+#### 0.1.20
+
+- Fix: sort custom classes containing a tailwind substring to end
+- Allow `>` child selectors inside sorted strings
+- Better sorting for classes with chained pseudos
+- Add missing classes: group-has, peer-has, and visible
+
 #### 0.1.11
 
 - Add Twig target language
