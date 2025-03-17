@@ -19,18 +19,17 @@ export function createRegex() {
 
   const prefixes = `(${escapedPrefixes}|class=|className=)`;
 
-  // regex101 example: https://regex101.com/r/IfViQ8/3
+  // regex101 example: https://regex101.com/r/IfViQ8/4
   // (?<=\\s|{|^) prefix should be preceded by a space, bracket, or the start of the string
   // \\s* may have spaces/newlines after the prefix
-  // "([^"?<{>]*)" matches everything inside quotes group unless there is dynamic syntax inside
-  const regexStr = `(?<=\\s|{|^)${prefixes}\\s*("([^"?<{>]*)"|'([^'?<{>]*)'|\`([^\`?<{>]*)\`)`;
+  // "([^"?<{]*)" matches everything inside quotes group unless there is dynamic syntax inside
+  const regexStr = `(?<=\\s|{|^)${prefixes}\\s*("([^"?<{]*)"|'([^'?<{]*)'|\`([^\`?<{]*)\`)`;
 
   return new RegExp(regexStr, "g");
 }
 
 /**
  * Creates a regex pattern to select style classes after apply and before semicolon
- *
  *
  * @returns The regex pattern
  */
@@ -43,26 +42,29 @@ export function createApplyRegex() {
   return new RegExp(regexStr, "g");
 }
 
+/**
+ * Finds all colons that are not inside square brackets.
+ * Preserves arbitrary values
+ *
+ * @example
+ * // matches ":" after hover, but not url
+ * // "hover:bg-[url:something]"
+ * @see https://regex101.com/r/K4qC3z/4
+ */
+export const colonRegex = /:(?![^\[\]]*\])/g;
+
 export const dynamicSyntaxMarkers = [
   "${",
   "{",
   "}",
   "{{",
   "}}",
-  // elixir
+  "<%",
   "<%=",
   "%>",
-  // PHP
   "<?php",
   "<?=",
   "?>",
-  // django
   "{%",
   "%}",
-  // ruby
-  "<%",
-  "%>",
-  // ASP.NET
-  "<%",
-  "%>",
 ];

@@ -412,6 +412,17 @@ suite("Ignore sorting", () => {
     );
   });
 
+  // https://tailwindcss.com/blog/tailwindcss-v3#arbitrary-properties
+  test("Arbitrary properties: do not change", () => {
+    const sortedString = `<div class="[mask-type:luminance] hover:[mask-type:alpha]">`;
+    const unsortedString = `<div class="[mask-type:luminance] hover:[mask-type:alpha]">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Multiline apply comments: do not change", () => {
     const unsortedString = `
     .btn {
@@ -477,20 +488,6 @@ suite("Ignore sorting", () => {
       sortedString
     );
   });
-
-  // test("twin macro dynamic syntax: do not change", () => {
-  //   const sortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
-  //   const unsortedString = `<div tw="hover:(text-black underline) focus:(text-blue-500 underline)" />`;
-
-  //   assert.strictEqual(
-  //     sortTailwind(unsortedString, classesMap, pseudoSortOrder),
-  //     sortedString
-  //   );
-  // });
-});
-
-suite("Misc. Ignore syntax", () => {
-  const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
   test("JS/TS dynamic syntax ${}: do not change", () => {
     const color = "blue";

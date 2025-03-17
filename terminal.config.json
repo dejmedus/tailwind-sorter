@@ -12,7 +12,7 @@
     },
     {
       "tab": "test",
-      "commands": ["# npm run test"],
+      "commands": ["*echo npm run test"],
       "description": "open test tab"
     }
   ],
@@ -36,7 +36,12 @@
     },
     {
       "tab": "test",
-      "commands": ["npm run test"],
+      "commands": [
+        "rm -rf .vscode-test",
+        "rm -rf dist",
+        "rm -rf out",
+        "npm run test"
+      ],
       "description": "run tests"
     }
   ]
