@@ -175,7 +175,6 @@ export function findLongestMatch(
 
 /**
  * Compares two Tailwind classes with pseudo variants to determine their sort order
- * Returns -1 if aClass should come before bClass, 1 if after, or alphabetical comparison if equal priority
  *
  * @param aClass - The first class to compare (hover:bg-blue-500)
  * @param bClass - The second class to compare (focus:bg-green-500)
