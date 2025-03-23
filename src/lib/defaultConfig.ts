@@ -545,3 +545,6 @@ export const defaultSortOrder = defaultConfig.categoryOrder.sortOrder;
 
 export const defaultPseudoSortOrder =
   defaultConfig.pseudoClassesOrder.sortOrder;
+
+export const defaultCustomPrefixes = ["twMerge(", "clsx(", "cva("];
+export const defaultSortOnSave = true;

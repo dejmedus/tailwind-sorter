@@ -1,0 +1,15 @@
+export const languages = [
+  "html",
+  "php",
+  "vue",
+  "javascriptreact",
+  "typescriptreact",
+  "elixir",
+  "phoenix-heex",
+  "svelte",
+  "twig",
+  "astro",
+  "rust",
+  "css",
+  "scss",
+];
