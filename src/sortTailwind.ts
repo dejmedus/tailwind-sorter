@@ -163,8 +163,9 @@ export function findLongestMatch(
     const keyInStyleClass =
       baseClass.startsWith(key) ||
       baseClass.includes("-" + key) ||
-      baseClass.includes(":" + key) ||
-      baseClass.includes("!" + key);
+      baseClass.includes("!" + key) ||
+      // allow _ prefix for ignored classes
+      baseClass.startsWith("_" + key);
 
     if (keyInStyleClass && key.length > longestMatch.length) {
       longestMatch = key;
