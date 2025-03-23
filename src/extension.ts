@@ -10,7 +10,6 @@ import sortTailwind from "./sortTailwind";
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(reloadDialog),
     vscode.commands.registerCommand("tailwindSorter.sort", sortOnCommand),
     vscode.workspace.onWillSaveTextDocument(sortOnSave)
   );
@@ -71,23 +70,6 @@ export function sortOnSave(event: vscode.TextDocumentWillSaveEvent) {
       ),
     ])
   );
-}
-
-function reloadDialog(event: vscode.ConfigurationChangeEvent) {
-  if (event.affectsConfiguration("tailwindSorter.sortOnSave")) {
-    vscode.window
-      .showInformationMessage(
-        "Reload window for Tailwind Sorter changes to take effect.",
-        { modal: true },
-        "Reload",
-        "Continue"
-      )
-      .then((selection) => {
-        if (selection === "Reload") {
-          vscode.commands.executeCommand("workbench.action.reloadDialog");
-        }
-      });
-  }
 }
 
 // This method is called when your extension is deactivated
