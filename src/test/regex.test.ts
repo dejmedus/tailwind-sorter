@@ -1,8 +1,8 @@
-import * as vscode from "vscode";
 import * as assert from "assert";
 import * as sinon from "sinon";
 
 import { createRegex } from "../lib/regex";
+import createConfigStub from "./_createConfigStub";
 
 function findMatch(fullString: string) {
   const regex = createRegex();
@@ -141,27 +141,13 @@ suite("Custom Prefixes", () => {
 });
 
 suite("Non-Default Custom Prefixes", () => {
-  let getConfigurationStub: sinon.SinonStub;
-
-  setup(() => {
-    getConfigurationStub = sinon.stub(vscode.workspace, "getConfiguration");
-
-    getConfigurationStub.returns({
-      get: sinon.stub().callsFake((configName: string, defaultValue: any) => {
-        if (configName === "customPrefixes") {
-          return ["label_class|default(", "potato="];
-        }
-        return defaultValue;
-      }),
-      update: sinon.stub(),
-    });
-  });
-
   teardown(() => {
-    getConfigurationStub.restore();
+    sinon.restore();
   });
 
   test("Potato :)", () => {
+    createConfigStub({ customPrefixes: ["potato="] });
+
     checkEquals(
       `potato=   'text-base          bg-blue-500          '`,
       "text-base          bg-blue-500          "
@@ -170,6 +156,8 @@ suite("Non-Default Custom Prefixes", () => {
 
   // https://symfony.com/doc/current/form/tailwindcss.html
   test("PHP Symfony form plugin", () => {
+    createConfigStub({ customPrefixes: ["label_class|default("] });
+
     checkEquals(
       `{%- set label_class = label_class|default('bg-blue-500 text-white') -%}`,
       "bg-blue-500 text-white"
