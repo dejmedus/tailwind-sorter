@@ -19,6 +19,7 @@ Custom sort order and categories can be configured in settings
 - [Categories](vscode://settings/tailwindSorter.categories): Which style classes will belong to which category and in what order.
 - [Pseudo Classes Order](vscode://settings/tailwindSorter.pseudoClassesOrder): How pseudo-classes should be ordered.
 - [Custom Prefixes](vscode://settings/tailwindSorter.customPrefixes): Prefixes that identify class strings other than the default `class=` and `className=`.
+- [Sort on Save](vscode://settings/tailwindSorter.sortOnSave): Whether or not classes should be sorted on save.
 
 
 **The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other.
@@ -50,6 +51,9 @@ Custom sort order and categories can be configured in settings
 
 **Custom Prefixes**: Tailwind Sorter checks for `class=` and `className=` as well as any custom prefixes defined in settings. Default custom prefixes include: `twMerge(`, `cva(`, and `clsx(`
 
+#### Command
+
+- `Tailwind Sorter: Sort`: Sort Tailwind classes in the current file.
 
 #### Sorting
 
