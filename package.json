@@ -34,6 +34,11 @@
     "configuration": {
       "title": "Tailwind Sorter",
       "properties": {
+        "tailwindSorter.sortOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Sort Tailwind classes on save"
+        },
         "tailwindSorter.customPrefixes": {
           "type": "array",
           "items": {
@@ -633,7 +638,13 @@
           "description": "List of classes in each category"
         }
       }
-    }
+    },
+    "commands": [
+      {
+        "command": "tailwindSorter.sort",
+        "title": "Tailwind Sorter: Sort"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -655,13 +666,11 @@
     "@typescript-eslint/parser": "^6.15.0",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.8",
+    "sinon": "^17.0.1",
     "eslint": "^8.56.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
-  },
-  "dependencies": {
-    "sinon": "^17.0.1"
   }
 }

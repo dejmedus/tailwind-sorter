@@ -1,51 +1,93 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
+
 import getClassesMap from "./getClassesMap";
+import { languages } from "./lib/languages";
 import sortTailwind from "./sortTailwind";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  let sortDisposable = vscode.workspace.onWillSaveTextDocument((event) => {
-    const languages = [
-      "html",
-      "php",
-      "vue",
-      "javascriptreact",
-      "typescriptreact",
-      "elixir",
-      "phoenix-heex",
-      "svelte",
-      "twig",
-      "astro",
-      "rust",
-      "css",
-      "scss",
-    ];
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(reloadDialog),
+    vscode.commands.registerCommand("tailwindSorter.sort", sortOnCommand),
+    vscode.workspace.onWillSaveTextDocument(sortOnSave)
+  );
+}
 
-    if (languages.includes(event.document.languageId)) {
-      const { classesMap, pseudoSortOrder } = getClassesMap();
+export async function sortOnCommand() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    return;
+  }
 
-      const text = event.document.getText();
-      const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
+  const document = editor.document;
+  if (!languages.includes(document.languageId)) {
+    vscode.window.showWarningMessage(
+      `Tailwind Sorter: Language ${document.languageId} is not supported`
+    );
+    return;
+  }
 
-      // onWillSave + waitUntil prevents looping
-      event.waitUntil(
-        Promise.resolve([
-          new vscode.TextEdit(
-            new vscode.Range(
-              event.document.positionAt(0),
-              event.document.positionAt(text.length)
-            ),
-            sortedTailwind
-          ),
-        ])
-      );
-    }
+  const { classesMap, pseudoSortOrder } = getClassesMap();
+
+  const text = document.getText();
+  const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
+
+  await editor.edit((editBuilder) => {
+    editBuilder.replace(
+      new vscode.Range(
+        document.positionAt(0),
+        document.positionAt(text.length)
+      ),
+      sortedTailwind
+    );
   });
+}
 
-  context.subscriptions.push(sortDisposable);
+export function sortOnSave(event: vscode.TextDocumentWillSaveEvent) {
+  const config = vscode.workspace.getConfiguration("tailwindSorter");
+  const sortOnSave = config.get<boolean>("sortOnSave", true);
+
+  if (!sortOnSave || !languages.includes(event.document.languageId)) {
+    return;
+  }
+
+  const { classesMap, pseudoSortOrder } = getClassesMap();
+
+  const text = event.document.getText();
+  const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
+
+  // onWillSave + waitUntil prevents looping
+  event.waitUntil(
+    Promise.resolve([
+      new vscode.TextEdit(
+        new vscode.Range(
+          event.document.positionAt(0),
+          event.document.positionAt(text.length)
+        ),
+        sortedTailwind
+      ),
+    ])
+  );
+}
+
+function reloadDialog(event: vscode.ConfigurationChangeEvent) {
+  if (event.affectsConfiguration("tailwindSorter.sortOnSave")) {
+    vscode.window
+      .showInformationMessage(
+        "Reload window for Tailwind Sorter changes to take effect.",
+        { modal: true },
+        "Reload",
+        "Continue"
+      )
+      .then((selection) => {
+        if (selection === "Reload") {
+          vscode.commands.executeCommand("workbench.action.reloadDialog");
+        }
+      });
+  }
 }
 
 // This method is called when your extension is deactivated
