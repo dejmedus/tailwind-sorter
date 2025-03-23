@@ -18,8 +18,24 @@ suite("Find Config Match", () => {
     assert.strictEqual(findLongestMatch("shape-wrapper", classesMap), "");
   });
 
+  test("custom_flex", () => {
+    assert.strictEqual(findLongestMatch("custom_flex", classesMap), "");
+  });
+
+  test("_custom_flex", () => {
+    assert.strictEqual(findLongestMatch("_custom_flex", classesMap), "");
+  });
+
   test("pe-4", () => {
     assert.strictEqual(findLongestMatch("pe-4", classesMap), "pe-");
+  });
+
+  test("_ prefix for ignored classes", () => {
+    assert.strictEqual(findLongestMatch("_ml-5", classesMap), "ml-");
+  });
+
+  test("_ prefix for ignored classes w pseudos", () => {
+    assert.strictEqual(findLongestMatch("_hover:ml-5", classesMap), "ml-");
   });
 
   test("-ml-5", () => {

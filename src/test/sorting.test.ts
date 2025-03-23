@@ -666,6 +666,16 @@ suite("Sorting", () => {
       sortedString
     );
   });
+
+  test("allow _ prefix for ignored classes", () => {
+    const sortedString = `<div class="flex _flex-col justify-center gap-6 bg-white _shadow-2xl p-8 border _hover:border-yellow-400 rounded-4xl w-lg custom_flex">`;
+    const unsortedString = `<div class="_shadow-2xl justify-center custom_flex gap-6 _hover:border-yellow-400 bg-white _flex-col p-8 border flex rounded-4xl w-lg">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
 });
 
 suite("@apply Sorting", () => {
