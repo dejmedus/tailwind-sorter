@@ -1,5 +1,11 @@
 ## Change Log
 
+#### 0.1.30
+
+- Add `sortOnSave` setting to toggle sorting on file save
+- Add `Tailwind Sorter: Sort` command to sort file manually
+- Allow tailwind classes with `_` prefixes to sort as normal
+
 #### 0.1.20
 
 - Fix: sort custom classes containing a tailwind substring to end
