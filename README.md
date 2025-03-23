@@ -2,7 +2,7 @@
 <h1>Tailwind Sorter</h1>
 </div>
 
-Automatically sort Tailwind classes on save. Use your preferred sort order to keep your classes organized.
+Automatically sort Tailwind classes on save or command. Use your preferred sort order to keep your classes organized.
 
 ![Demo](https://github.com/dejmedus/gifs/blob/main/tailwind-sorter-demo.gif?raw=true)
 
