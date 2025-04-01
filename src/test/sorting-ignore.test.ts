@@ -62,6 +62,16 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("Dynamic Rails erb syntax: do not change", () => {
+    const sortedString = `<button class="<%= is_active ? 'bg-green-500' : 'bg-gray-500' %> text-white rounded">`;
+    const unsortedString = `<button class="<%= is_active ? 'bg-green-500' : 'bg-gray-500' %> text-white rounded">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Conditional Angular syntax: do not change", () => {
     const sortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
     const unsortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;

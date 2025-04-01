@@ -1,12 +1,18 @@
 import * as assert from "assert";
+import * as sinon from "sinon";
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import sortTailwind from "../sortTailwind";
 import { defaultClassesMap } from "./_defaultClassMap";
+import createConfigStub from "./_createConfigStub";
 
 suite("Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
+
+  teardown(() => {
+    sinon.restore();
+  });
 
   test('Correct sort class=""', () => {
     const sortedString = `<div class="flex flex-col flex-1 items-center gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold before:content-[''] after:content-['']" blah blah`;
@@ -480,6 +486,30 @@ suite("Sorting", () => {
   test("Svelte syntax", () => {
     const sortedString = `<div class:isActive={isActive && !isDisabled} class="bg-blue-400 bg-blue-500 text-white">`;
     const unsortedString = `<div class:isActive={isActive && !isDisabled} class="bg-blue-400 text-white bg-blue-500">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Rails erb helper tag", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    const sortedString = `<%= f.label :name, class: "bg-blue-400 bg-blue-500 text-white" %>`;
+    const unsortedString = `<%= f.label :name, class: "bg-blue-500 text-white bg-blue-400" %>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Rails erb helper tag with ()", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    const sortedString = `<%= form_with(model: @user, class: 'bg-pink-500 text-white') do |f| %>`;
+    const unsortedString = `<%= form_with(model: @user, class: 'text-white bg-pink-500') do |f| %>`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
