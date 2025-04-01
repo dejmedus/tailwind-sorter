@@ -63,8 +63,28 @@ suite("Ignore sorting", () => {
   });
 
   test("Dynamic Rails erb syntax: do not change", () => {
-    const sortedString = `<button class="<%= is_active ? 'bg-green-500' : 'bg-gray-500' %> text-white rounded">`;
-    const unsortedString = `<button class="<%= is_active ? 'bg-green-500' : 'bg-gray-500' %> text-white rounded">`;
+    const sortedString = `<button class="<%= is_active ? 'text-white bg-green-500' : 'text-white bg-gray-500' %> text-white bg-blue-500 rounded">`;
+    const unsortedString = `<button class="<%= is_active ? 'text-white bg-green-500' : 'text-white bg-gray-500' %> text-white bg-blue-500 rounded">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Dynamic erb helper tag: do not change", () => {
+    const sortedString = `<%= link_to "Home", root_path, class: "nav-link #{'text-pink-500 bg-white' if current_page?(root_path)}" %>`;
+    const unsortedString = `<%= link_to "Home", root_path, class: "nav-link #{'text-pink-500 bg-white' if current_page?(root_path)}" %>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Dynamic erb helper tag array: do not change", () => {
+    const sortedString = `<%= link_to "Dashboard", dashboard_path, class: ["text-pink-500 bg-white", current_user.admin? ? "bg-red-500 text-white" : "bg-blue-500 text-white"] %>`;
+    const unsortedString = `<%= link_to "Dashboard", dashboard_path, class: ["text-pink-500 bg-white", current_user.admin? ? "bg-red-500 text-white" : "bg-blue-500 text-white"] %>`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -214,8 +234,8 @@ suite("Ignore sorting", () => {
   });
 
   test("Phoenix dynamic syntax <%=: do not change", () => {
-    const sortedString = `<button class="mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
-    const unsortedString = `<button class="mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
+    const sortedString = `<button class="text-pink-500 bg-white mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
+    const unsortedString = `<button class="text-pink-500 bg-white mt-5 px-4 py-2 <%= @button_color %> text-white rounded hover:<%= @button_hover_color %>"></button>`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
