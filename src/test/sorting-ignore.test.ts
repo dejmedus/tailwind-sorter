@@ -1,7 +1,9 @@
 import * as assert from "assert";
+import { restore } from "sinon";
 
 import sortTailwind from "../sortTailwind";
 import { defaultClassesMap } from "./_defaultClassMap";
+import createConfigStub from "./_createConfigStub";
 
 suite("Ignore sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
@@ -73,6 +75,8 @@ suite("Ignore sorting", () => {
   });
 
   test("Dynamic erb helper tag: do not change", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
     const sortedString = `<%= link_to "Home", root_path, class: "nav-link #{'text-pink-500 bg-white' if current_page?(root_path)}" %>`;
     const unsortedString = `<%= link_to "Home", root_path, class: "nav-link #{'text-pink-500 bg-white' if current_page?(root_path)}" %>`;
 
@@ -80,9 +84,13 @@ suite("Ignore sorting", () => {
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
+
+    restore();
   });
 
   test("Dynamic erb helper tag array: do not change", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
     const sortedString = `<%= link_to "Dashboard", dashboard_path, class: ["text-pink-500 bg-white", current_user.admin? ? "bg-red-500 text-white" : "bg-blue-500 text-white"] %>`;
     const unsortedString = `<%= link_to "Dashboard", dashboard_path, class: ["text-pink-500 bg-white", current_user.admin? ? "bg-red-500 text-white" : "bg-blue-500 text-white"] %>`;
 
@@ -90,6 +98,8 @@ suite("Ignore sorting", () => {
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
+
+    restore();
   });
 
   test("Conditional Angular syntax: do not change", () => {

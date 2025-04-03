@@ -1,5 +1,6 @@
 import * as assert from "assert";
-import * as sinon from "sinon";
+import { restore } from "sinon";
+import * as vscode from "vscode";
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
@@ -9,10 +10,6 @@ import createConfigStub from "./_createConfigStub";
 
 suite("Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
-
-  teardown(() => {
-    sinon.restore();
-  });
 
   test('Correct sort class=""', () => {
     const sortedString = `<div class="flex flex-col flex-1 items-center gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold before:content-[''] after:content-['']" blah blah`;
@@ -503,6 +500,8 @@ suite("Sorting", () => {
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
+
+    restore();
   });
 
   test("Rails erb helper tag with ()", () => {
@@ -515,6 +514,8 @@ suite("Sorting", () => {
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
+
+    restore();
   });
 
   test("Tailwind merge concat strings", () => {
