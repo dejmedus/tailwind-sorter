@@ -6,6 +6,7 @@ export const languages = [
   "typescriptreact",
   "elixir",
   "phoenix-heex",
+  "erb",
   "svelte",
   "twig",
   "astro",

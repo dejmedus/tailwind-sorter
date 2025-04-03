@@ -1,9 +1,12 @@
 import * as assert from "assert";
+import { restore } from "sinon";
+import * as vscode from "vscode";
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import sortTailwind from "../sortTailwind";
 import { defaultClassesMap } from "./_defaultClassMap";
+import createConfigStub from "./_createConfigStub";
 
 suite("Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
@@ -485,6 +488,34 @@ suite("Sorting", () => {
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
+  });
+
+  test("Rails erb helper tag", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    const sortedString = `<%= f.label :name, class: "bg-blue-400 bg-blue-500 text-white" %>`;
+    const unsortedString = `<%= f.label :name, class: "bg-blue-500 text-white bg-blue-400" %>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+
+    restore();
+  });
+
+  test("Rails erb helper tag with ()", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    const sortedString = `<%= form_with(model: @user, class: 'bg-pink-500 text-white') do |f| %>`;
+    const unsortedString = `<%= form_with(model: @user, class: 'text-white bg-pink-500') do |f| %>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+
+    restore();
   });
 
   test("Tailwind merge concat strings", () => {

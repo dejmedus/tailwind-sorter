@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.31
+
+- Add ERB target language
+
 #### 0.1.30
 
 - Add `sortOnSave` setting to toggle sorting on file save
