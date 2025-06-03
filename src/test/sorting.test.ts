@@ -442,6 +442,16 @@ suite("Sorting", () => {
     );
   });
 
+  test("PHP syntax", () => {
+    const sortedString = `<button class="bg-blue-500 text-white" onclick="<?php echo $link; ?>"><?php echo $label; ?></button>`;
+    const unsortedString = `<button class="text-white bg-blue-500" onclick="<?php echo $link; ?>"><?php echo $label; ?></button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("PHP Laravel syntax", () => {
     const sortedString = `<button wire:click="increment" class="bg-blue-500 text-white">
         Increment Count
@@ -456,9 +466,13 @@ suite("Sorting", () => {
     );
   });
 
-  test("PHP syntax", () => {
-    const sortedString = `<button class="bg-blue-500 text-white" onclick="<?php echo $link; ?>"><?php echo $label; ?></button>`;
-    const unsortedString = `<button class="text-white bg-blue-500" onclick="<?php echo $link; ?>"><?php echo $label; ?></button>`;
+  test("PHP Symfony Twig syntax", () => {
+    const sortedString = `{% block sidebar %}
+       <a href="{{ path('homepage') }}" class="block px-4">Home</a>
+    {% endblock %}`;
+    const unsortedString = `{% block sidebar %}
+       <a href="{{ path('homepage') }}" class="px-4 block">Home</a>
+    {% endblock %}`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
@@ -466,13 +480,16 @@ suite("Sorting", () => {
     );
   });
 
-  test("PHP Symfony Twig syntax", () => {
-    const sortedString = `{% block sidebar %}
-       <a href="{{ path('homepage') }}" class="block px-4">Home</a>
-{% endblock %}`;
-    const unsortedString = `{% block sidebar %}
-       <a href="{{ path('homepage') }}" class="px-4 block">Home</a>
-{% endblock %}`;
+  test("PHP Blade syntax", () => {
+    // https://accreditly.io/articles/how-to-use-tailwind-with-blade-components
+    const sortedString = `
+      @section('content')
+          <x-alert type="success" message="This is a success alert!" class="bg-blue-500 text-white" />
+      @endsection`;
+    const unsortedString = `
+      @section('content')
+          <x-alert type="success" message="This is a success alert!" class="text-white bg-blue-500" />
+      @endsection`;
 
     assert.strictEqual(
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),

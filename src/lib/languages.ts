@@ -1,6 +1,7 @@
 export const languages = [
   "html",
   "php",
+  "blade.php",
   "vue",
   "javascriptreact",
   "typescriptreact",

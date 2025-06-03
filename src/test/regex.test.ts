@@ -188,12 +188,25 @@ suite("No Match", () => {
     );
   });
 
-  test("Ignore dynamic Svelte", () => {
-    hasMatch("<div class:isActive={isActive}>", false);
+  test(`Ignore dynamic PHP Blade $attributes`, () => {
+    hasMatch(
+      `<button {{ $attributes->merge(['class' => 'text-white bg-blue-500 ']) }}>
+          {{ $slot }}
+      </button>`,
+      false
+    );
+  });
+
+  test(`Ignore dynamic PHP Blade {{ }}`, () => {
+    hasMatch(`<div class="alert alert-{{ $type }}">`, false);
   });
 
   test(`Ignore dynamic PHP <?= `, () => {
     hasMatch('<div class="<?= $themeClass ?> p-6 rounded-lg">', false);
+  });
+
+  test("Ignore dynamic Svelte", () => {
+    hasMatch("<div class:isActive={isActive}>", false);
   });
 
   test(`Ignore dynamic twMerge`, () => {

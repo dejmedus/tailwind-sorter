@@ -574,6 +574,33 @@ $bgClass = $isActive ? 'bg-green-500' : 'bg-red-500';
     );
   });
 
+  test("PHP Blade dynamic syntax {{ }} do not change", () => {
+    const unsortedString = `<button class="px-4
+    {{ $isActive ? 'flex-col flex' : 'text-black bg-gray-300' }}">
+    Submit
+</button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("PHP Blade dynamic syntax class arr do not change", () => {
+    const unsortedString = `<button {{ class([
+          'px-4 rounded py-2',
+          'text-white bg-blue-500' => $isActive,
+          'text-black bg-gray-300' => !$isActive,
+      ]) }}>
+          Submit
+      </button>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
   test("Django dynamic syntax {% %}: do not change", () => {
     const sortedString = `<div class="bg-{% color %}-500">Hello, world!</div>`;
     const unsortedString = `<div class="bg-{% color %}-500">Hello, world!</div>`;
