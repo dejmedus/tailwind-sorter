@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.32
+
+- Add PHP Blade target language
+
 #### 0.1.31
 
 - Add ERB target language
