@@ -535,6 +535,48 @@ suite("Sorting", () => {
     restore();
   });
 
+  test("Rails rb view component", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    const sortedString = `form_with model: @user, class: 'bg-pink-500 text-white' do |f|`;
+    const unsortedString = `form_with model: @user, class: 'text-white bg-pink-500' do |f|`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+
+    restore();
+  });
+
+  test("Rails rb view component with ()", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    const sortedString = `form_with(model: @user, class: 'bg-pink-500 text-white') do |f|`;
+    const unsortedString = `form_with(model: @user, class: 'text-white bg-pink-500') do |f|`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+
+    restore();
+  });
+
+  test("Rails rb view component with special syntax", () => {
+    createConfigStub({ customPrefixes: ["has_dom_class -> {"] });
+
+    const sortedString = `has_dom_class -> { 'bg-pink-500 text-white' }`;
+    const unsortedString = `has_dom_class -> { 'text-white bg-pink-500' }`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+
+    restore();
+  });
+
   test("Tailwind merge concat strings", () => {
     // https://github.com/dcastil/tailwind-merge
 

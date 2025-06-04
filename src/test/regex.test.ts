@@ -172,6 +172,24 @@ suite("Non-Default Custom Prefixes", () => {
       "bg-blue-500 text-white"
     );
   });
+
+  test("Rails rb view component helper tags", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    checkEquals(
+      `link_to 'New Frog', new_frog_path, class: 'bg-blue-500 text-white'`,
+      "bg-blue-500 text-white"
+    );
+  });
+
+  test("Rails rb view component special syntax", () => {
+    createConfigStub({ customPrefixes: ["has_dom_class -> {"] });
+
+    checkEquals(
+      `has_dom_class -> { 'bg-blue-500 text-white' }`,
+      "bg-blue-500 text-white"
+    );
+  });
 });
 
 suite("No Match", () => {
