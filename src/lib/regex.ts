@@ -9,7 +9,7 @@ import * as vscode from "vscode";
 export function createRegex() {
   const config = vscode.workspace.getConfiguration("tailwindSorter");
 
-  // custom prefix should be a string + ( or =
+  // custom prefix should be a string + a delimiter
   // defaults: ["twMerge(", "clsx(", "cva("];
   let customPrefixes: string[] = config.get("customPrefixes", []);
 
@@ -55,6 +55,7 @@ export const colonRegex = /:(?![^\[\]]*\])/g;
 
 export const dynamicSyntaxMarkers = [
   "${",
+  "#{",
   "{",
   "}",
   "{{",
