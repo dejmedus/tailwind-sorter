@@ -69,7 +69,7 @@ Single line `@apply` rules ending with a semicolon that do not include dynamic s
 
 #### Language Support
 
-Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.twig`, `.svelte`, `.vue`, `php`, `.erb`, `.rs`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
+Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ex`, `.heex`, `.twig`, `.svelte`, `.vue`, `php`, `.rb`, `.erb`, `.rs`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or submit a PR).
 
 #### With Prettier
 
