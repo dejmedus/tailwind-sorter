@@ -1,5 +1,10 @@
 ## Change Log
 
+#### 0.1.33
+
+- Add Ruby target language ([asgerb](https://github.com/asgerb))
+  - Support for Rails View Components 
+
 #### 0.1.32
 
 - Add PHP Blade target language
@@ -39,7 +44,7 @@
 
 ### 0.0.91
 
-- Add PHP target language
+- Add PHP target language ([vanbasx](https://github.com/vanbasx))
 
 ### 0.0.90
 
