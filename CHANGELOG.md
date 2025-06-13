@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.34
+
+- Add Blade target language
+
 #### 0.1.33
 
 - Add Ruby target language ([asgerb](https://github.com/asgerb))

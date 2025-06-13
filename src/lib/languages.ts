@@ -6,6 +6,7 @@ export const languages = [
   "svelte",
   "vue",
   "php",
+  "blade",
   "blade.php",
   "twig",
   "elixir",
