@@ -150,6 +150,22 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("MDX dynamic syntax: do not change", () => {
+    const unsortedString =
+      "export function CustomComponent({ className = '', ...props }) {\n" +
+      "  return (\n" +
+      "    <div className={`p-4 border flex rounded flex-1 ${className}`} {...props}>\n" +
+      "      Custom content\n" +
+      "    </div>\n" +
+      "  );\n" +
+      "}";
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
   test("Alpine.js syntax: do not change", () => {
     const unsortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
 

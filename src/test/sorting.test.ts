@@ -372,6 +372,48 @@ suite("Sorting", () => {
     );
   });
 
+  test("MDX syntax", () => {
+    const sortedString = `<Component className="bg-yellow-100 text-yellow-800" />`;
+    const unsortedString = `<Component className="text-yellow-800 bg-yellow-100" />`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("MDX markdown syntax", () => {
+    const sortedString = `## Hello
+This is a **bold** paragraph.
+<Component className="flex flex-col">mdx</Component>`;
+    const unsortedString = `## Hello
+This is a **bold** paragraph.
+<Component className="flex-col flex">mdx</Component>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Fragments", () => {
+    const sortedString = `
+<>
+  <div className="font-medium text-sm text-center" />
+</>
+`;
+    const unsortedString = `
+<>
+  <div className="text-center font-medium text-sm" />
+</>
+`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Angular syntax", () => {
     const sortedString = `<div class="bg-blue-500 text-white"`;
     const unsortedString = `<div class="text-white bg-blue-500"`;
