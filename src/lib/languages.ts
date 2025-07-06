@@ -5,6 +5,7 @@ export const languages = [
   "astro",
   "svelte",
   "vue",
+  "mdx",
   "php",
   "blade",
   "blade.php",

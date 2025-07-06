@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.35
+
+- Add MDX target language
+
 #### 0.1.34
 
 - Add Blade target language
