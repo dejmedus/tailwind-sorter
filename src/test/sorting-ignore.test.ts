@@ -166,6 +166,52 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("EJS dynamic syntax: do not change", () => {
+    const unsortedString = `<% const isError = true; %>
+<div class="<%= isError ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' %> px-4 py-2 rounded">
+  <%= isError ? 'There was an error!' : 'All good!' %>
+</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("EJS array join: do not change", () => {
+    const unsortedString = `<%
+  const classes = [
+    'px-4', 'py-2', 'rounded',
+    isError ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800',
+    isActive && 'border-2 border-blue-500'
+  ].filter(Boolean).join(' ');
+%>
+<div class="<%= classes %>"></div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("EJS include: do not change", () => {
+    const unsortedString = `<%- include('components/button', { className: 'bg-blue-500 text-white' }) %>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("EJS unescaped class: do not change", () => {
+    const unsortedString = `<div class="<%- someClass %> px-4 py-2 rounded"></div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
   test("Alpine.js syntax: do not change", () => {
     const unsortedString = `<div x-data="{ isPrimary: true, isActive: true }"`;
 

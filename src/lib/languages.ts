@@ -2,6 +2,7 @@ export const languages = [
   "html",
   "javascriptreact",
   "typescriptreact",
+  "ejs",
   "astro",
   "svelte",
   "vue",
