@@ -414,6 +414,20 @@ This is a **bold** paragraph.
     );
   });
 
+  test("EJS syntax", () => {
+    const sortedString = `<% for (let i = 1; i <= 20; i++) { %>
+        <p class="text-gray-700 text-sm">Item <%= i %></p>
+      <% } %>`;
+    const unsortedString = `<% for (let i = 1; i <= 20; i++) { %>
+        <p class="text-sm text-gray-700">Item <%= i %></p>
+      <% } %>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Angular syntax", () => {
     const sortedString = `<div class="bg-blue-500 text-white"`;
     const unsortedString = `<div class="text-white bg-blue-500"`;
