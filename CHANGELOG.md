@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.36
+
+- Add EJS target language
+
 #### 0.1.35
 
 - Add MDX target language
