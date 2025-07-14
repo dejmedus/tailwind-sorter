@@ -48,7 +48,8 @@
           "default": [
             "twMerge(",
             "clsx(",
-            "cva("
+            "cva(",
+            "cn("
           ],
           "description": "Custom prefixes to identify tailwind class strings. Example: clsx( or tw="
         },
