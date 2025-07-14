@@ -1,3 +1,5 @@
+// default configuration comes from package.json contributes configuration
+
 export const defaultConfig = {
   categoryOrder: {
     sortOrder: [

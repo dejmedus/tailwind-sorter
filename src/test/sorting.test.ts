@@ -713,6 +713,48 @@ This is a **bold** paragraph.
     );
   });
 
+  test(`cn(`, () => {
+    const sortedString = `<div className={cn("relative w-full overflow-auto", wrapperClassName)}>`;
+    const unsortedString = `<div className={cn("relative overflow-auto w-full", wrapperClassName)}>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test(`Complex cn(`, () => {
+    const sortedString = `  return <tfoot className={cn("bg-muted/50 border-t last:[&>tr]:border-b-0", className)} {...rest} />;`;
+    const unsortedString = `  return <tfoot className={cn("bg-muted/50 border-t last:[&>tr]:border-b-0", className)} {...rest} />;`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test(`Newline cn(`, () => {
+    const sortedString = `<span
+          className={cn(
+"first:mt-0 px-2 py-1",
+className
+)}
+{...props}
+/>]`;
+    const unsortedString = `<span
+          className={cn(
+"py-1 px-2 first:mt-0",
+className
+)}
+{...props}
+/>]`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test(`Complex newline clsx(`, () => {
     const sortedString = `<span
         className={clsx(

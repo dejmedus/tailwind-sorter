@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.37
+
+- Add `cn(` as default prefix ([milksense](https://github.com/milksense))
+
 #### 0.1.36
 
 - Add EJS target language

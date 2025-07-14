@@ -103,6 +103,34 @@ suite("Custom Prefixes", () => {
     );
   });
 
+  test(`cn(`, () => {
+    checkEquals(
+      `  <table
+    ref={ref}
+    className={cn("w-full caption-bottom text-sm", className)}
+    {...props}
+  />;`,
+      "w-full caption-bottom text-sm"
+    );
+  });
+
+  test(`Single class cn(`, () => {
+    checkEquals(
+      `className={cn("[&_tr]:border-b", className)} `,
+      "[&_tr]:border-b"
+    );
+  });
+
+  test(`Newline cn(`, () => {
+    checkEquals(
+      `   className={cn(
+      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+      className
+    )}`,
+      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+    );
+  });
+
   test(`clsx(`, () => {
     checkEquals(
       `<div blah blah blah clsx('relative before:rounded-full before:content-[""] before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl') blah >`,
@@ -263,5 +291,14 @@ suite("No Match", () => {
     );
     hasMatch("<div class:red=move || count() % 2 == 1 ></div>", false);
     hasMatch("<div class=style::jumbotron/>", false);
+  });
+
+  test(`Ignore cn function`, () => {
+    hasMatch(
+      `export function cn(...inputs: ClassValue[]): string {
+  return twMerge(clsx(inputs));
+}`,
+      false
+    );
   });
 });
