@@ -568,6 +568,33 @@ $bgClass = $isActive ? 'bg-green-500' : 'bg-red-500';
     );
   });
 
+  test("C# Razor dynamic syntax .Join(: do not change", () => {
+    const unsortedString = `<div class="flex-col @string.Join(" ", classes) flex">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("C# Razor dynamic syntax @(: do not change", () => {
+    const unsortedString = `<div class="p-4 @(isActive ? "bg-green-200 flex" : "bg-gray-200") flex-col">`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("C# Razor dynamic syntax HTML: do not change", () => {
+    const unsortedString = `@Html.Raw($"<div class=\"p-4 bg-{Model.Color}-500\">Text</div>")`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
   test("Django dynamic syntax {% %}: do not change", () => {
     const unsortedString = `<div class="bg-{% color %}-500">Hello, world!</div>`;
 

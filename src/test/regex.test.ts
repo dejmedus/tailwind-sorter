@@ -58,6 +58,23 @@ suite("Correct Regex", () => {
       `bg-blue-400 text-white bg-blue-500`
     );
   });
+
+  test("Arbitrary Variables", () => {
+    checkEquals(
+      `<div class="mt-[calc(theme(spacing.4)+10px)]"></div>`,
+      `mt-[calc(theme(spacing.4)+10px)]`
+    );
+
+    checkEquals(
+      `<div class="clip-path-[polygon(0%_0%,100%_0%,100%_100%,0%_100%)]"></div>`,
+      `clip-path-[polygon(0%_0%,100%_0%,100%_100%,0%_100%)]`
+    );
+
+    checkEquals(
+      `<div class="blur-[calc(1rem+2px)]"></div>`,
+      `blur-[calc(1rem+2px)]`
+    );
+  });
 });
 
 suite("Custom Prefixes", () => {
@@ -249,6 +266,13 @@ suite("No Match", () => {
 
   test(`Ignore dynamic PHP <?= `, () => {
     hasMatch('<div class="<?= $themeClass ?> p-6 rounded-lg">', false);
+  });
+
+  test(`Ignore dynamic Razor @( `, () => {
+    hasMatch(
+      `<div class="p-4 @(isActive ? 'bg-green-200' : 'bg-gray-200')">`,
+      false
+    );
   });
 
   test("Ignore dynamic Svelte", () => {
