@@ -18,5 +18,6 @@ export const languages = [
   "rust",
   "css",
   "scss",
-  "aspnetcorerazor"
+  "razor",
+  "aspnetcorerazor",
 ];

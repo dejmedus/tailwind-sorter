@@ -536,6 +536,40 @@ This is a **bold** paragraph.
     );
   });
 
+  test("C# Razor syntax", () => {
+    const sortedString = `@model string
+<div class="bg-red-100 p-3 text-red-700">
+    @Model
+</div>`;
+    const unsortedString = `@model string
+<div class="p-3 bg-red-100 text-red-700">
+    @Model
+</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("C# Razor @ syntax", () => {
+    const sortedString = `@for (int i = 0; i < 5; i++)
+{
+    var color = i % 2 == 0 ? "bg-yellow-200" : "bg-pink-200";
+    <div class="mb-2 p-2 rounded @color">Item @i</div>
+}`;
+    const unsortedString = `@for (int i = 0; i < 5; i++)
+{
+    var color = i % 2 == 0 ? "bg-yellow-200" : "bg-pink-200";
+    <div class="mb-2 rounded p-2 @color">Item @i</div>
+}`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("PHP Blade syntax", () => {
     // https://accreditly.io/articles/how-to-use-tailwind-with-blade-components
     const sortedString = `

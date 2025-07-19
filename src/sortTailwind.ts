@@ -3,6 +3,7 @@ import {
   createRegex,
   colonRegex,
   dynamicSyntaxMarkers,
+  parenthesis,
 } from "./lib/regex";
 
 /**
@@ -62,8 +63,8 @@ function sortFoundTailwind(
     return match;
   }
 
-  const groupContainsDynamicSyntax = dynamicSyntaxMarkers.some((syntax) =>
-    classesStr.includes(syntax)
+  const groupContainsDynamicSyntax = dynamicSyntaxMarkers.some(
+    (syntax) => classesStr.includes(syntax) || parenthesis.test(classesStr)
   );
 
   if (groupContainsDynamicSyntax) {

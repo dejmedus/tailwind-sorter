@@ -53,6 +53,17 @@ export function createApplyRegex() {
  */
 export const colonRegex = /:(?![^\[\]]*\])/g;
 
+/**
+ * Finds all parenthesis that are not inside square brackets.
+ * Preserves arbitrary values
+ *
+ * @example
+ * // matches "(" that aren't inside []
+ * // class="@string.Join(" ", classes)"
+ * @see https://regex101.com/r/isai9V/1
+ */
+export const parenthesis = /\((?![^\[\]]*\])/g;
+
 export const dynamicSyntaxMarkers = [
   "${",
   "#{",
@@ -69,4 +80,5 @@ export const dynamicSyntaxMarkers = [
   "?>",
   "{%",
   "%}",
+  "@(",
 ];
