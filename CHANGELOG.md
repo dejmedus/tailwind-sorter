@@ -1,5 +1,10 @@
 ## Change Log
 
+#### 0.1.38
+
+- Add Razor target languages ([rintheo](https://github.com/rintheo))
+- Add contributing docs
+
 #### 0.1.37
 
 - Add `cn(` as default prefix ([milksense](https://github.com/milksense))
