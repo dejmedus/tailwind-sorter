@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import * as sinon from "sinon";
+import { restore } from "sinon";
 
 import { createRegex } from "../lib/regex";
 import createConfigStub from "./_createConfigStub";
@@ -187,7 +187,7 @@ suite("Custom Prefixes", () => {
 
 suite("Non-Default Custom Prefixes", () => {
   teardown(() => {
-    sinon.restore();
+    restore();
   });
 
   test("Potato :)", () => {
@@ -215,6 +215,15 @@ suite("Non-Default Custom Prefixes", () => {
     checkEquals(
       `<%= link_to 'New Frog', new_frog_path, class: 'bg-blue-500 text-white' %>`,
       "bg-blue-500 text-white"
+    );
+  });
+
+  test("Ruby class in parenthesis", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    checkEquals(
+      `tag.svg(class: "size-full -rotate-90"`,
+      "size-full -rotate-90"
     );
   });
 

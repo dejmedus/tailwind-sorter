@@ -11,6 +11,10 @@ import createConfigStub from "./_createConfigStub";
 suite("Sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
+  teardown(() => {
+    restore();
+  });
+
   test('Correct sort class=""', () => {
     const sortedString = `<div class="flex flex-col flex-1 items-center gap-20 bg-black lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 w-full font-sans font-semibold before:content-[''] after:content-['']" blah blah`;
     const unsortedString = `<div class="font-semibold after:content-[''] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[''] items-center" blah blah`;
@@ -607,8 +611,6 @@ This is a **bold** paragraph.
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
-
-    restore();
   });
 
   test("Rails erb helper tag with ()", () => {
@@ -621,8 +623,6 @@ This is a **bold** paragraph.
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
-
-    restore();
   });
 
   test("Rails rb view component", () => {
@@ -635,8 +635,18 @@ This is a **bold** paragraph.
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
+  });
 
-    restore();
+  test("Ruby class: in parenthesis", () => {
+    createConfigStub({ customPrefixes: ["class:"] });
+
+    const sortedString = `tag.svg(class: "flex flex-col size-full -rotate-90", viewBox: "0 0 36 36", xmlns: "http://www.w3.org/2000/svg") do`;
+    const unsortedString = `tag.svg(class: "size-full flex-col -rotate-90 flex", viewBox: "0 0 36 36", xmlns: "http://www.w3.org/2000/svg") do`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
   });
 
   test("Rails rb view component with ()", () => {
@@ -649,8 +659,6 @@ This is a **bold** paragraph.
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
-
-    restore();
   });
 
   test("Rails rb view component with special syntax", () => {
@@ -663,8 +671,6 @@ This is a **bold** paragraph.
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       sortedString
     );
-
-    restore();
   });
 
   test("Tailwind merge concat strings", () => {

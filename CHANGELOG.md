@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.39
+- Fix: sort ruby `.rb` files
+- Match prefixes inside parentheses
+
 #### 0.1.38
 
 - Add Razor target languages ([rintheo](https://github.com/rintheo))

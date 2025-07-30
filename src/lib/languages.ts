@@ -13,7 +13,7 @@ export const languages = [
   "twig",
   "elixir",
   "phoenix-heex",
-  "rb",
+  "ruby",
   "erb",
   "rust",
   "css",

@@ -23,7 +23,7 @@ export function createRegex() {
   // (?<=\\s|{|^) prefix should be preceded by a space, bracket, or the start of the string
   // \\s* may have spaces/newlines after the prefix
   // "([^"?<{]*)" matches everything inside quotes group unless there is dynamic syntax inside
-  const regexStr = `(?<=\\s|{|^)${prefixes}\\s*("([^"?<{]*)"|'([^'?<{]*)'|\`([^\`?<{]*)\`)`;
+  const regexStr = `(?<=\\s|{|^|\\()${prefixes}\\s*("([^"?<{]*)"|'([^'?<{]*)'|\`([^\`?<{]*)\`)`;
 
   return new RegExp(regexStr, "g");
 }

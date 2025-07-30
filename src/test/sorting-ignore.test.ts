@@ -8,6 +8,10 @@ import createConfigStub from "./_createConfigStub";
 suite("Ignore sorting", () => {
   const { classesMap, pseudoSortOrder } = defaultClassesMap();
 
+  teardown(() => {
+    restore();
+  });
+
   test("Dynamic styles class={` ternary ': do not change", () => {
     const unsortedString =
       "<div class={`button ${isActive ? 'button-active' : 'button-inactive'}`}";
@@ -83,8 +87,6 @@ suite("Ignore sorting", () => {
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       unsortedString
     );
-
-    restore();
   });
 
   test("Dynamic erb helper tag array: do not change", () => {
@@ -96,8 +98,6 @@ suite("Ignore sorting", () => {
       sortTailwind(unsortedString, classesMap, pseudoSortOrder),
       unsortedString
     );
-
-    restore();
   });
 
   test("Conditional Angular syntax: do not change", () => {
