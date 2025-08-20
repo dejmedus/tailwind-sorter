@@ -673,6 +673,38 @@ This is a **bold** paragraph.
     );
   });
 
+  test("Liquid syntax", () => {
+    const sortedString = `<ul>
+  {% for tag in blog.tags %}
+    <li class="inline-block px-2 py-1">
+      {{ tag.name }}
+    </li>
+  {% endfor %}
+</ul>`;
+    const unsortedString = `<ul>
+  {% for tag in blog.tags %}
+    <li class="inline-block py-1 px-2">
+      {{ tag.name }}
+    </li>
+  {% endfor %}
+</ul>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
+  test("Liquid conditional syntax", () => {
+    const sortedString = `<div {% if block.settings.highlight %}class="flex flex-col bg-yellow-100"{% endif %}>`;
+    const unsortedString = `<div {% if block.settings.highlight %}class="bg-yellow-100 flex-col flex"{% endif %}>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("Tailwind merge concat strings", () => {
     // https://github.com/dcastil/tailwind-merge
 
