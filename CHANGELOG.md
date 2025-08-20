@@ -1,5 +1,8 @@
 ## Change Log
 
+#### 0.1.40
+- Add Liquid target language
+
 #### 0.1.39
 - Fix: sort ruby `.rb` files
 - Match prefixes inside parentheses

@@ -3,7 +3,7 @@
   "displayName": "Tailwind Sorter",
   "description": "Sort your tailwind classes in a predictable way",
   "icon": "icon.png",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "pricing": "Free",
   "engines": {
     "vscode": "^1.85.0"
