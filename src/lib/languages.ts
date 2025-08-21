@@ -15,6 +15,7 @@ export const languages = [
   "phoenix-heex",
   "ruby",
   "erb",
+  "liquid",
   "rust",
   "css",
   "scss",

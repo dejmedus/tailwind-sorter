@@ -100,6 +100,46 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("Dynamic liquid: do not change", () => {
+    const unsortedString = `<div class="p-4 flex-col flex {{ section.settings.bg_color }}">
+  Content
+</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("Dynamic liquid conditional: do not change", () => {
+    const unsortedString = `<p class="
+  text-base
+  {% if customer %}font-bold flex-col flex{% endif %}
+">
+  Hi!
+</p>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
+  test("Dynamic liquid for: do not change", () => {
+    const unsortedString = `<ul>
+  {% for tag in blog.tags %}
+    <li class="inline-block py-1 px-2 bg-{{ tag.color }}">
+      {{ tag.name }}
+    </li>
+  {% endfor %}
+</ul>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
   test("Conditional Angular syntax: do not change", () => {
     const unsortedString = `<div [class.text-white]="isPrimary" [class.bg-blue-500]="isPrimary"`;
 
