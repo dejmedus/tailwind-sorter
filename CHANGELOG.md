@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.41
+- Add license
+- Publish to Open VSX
+
 #### 0.1.40
 - Add Liquid target language
 
