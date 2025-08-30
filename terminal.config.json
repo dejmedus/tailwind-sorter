@@ -8,12 +8,16 @@
     {
       "tab": "git",
       "commands": ["git branch"],
-      "description": "open git tab"
+      "description": "open git tab",
+      "icon": "git-merge",
+      "shell": "bash"
     },
     {
       "tab": "test",
       "commands": ["*echo npm run test"],
-      "description": "open test tab"
+      "description": "open test tab",
+      "icon": "beaker",
+      "shell": "bash"
     }
   ],
   "test": [
@@ -28,12 +32,13 @@
       "tab": "upgrade",
       "commands": [
         "code CHANGELOG.md",
-        "code package.json",
         "code README.md",
-        "npm i",
-        "echo '1. Update CHANGELOG.md. 2. Up version in package.json. 3. Ensure tests pass. 4. vsce publish'"
+        "bash scripts/VERSION.sh",
+        "echo '1. Update CHANGELOG.md. 2. Update README.md. 3. Ensure tests pass. 4. vsce publish 5. ovsx publish'"
       ],
-      "description": "before upgrade to do list"
+      "description": "before upgrade to do list",
+      "icon": "gear",
+      "shell": "bash"
     },
     {
       "tab": "test",
