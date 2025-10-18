@@ -1,5 +1,8 @@
 ## Change Log
 
+#### 0.1.50
+- Stricter class matching
+
 #### 0.1.41
 - Add license
 - Publish to Open VSX
