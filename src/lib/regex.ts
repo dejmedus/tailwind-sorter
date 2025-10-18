@@ -60,7 +60,7 @@ export const colonRegex = /:(?![^\[\]]*\])/g;
  * @example
  * // matches "(" that aren't inside []
  * // class="@string.Join(" ", classes)"
- * @see https://regex101.com/r/isai9V/1
+ * @see https://regex101.com/r/isai9V/2
  */
 export const parenthesis = /\((?![^\[\]]*\])/g;
 
