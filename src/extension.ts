@@ -3,7 +3,7 @@
 import * as vscode from "vscode";
 
 import getClassesMap from "./getClassesMap";
-import { languages } from "./lib/languages";
+import getLanguages from "./lib/languages";
 import sortTailwind from "./sortTailwind";
 
 // This method is called when your extension is activated
@@ -22,6 +22,8 @@ export async function sortOnCommand() {
   }
 
   const document = editor.document;
+  const languages = getLanguages();
+
   if (!languages.includes(document.languageId)) {
     vscode.window.showWarningMessage(
       `Tailwind Sorter: Language ${document.languageId} is not supported`
@@ -48,6 +50,7 @@ export async function sortOnCommand() {
 export function sortOnSave(event: vscode.TextDocumentWillSaveEvent) {
   const config = vscode.workspace.getConfiguration("tailwindSorter");
   const sortOnSave = config.get<boolean>("sortOnSave", true);
+  const languages = getLanguages();
 
   if (!sortOnSave || !languages.includes(event.document.languageId)) {
     return;

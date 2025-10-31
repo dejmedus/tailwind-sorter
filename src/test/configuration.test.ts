@@ -5,6 +5,7 @@ import * as sinon from "sinon";
 import { sortOnSave } from "../extension";
 import getClassesMap from "../getClassesMap";
 import createConfigStub from "./_createConfigStub";
+import getLanguages from "../lib/languages";
 
 suite("VS Code Configuration", () => {
   teardown(() => {
@@ -31,6 +32,15 @@ suite("VS Code Configuration", () => {
     });
 
     assert.deepStrictEqual(pseudoSortOrder, ["pseudo2", "pseudo1"]);
+  });
+
+  test("getLanguages includes custom languages from config", () => {
+    createConfigStub({
+      includeLanguages: ["potatoscript"],
+    });
+
+    const languages = getLanguages();
+    assert.ok(languages.includes("potatoscript"));
   });
 
   test("don't sort on command if language is not supported", async () => {
@@ -74,6 +84,46 @@ suite("VS Code Configuration", () => {
 
     const document = {
       languageId: "html",
+      getText: () => "<div class='hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset),
+    } as vscode.TextDocument;
+
+    const replaceStub = sinon.stub();
+    const editBuilderMock = { replace: replaceStub };
+
+    const editSpy = sinon.spy((callback) => {
+      callback(editBuilderMock);
+      return Promise.resolve(true);
+    });
+
+    const activeTextEditor = {
+      document,
+      edit: editSpy,
+    } as unknown as vscode.TextEditor;
+    sinon.stub(vscode.window, "activeTextEditor").get(() => activeTextEditor);
+
+    await vscode.commands.executeCommand("tailwindSorter.sort");
+
+    sinon.assert.notCalled(showWarningMessageStub);
+    sinon.assert.called(editSpy);
+    sinon.assert.calledOnce(replaceStub);
+
+    const sortedTailwind = replaceStub.firstCall.args[1];
+    assert.strictEqual(sortedTailwind.includes("grid hover:grid"), true);
+  });
+
+  test("sort on command if language is included via config", async () => {
+    createConfigStub({
+      includeLanguages: ["potatoscript"],
+    });
+
+    const showWarningMessageStub = sinon.stub(
+      vscode.window,
+      "showWarningMessage"
+    );
+
+    const document = {
+      languageId: "potatoscript",
       getText: () => "<div class='hover:grid grid'></div>",
       positionAt: (offset: number) => new vscode.Position(0, offset),
     } as vscode.TextDocument;

@@ -39,6 +39,14 @@
           "default": true,
           "description": "Sort Tailwind classes on save"
         },
+        "tailwindSorter.includeLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Unsupported language identifiers to add to the list of supported languages. May not sort as expected. Example: plaintext"
+        },
         "tailwindSorter.customPrefixes": {
           "type": "array",
           "items": {
