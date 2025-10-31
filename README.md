@@ -19,6 +19,7 @@ Custom sort order and categories can be configured in settings
 - [Categories](vscode://settings/tailwindSorter.categories): Which style classes will belong to which category and in what order.
 - [Pseudo Classes Order](vscode://settings/tailwindSorter.pseudoClassesOrder): How pseudo-classes should be ordered.
 - [Custom Prefixes](vscode://settings/tailwindSorter.customPrefixes): Prefixes that identify class strings other than the default `class=` and `className=`.
+- [Include Languages](vscode://settings/tailwindSorter.includeLanguages): Language identifiers to add to the list of supported languages. May not sort as expected.
 - [Sort on Save](vscode://settings/tailwindSorter.sortOnSave): Whether or not classes should be sorted on save.
 
 
@@ -70,6 +71,8 @@ Single line `@apply` rules ending with a semicolon that do not include dynamic s
 #### Language Support
 
 Currently, Tailwind Sorter supports `.html`, `.jsx`, `.tsx`, `.ejs`, `.mdx`, `.ex`, `.heex`, `.twig`, `django-html`, `.svelte`, `.vue`, `.php`, `.blade.php`, `.rb`, `.erb`, `liquid`, `.rs`, `.cshtml`, `.css`, `.scss`, and `.astro` files. If you would like to see support for an additional language, please open an issue (or [submit a PR](/CONTRIBUTING.md)).
+
+Alternatively, you can add additional [language identifiers](./CONTRIBUTING.md#1-add-the-vs-code-language-identifier) to the [Include Languages](vscode://settings/tailwindSorter.includeLanguages) list in settings. Note that sorting may not work as expected
 
 #### With Prettier
 

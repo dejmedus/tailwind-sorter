@@ -79,8 +79,7 @@ Example PR: [Adding EJS Support](https://github.com/dejmedus/tailwind-sorter/pul
 
 #### 1. Add the VS Code Language Identifier
 
-Find the language identifier in bottom-right corner of VS Code or via the command palette with `Change Language Mode`
-and add it to the supported languages list
+Find the language identifier via the command palette with `Change Language Mode` and add it to the supported languages list. Identifiers are all lowercase and do not include spaces
 
 ```ts
 // lib/languages.ts

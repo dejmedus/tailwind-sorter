@@ -16,6 +16,7 @@ export default function createConfigStub(options = {}) {
     pseudoClassesOrder: { sortOrder: defaultPseudoSortOrder },
     customPrefixes: defaultCustomPrefixes,
     sortOnSave: defaultSortOnSave,
+    includeLanguages: [],
   };
 
   const config = { ...defaults, ...options };
@@ -35,6 +36,8 @@ export default function createConfigStub(options = {}) {
                 return config.pseudoClassesOrder;
               case "customPrefixes":
                 return config.customPrefixes;
+              case "includeLanguages":
+                return config.includeLanguages;
               case "sortOnSave":
                 return config.sortOnSave;
               default:
