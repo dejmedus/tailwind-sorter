@@ -562,6 +562,21 @@ This is a **bold** paragraph.
     );
   });
 
+  test("Django html syntax", () => {
+    const sortedString = `{% block content %}
+    <a href="{% url 'homepage' %}" class="block px-4">Home</a>
+  {% endblock %}`;
+
+    const unsortedString = `{% block content %}
+    <a href="{% url 'homepage' %}" class="px-4 block">Home</a>
+  {% endblock %}`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortedString
+    );
+  });
+
   test("C# Razor syntax", () => {
     const sortedString = `@model string
 <div class="bg-red-100 p-3 text-red-700">

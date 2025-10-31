@@ -306,6 +306,15 @@ suite("Ignore sorting", () => {
     );
   });
 
+  test("Django dynamic syntax: do not change", () => {
+    const unsortedString = `<div class="justify-center flex {{ extra_classes }}">Hello</div>`;
+
+    assert.strictEqual(
+      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      unsortedString
+    );
+  });
+
   test("Elixir dynamic syntax: do not change", () => {
     const unsortedString = `
     <li class={"#{case item.status do

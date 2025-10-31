@@ -7,6 +7,7 @@ export const languages = [
   "svelte",
   "vue",
   "mdx",
+  "django-html",
   "php",
   "blade",
   "blade.php",

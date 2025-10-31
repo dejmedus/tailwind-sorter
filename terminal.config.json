@@ -2,20 +2,18 @@
   "open": [
     {
       "tab": "zsh",
-      "commands": ["*CLOSE"],
-      "description": "close current tab"
+      "commands": ["*close"]
     },
     {
       "tab": "git",
       "commands": ["git branch"],
-      "description": "open git tab",
-      "icon": "git-merge",
+      "icon": "git",
       "shell": "bash"
     },
     {
       "tab": "test",
-      "commands": ["*echo npm run test"],
-      "description": "open test tab",
+      "header": "npm run test",
+      "commands": [],
       "icon": "beaker",
       "shell": "bash"
     }
@@ -33,7 +31,7 @@
       "commands": [
         "code CHANGELOG.md",
         "code README.md",
-        "bash scripts/VERSION.sh",
+        "npm i",
         "echo '1. Update CHANGELOG.md. 2. Update README.md. 3. Ensure tests pass. 4. vsce publish 5. ovsx publish'"
       ],
       "description": "before upgrade to do list",
