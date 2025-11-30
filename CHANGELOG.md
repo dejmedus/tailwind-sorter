@@ -1,5 +1,9 @@
 ## Change Log
 
+#### 0.1.51
+- Add `includeLanguages` setting to allow custom target languages
+- Add Django-HTML target language
+
 #### 0.1.50
 - Stricter class matching
 
