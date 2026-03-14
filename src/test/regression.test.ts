@@ -1,15 +1,17 @@
 import * as assert from "assert";
 import * as fs from "fs";
 import * as path from "path";
+import { restore } from "sinon";
 
-import sortTailwind from "../sortTailwind";
 import createConfigStub from "./_createConfigStub";
-import { defaultClassesMap } from "./_defaultClassMap";
+import sortHelper from "./_sortHelper";
 
 const FIXTURES_DIR = path.join(process.cwd(), "src/test/fixtures");
 
 suite("Regression tests", () => {
-  const { classesMap, pseudoSortOrder } = defaultClassesMap();
+  teardown(() => {
+    restore();
+  });
 
   const languages = fs.readdirSync(FIXTURES_DIR);
 
@@ -36,7 +38,7 @@ suite("Regression tests", () => {
       const input = fs.readFileSync(fixturePath, "utf8");
       const expectedOutput = fs.readFileSync(expectedPath, "utf8");
 
-      const actualOutput = sortTailwind(input, classesMap, pseudoSortOrder);
+      const actualOutput = sortHelper(input);
 
       fs.writeFileSync(sortedPath, actualOutput, "utf8");
 
