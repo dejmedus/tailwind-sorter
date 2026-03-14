@@ -3,7 +3,7 @@ import * as assert from "assert";
 import { findLongestMatch } from "../sortTailwind";
 import { defaultClassesMap } from "./_defaultClassMap";
 
-suite("Find Config Match", () => {
+suite("Find Classes Match", () => {
   const { classesMap } = defaultClassesMap();
 
   test("carrots", () => {
@@ -45,21 +45,21 @@ suite("Find Config Match", () => {
   test("list-type-bananas", () => {
     assert.strictEqual(
       findLongestMatch("list-type-bananas", classesMap),
-      "list-type-"
+      "list-type-",
     );
   });
 
   test("tw-list-type-bananas", () => {
     assert.strictEqual(
       findLongestMatch("tw-list-type-bananas", classesMap),
-      "list-type-"
+      "list-type-",
     );
   });
 
   test("tw-not-list-type-bananas", () => {
     assert.strictEqual(
       findLongestMatch("tw-not-list-type-bananas", classesMap),
-      "list-type-"
+      "list-type-",
     );
   });
 
@@ -70,21 +70,21 @@ suite("Find Config Match", () => {
   test("hover:not-lg:w-[568px]", () => {
     assert.strictEqual(
       findLongestMatch("hover:not-lg:w-[568px]", classesMap),
-      "w-"
+      "w-",
     );
   });
 
   test("hover:list-type-bananas", () => {
     assert.strictEqual(
       findLongestMatch("hover:list-type-bananas", classesMap),
-      "list-type-"
+      "list-type-",
     );
   });
 
   test("! important", () => {
     assert.strictEqual(
       findLongestMatch("hover:!bg-blue-500", classesMap),
-      "bg-"
+      "bg-",
     );
 
     assert.strictEqual(findLongestMatch("!-m-4", classesMap), "m-");
@@ -97,7 +97,7 @@ suite("Find Config Match", () => {
   test("multiple pseudos", () => {
     assert.strictEqual(
       findLongestMatch("hover:focus:bg-blue-500", classesMap),
-      "bg-"
+      "bg-",
     );
   });
 
@@ -105,28 +105,28 @@ suite("Find Config Match", () => {
   test("line height shorthand", () => {
     assert.strictEqual(
       findLongestMatch("text-sm/[17px]", classesMap),
-      "text-sm"
+      "text-sm",
     );
   });
 
   test("container queries with @", () => {
     assert.strictEqual(
       findLongestMatch("@lg/main:text-sm", classesMap),
-      "text-sm"
+      "text-sm",
     );
   });
 
   test("arbitrary [] with /", () => {
     assert.strictEqual(
       findLongestMatch("list-image-[url(/carrot.png)]", classesMap),
-      "list-image-"
+      "list-image-",
     );
   });
 
   test("css vars", () => {
     assert.strictEqual(
       findLongestMatch("bg-(--brand-color)", classesMap),
-      "bg-"
+      "bg-",
     );
   });
 
@@ -134,7 +134,7 @@ suite("Find Config Match", () => {
   test("group-", () => {
     assert.strictEqual(
       findLongestMatch("group-hover:text-blue-500", classesMap),
-      "text-"
+      "text-",
     );
   });
 
@@ -146,7 +146,7 @@ suite("Find Config Match", () => {
   test("group-[]", () => {
     assert.strictEqual(
       findLongestMatch("group-[:nth-of-type(3)_&]:block", classesMap),
-      "block"
+      "block",
     );
   });
 
@@ -158,14 +158,14 @@ suite("Find Config Match", () => {
   test("data attribute selectors", () => {
     assert.strictEqual(
       findLongestMatch("data-[open=true]:bg-blue-500", classesMap),
-      "bg-"
+      "bg-",
     );
   });
 
   test("supports-", () => {
     assert.strictEqual(
       findLongestMatch("supports-[display:block]:grid", classesMap),
-      "grid"
+      "grid",
     );
   });
 
@@ -180,41 +180,41 @@ suite("Find Config Match", () => {
   test("arbitrary [] class", () => {
     assert.strictEqual(
       findLongestMatch("before:content-[attr(data:time)]", classesMap),
-      "content-"
+      "content-",
     );
 
     assert.strictEqual(findLongestMatch("w-[calc(100%/3)]", classesMap), "w-");
 
     assert.strictEqual(
       findLongestMatch("content-['Time:_12:30_PM']", classesMap),
-      "content-"
+      "content-",
     );
   });
 
   test("arbitrary [] pseudos", () => {
     assert.strictEqual(
       findLongestMatch("[&>*:not(:first-child)]:mt-2", classesMap),
-      "mt-"
+      "mt-",
     );
 
     assert.strictEqual(
       findLongestMatch("[&:nth-child(3)]:bg-blue-500", classesMap),
-      "bg-"
+      "bg-",
     );
 
     assert.strictEqual(
       findLongestMatch("[&:is(button,a)]:text-blue-500", classesMap),
-      "text-"
+      "text-",
     );
 
     assert.strictEqual(
       findLongestMatch("[&_p]:text-gray-500", classesMap),
-      "text-"
+      "text-",
     );
 
     assert.strictEqual(
       findLongestMatch("[&:hover]:[&>*]:bg-red-500", classesMap),
-      "bg-"
+      "bg-",
     );
   });
 });
