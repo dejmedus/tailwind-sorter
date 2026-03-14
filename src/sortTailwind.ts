@@ -3,7 +3,7 @@ import {
   createRegex,
   colonRegex,
   dynamicSyntaxMarkers,
-  parenthesis,
+  parenthesis
 } from "./lib/regex";
 
 /**
@@ -17,11 +17,18 @@ import {
 export default function sortTailwind(
   text: string,
   sortConfig: { [key: string]: number },
-  pseudoClasses: string[]
+  pseudoClasses: string[],
+  sectionOrder: string[]
 ) {
   const applyRegex = createApplyRegex();
   text = text.replace(applyRegex, (match, classesGroup) => {
-    return sortFoundTailwind(match, classesGroup, sortConfig, pseudoClasses);
+    return sortFoundTailwind(
+      match,
+      classesGroup,
+      sortConfig,
+      pseudoClasses,
+      sectionOrder
+    );
   });
 
   const regex = createRegex();
@@ -38,7 +45,13 @@ export default function sortTailwind(
       const quotesGroup =
         singleQuotesGroup || doubleQuotesGroup || backtickQuotesGroup;
 
-      return sortFoundTailwind(match, quotesGroup, sortConfig, pseudoClasses);
+      return sortFoundTailwind(
+        match,
+        quotesGroup,
+        sortConfig,
+        pseudoClasses,
+        sectionOrder
+      );
     }
   );
 
@@ -52,12 +65,14 @@ export default function sortTailwind(
  * @param classesStr - The tailwind classes. ex: bg-blue-500 text-white
  * @param sortConfig - The sort config object that maps style classes to their sort order index.
  * @param pseudoClasses - An array of pseudo classes to sort by.
+ * @param sectionOrder - The order of classes, pseudo classes, and custom classes
  */
 function sortFoundTailwind(
   match: string,
   classesStr: string,
   sortConfig: { [key: string]: number },
-  pseudoClasses: string[]
+  pseudoClasses: string[],
+  sectionOrder: string[]
 ) {
   if (!classesStr || !classesStr.includes(" ")) {
     return match;
@@ -79,71 +94,71 @@ function sortFoundTailwind(
     return match;
   }
 
-  const { unsortedClasses, ignoredClasses } = classes.reduce(
-    (acc, className) => {
-      const match = findLongestMatch(className, sortConfig);
+  const base = sectionOrder.indexOf("classes") * 1000;
+  const pseudoIndex = sectionOrder.indexOf("pseudoClasses");
+  const bases = {
+    class: base,
+    pseudo: pseudoIndex !== -1 ? pseudoIndex * 1000 : base,
+    custom: sectionOrder.indexOf("customClasses") * 1000
+  };
 
-      match
-        ? acc.unsortedClasses.push(className)
-        : acc.ignoredClasses.push(className);
+  const sortedClasses = classes.sort((aClass: string, bClass: string) => {
+    const [aIndex, aIsPseudo] = findIndex(aClass, bases, sortConfig, classes);
+    const [bIndex, bIsPseudo] = findIndex(bClass, bases, sortConfig, classes);
 
-      return acc;
-    },
-    { unsortedClasses: [] as string[], ignoredClasses: [] as string[] }
-  );
-
-  const sortedClasses = unsortedClasses.sort(
-    (aClass: string, bClass: string) => {
-      const a = findLongestMatch(aClass, sortConfig);
-      const b = findLongestMatch(bClass, sortConfig);
-
-      const aBaseClass = aClass.split(colonRegex).pop() || aClass;
-      const bBaseClass = bClass.split(colonRegex).pop() || bClass;
-
-      const aIsPseudo = aBaseClass !== aClass;
-      const bIsPseudo = bBaseClass !== bClass;
-
-      const aIsNotVariant = aBaseClass.includes("not-");
-      const bIsNotVariant = bBaseClass.includes("not-");
-
-      const aOffset = aIsPseudo
-        ? aIsNotVariant
-          ? 0.75
-          : 0.5
-        : aIsNotVariant
-        ? 0.25
-        : 0;
-
-      const bOffset = bIsPseudo
-        ? bIsNotVariant
-          ? 0.75
-          : 0.5
-        : bIsNotVariant
-        ? 0.25
-        : 0;
-
-      // assign each class its sortConfig index and add offset
-      // 0.25: not- class, 0.5: pseudo class, 0.75: not- pseudo class
-      const aIndex = sortConfig[a] + aOffset;
-      const bIndex = sortConfig[b] + bOffset;
-
-      if (aIndex === bIndex) {
-        if (aIsPseudo && bIsPseudo) {
-          // sort pseudo classes by config order
-          return comparePseudoClasses(aClass, bClass, pseudoClasses);
-        }
-
-        // otherwise sort alphabetically
-        return aClass.localeCompare(bClass);
-      }
-
+    if (aIndex !== bIndex) {
       return aIndex - bIndex;
     }
-  );
 
-  const sortedClassesStr = [...sortedClasses, ...ignoredClasses].join(" ");
+    if (aIsPseudo && bIsPseudo) {
+      // sort pseudo classes by config order
+      return comparePseudoClasses(aClass, bClass, pseudoClasses);
+    }
 
-  return match.replace(classesStr, sortedClassesStr);
+    // otherwise sort alphabetically
+    return aClass.localeCompare(bClass);
+  });
+
+  return match.replace(classesStr, sortedClasses.join(" "));
+}
+
+/**
+ * Finds sort index of a given class
+ *
+ * @param aClass - The style class to find an index for. (overflow-x-12)
+ * @param bases - The map of base offset numbers for classes, pseudo classes, custom classes
+ * @param sortConfig - The sort config object.
+ * @param classes - The array of classes being sorted.
+ * @returns sort index, if class is a pseudo class (hover:)
+ */
+function findIndex(
+  aClass: string,
+  bases: { [key: string]: number },
+  sortConfig: { [key: string]: number },
+  classes: string[]
+): [number, boolean] {
+  const match = findLongestMatch(aClass, sortConfig);
+
+  if (!match) {
+    const customIndex = bases.custom + classes.indexOf(aClass);
+    return [customIndex, false];
+  }
+
+  const baseClass = aClass?.split(colonRegex).pop() || aClass;
+  const isPseudo = baseClass !== aClass;
+  const isNotVariant = baseClass.includes("not-");
+
+  const offset = isPseudo
+    ? isNotVariant
+      ? bases.pseudo + 0.75
+      : bases.pseudo + 0.5
+    : isNotVariant
+      ? bases.class + 0.25
+      : bases.class + 0;
+
+  // assign each class its sortConfig index and add offset
+  // 0.25: not- class, 0.5: pseudo class, 0.75: not- pseudo class
+  return [sortConfig[match] + offset, isPseudo];
 }
 
 /**

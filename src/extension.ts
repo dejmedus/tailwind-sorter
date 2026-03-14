@@ -31,10 +31,15 @@ export async function sortOnCommand() {
     return;
   }
 
-  const { classesMap, pseudoSortOrder } = getClassesMap();
+  const { classesMap, pseudoSortOrder, sectionOrder } = getClassesMap();
 
   const text = document.getText();
-  const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
+  const sortedTailwind = sortTailwind(
+    text,
+    classesMap,
+    pseudoSortOrder,
+    sectionOrder
+  );
 
   await editor.edit((editBuilder) => {
     editBuilder.replace(
@@ -56,10 +61,15 @@ export function sortOnSave(event: vscode.TextDocumentWillSaveEvent) {
     return;
   }
 
-  const { classesMap, pseudoSortOrder } = getClassesMap();
+  const { classesMap, pseudoSortOrder, sectionOrder } = getClassesMap();
 
   const text = event.document.getText();
-  const sortedTailwind = sortTailwind(text, classesMap, pseudoSortOrder);
+  const sortedTailwind = sortTailwind(
+    text,
+    classesMap,
+    pseudoSortOrder,
+    sectionOrder
+  );
 
   // onWillSave + waitUntil prevents looping
   event.waitUntil(
