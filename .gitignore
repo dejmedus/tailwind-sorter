@@ -8,3 +8,4 @@ node_modules
 .github/workflows/tests.yml
 rules.md
 findIndex.ts
+src/test/fixtures/*/sorted*
