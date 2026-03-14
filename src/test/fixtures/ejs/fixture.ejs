@@ -1,0 +1,27 @@
+<%- include("./partials/header") -%>
+<body class="flex flex-col justify-center items-center bg-teal-600 p-6 min-h-screen">
+  <main class="space-y-8 bg-white shadow-lg flex p-8 rounded-lg w-full max-w-3xl">
+    <div class="bg-gray-50 p-2 border rounded h-32 overflow-y-scroll">
+      <% for (let i = 1; i <= 20; i++) { %>
+        <p class="text-gray-700 text-sm">Item <%= i %></p>
+      <% } %>
+    </div>
+
+    <% const isError = true; %>
+    <div class="<%= isError ? 'text-red-800 bg-red-100' : 'text-green-800 bg-green-100' %> py-2 px-4 rounded">
+      <%= isError ? 'There was an error!' : 'All good!' %>
+    </div>
+
+    <%
+      const classes = [
+        'px-4', 'py-2', 'rounded',
+        isError ? 'bg-red-100 text-red-800' : 'text-green-800 bg-green-100',
+        isActive && 'border-2 border-blue-500' 
+      ].filter(Boolean).join(' ');
+    %>
+    <div class="<%= classes %>"></div>
+
+    <div class="px-4 py-2 flex-col rounded <%= isError ? 'bg-red-100 flex text-red-800' : '' %> <%= isActive ? 'border-blue-500 border' : '' %>"></div>
+  </main>
+</body>
+</html>

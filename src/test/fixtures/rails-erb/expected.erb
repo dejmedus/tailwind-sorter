@@ -1,0 +1,9 @@
+<div class="flex justify-center items-center mx-auto max-w-2xl h-screen">
+    <%= link_to 'New Frog', new_frog_path, class: 'bg-white text-pink-500' %>
+    <button data-tooltip-target="tooltip-default" type="button" class="bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 px-5 py-2.5 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-white text-sm text-center">Default tooltip</button>
+
+    <div id="tooltip-default" role="tooltip" class="invisible inline-block z-10 absolute bg-gray-900 dark:bg-gray-700 opacity-0 shadow-xs px-3 py-2 rounded-lg font-medium text-white text-sm transition-opacity duration-300 tooltip">
+        Tooltip content
+        <div class="tooltip-arrow" data-popper-arrow></div>
+    </div>
+</div>

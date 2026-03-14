@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="./assets/img/apple-icon.png"
+    />
+    <title>Landing | Tailwind Starter Kit by Creative Tim</title>
+    <link type="text/css" href="assets/css/style.css" rel="stylesheet" />
+  </head>
+
+  <body x-bind:class="ducks.quantity === 1 ? 'bg-slate-200' : ''">
+    <nav
+      class="top-0 z-50 absolute flex flex-wrap justify-between items-center px-2 py-3 w-full navbar-expand-lg"
+    >
+      <div x-bind:class="{'text-gray-800 antialiased': condition}">
+        <div
+          class="lg:block lg:static relative flex justify-between lg:justify-start w-full lg:w-auto"
+        >
+          <a
+            class="inline-block mr-4 py-2 font-bold text-white text-sm uppercase leading-relaxed whitespace-nowrap"
+            href="https://www.creative-tim.com/learning-lab/tailwind-starter-kit#/presentation"
+            >Tailwind Starter Kit</a
+          ><button
+            class="lg:hidden block bg-transparent px-3 py-1 border border-transparent border-solid rounded outline-none focus:outline-none text-xl leading-none cursor-pointer"
+            type="button"
+            onclick="toggleNavbar('example-collapse-navbar')"
+          >
+            <i class="text-white fas fa-bars"></i>
+          </button>
+        </div>
+        <div
+          class="hidden lg:flex flex-grow items-center bg-white lg:bg-transparent lg:shadow-none"
+          id="example-collapse-navbar"
+        >
+          <ul class="flex lg:flex-row flex-col mr-auto list-none">
+            <li class="flex items-center">
+              <a
+                class="flex items-center px-3 py-4 lg:py-2 font-bold text-gray-800 lg:hover:text-gray-300 lg:text-white text-xs uppercase"
+                href="https://www.creative-tim.com/learning-lab/tailwind-starter-kit#/landing"
+                ><i
+                  class="mr-2 text-gray-500 lg:text-gray-300 text-lg leading-lg far fa-file-alt"
+                ></i>
+                Docs</a
+              >
+            </li>
+          </ul>
+          <ul class="flex lg:flex-row flex-col lg:ml-auto list-none">
+            <li class="flex items-center">
+              <a
+                class="flex items-center px-3 py-4 lg:py-2 font-bold text-gray-800 lg:hover:text-gray-300 lg:text-white text-xs uppercase"
+                href="#pablo"
+                ><i
+                  class="text-gray-500 lg:text-gray-300 text-lg leading-lg fab fa-facebook"
+                ></i
+                ><span class="lg:hidden inline-block ml-2">Share</span></a
+              >
+            </li>
+            <li class="flex items-center">
+              <a
+                class="flex items-center px-3 py-4 lg:py-2 font-bold text-gray-800 lg:hover:text-gray-300 lg:text-white text-xs uppercase"
+                href="#pablo"
+                ><i
+                  class="text-gray-500 lg:text-gray-300 text-lg leading-lg fab fa-twitter"
+                ></i
+                ><span class="lg:hidden inline-block ml-2">Tweet</span></a
+              >
+            </li>
+            <li class="flex items-center">
+              <a
+                class="flex items-center px-3 py-4 lg:py-2 font-bold text-gray-800 lg:hover:text-gray-300 lg:text-white text-xs uppercase"
+                href="#pablo"
+                ><i
+                  class="text-gray-500 lg:text-gray-300 text-lg leading-lg fab fa-github"
+                ></i
+                ><span class="lg:hidden inline-block ml-2">Star</span></a
+              >
+            </li>
+            <li class="flex items-center">
+              <button
+                class="bg-white active:bg-gray-100 shadow hover:shadow-md lg:mr-1 mb-3 lg:mb-0 ml-3 px-4 py-2 rounded outline-none focus:outline-none font-bold text-gray-800 text-xs uppercase"
+                type="button"
+                style="transition: all 0.15s ease 0s"
+              >
+                <i class="fas fa-arrow-alt-circle-down"></i> Download
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <div
+        class="relative flex justify-center items-center content-center pt-16 pb-32"
+        style="min-height: 75vh"
+      >
+        <div
+          class="top-0 absolute bg-cover bg-center w-full h-full"
+          style="
+            background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1267&amp;q=80');
+          "
+        >
+          <span
+            id="blackOverlay"
+            class="absolute bg-black opacity-75 w-full h-full"
+          ></span>
+        </div>
+        <div class="relative mx-auto container">
+          <div class="flex flex-wrap items-center">
+            <div class="mr-auto ml-auto px-4 w-full lg:w-6/12 text-center">
+              <div class="pr-12">
+                <h1 class="font-semibold text-white text-5xl">
+                  Your story starts with us.
+                </h1>
+                <p class="mt-4 text-gray-300 text-lg">
+                  This is a simple example of a Landing Page you can build using
+                  Tailwind Starter Kit. It features multiple CSS components
+                  based on the Tailwindcss design system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="top-auto right-0 bottom-0 left-0 absolute w-full overflow-hidden pointer-events-none"
+          style="height: 70px; transform: translateZ(0px)"
+        >
+          <svg
+            class="bottom-0 absolute overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="fill-current text-gray-300"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+      </div>
+      <section class="bg-gray-300 -mt-24 pb-20">
+        <div class="mx-auto px-4 container">
+          <div class="flex flex-wrap">
+            <div class="px-4 pt-6 lg:pt-12 w-full md:w-4/12 text-center">
+              <div
+                class="relative flex flex-col bg-white shadow-lg mb-8 rounded-lg w-full min-w-0 break-words"
+              >
+                <div class="flex-auto px-4 py-5">
+                  <div
+                    class="inline-flex justify-center items-center bg-red-400 shadow-lg mb-5 p-3 rounded-full w-12 h-12 text-white text-center"
+                  >
+                    <i class="fas fa-award"></i>
+                  </div>
+                  <h6 class="font-semibold text-xl">Awarded Agency</h6>
+                  <p class="mt-2 mb-4 text-gray-600">
+                    Divide details about your product or agency work into parts.
+                    A paragraph describing a feature will be enough.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 w-full md:w-4/12 text-center">
+              <div
+                class="relative flex flex-col bg-white shadow-lg mb-8 rounded-lg w-full min-w-0 break-words"
+              >
+                <div class="flex-auto px-4 py-5">
+                  <div
+                    class="inline-flex justify-center items-center bg-blue-400 shadow-lg mb-5 p-3 rounded-full w-12 h-12 text-white text-center"
+                  >
+                    <i class="fas fa-retweet"></i>
+                  </div>
+                  <h6 class="font-semibold text-xl">Free Revisions</h6>
+                  <p class="mt-2 mb-4 text-gray-600">
+                    Keep you user engaged by providing meaningful information.
+                    Remember that by this time, the user is curious.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 pt-6 w-full md:w-4/12 text-center">
+              <div
+                class="relative flex flex-col bg-white shadow-lg mb-8 rounded-lg w-full min-w-0 break-words"
+              >
+                <div class="flex-auto px-4 py-5">
+                  <div
+                    class="inline-flex justify-center items-center bg-green-400 shadow-lg mb-5 p-3 rounded-full w-12 h-12 text-white text-center"
+                  >
+                    <i class="fas fa-fingerprint"></i>
+                  </div>
+                  <h6 class="font-semibold text-xl">Verified Company</h6>
+                  <p class="mt-2 mb-4 text-gray-600">
+                    Write a few lines about each one. A paragraph describing a
+                    feature will be enough. Keep you user engaged!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center mt-32">
+            <div class="mr-auto ml-auto px-4 w-full md:w-5/12">
+              <div
+                class="inline-flex justify-center items-center bg-gray-100 shadow-lg mb-6 p-3 rounded-full w-16 h-16 text-gray-600 text-center"
+              >
+                <i class="text-xl fas fa-user-friends"></i>
+              </div>
+              <h3 class="mb-2 font-semibold text-3xl leading-normal">
+                Working with us is a pleasure
+              </h3>
+              <p
+                class="mt-4 mb-4 font-light text-gray-700 text-lg leading-relaxed"
+              >
+                Don't let your uses guess by attaching tooltips and popoves to
+                any element. Just make sure you enable them first via
+                JavaScript.
+              </p>
+              <p
+                class="mt-0 mb-4 font-light text-gray-700 text-lg leading-relaxed"
+              >
+                The kit comes with three pre-built pages to help you get started
+                faster. You can change the text and images and you're good to
+                go. Just make sure you enable them first via JavaScript.
+              </p>
+              <a
+                href="https://www.creative-tim.com/learning-lab/tailwind-starter-kit#/presentation"
+                class="mt-8 font-bold text-gray-800"
+                >Check Tailwind Starter Kit!</a
+              >
+            </div>
+            <div class="mr-auto ml-auto px-4 w-full md:w-4/12">
+              <div
+                class="relative flex flex-col bg-pink-600 bg-white shadow-lg mb-6 rounded-lg w-full min-w-0 break-words"
+              >
+                <img
+                  alt="..."
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1051&amp;q=80"
+                  class="rounded-t-lg w-full align-middle"
+                />
+                <blockquote class="relative mb-4 p-8">
+                  <svg
+                    preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 583 95"
+                    class="block left-0 absolute w-full"
+                    style="height: 95px; top: -94px"
+                  >
+                    <polygon
+                      points="-30,95 583,95 583,65"
+                      class="fill-current text-pink-600"
+                    ></polygon>
+                  </svg>
+                  <h4 class="font-bold text-white text-xl">
+                    Top Notch Services
+                  </h4>
+                  <p class="mt-2 font-light text-md text-white">
+                    The Arctic Ocean freezes every winter and much of the
+                    sea-ice then thaws every summer, and that process will
+                    continue whatever happens.
+                  </p>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="relative py-20">
+        <div
+          class="top-0 right-0 bottom-auto left-0 absolute -mt-20 w-full overflow-hidden pointer-events-none"
+          style="height: 80px; transform: translateZ(0px)"
+        >
+          <svg
+            class="bottom-0 absolute overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="fill-current text-white"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+        <div class="mx-auto px-4 container">
+          <div class="flex flex-wrap items-center">
+            <div class="mr-auto ml-auto px-4 w-full md:w-4/12">
+              <img
+                alt="..."
+                class="shadow-lg rounded-lg max-w-full"
+                src="https://images.unsplash.com/photo-1555212697-194d092e3b8f?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80"
+              />
+            </div>
+            <div class="mr-auto ml-auto px-4 w-full md:w-5/12">
+              <div class="md:pr-12">
+                <div
+                  class="inline-flex justify-center items-center bg-pink-300 shadow-lg mb-6 p-3 rounded-full w-16 h-16 text-pink-600 text-center"
+                >
+                  <i class="text-xl fas fa-rocket"></i>
+                </div>
+                <h3 class="font-semibold text-3xl">A growing company</h3>
+                <p class="mt-4 text-gray-600 text-lg leading-relaxed">
+                  The extension comes with three pre-built pages to help you get
+                  started faster. You can change the text and images and you're
+                  good to go.
+                </p>
+                <ul class="mt-6 list-none">
+                  <li class="py-2">
+                    <div class="flex items-center">
+                      <div>
+                        <span
+                          class="inline-block bg-pink-200 mr-3 px-2 py-1 rounded-full font-semibold text-pink-600 text-xs uppercase"
+                          ><i class="fas fa-fingerprint"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4 class="text-gray-600">
+                          Carefully crafted components
+                        </h4>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="py-2">
+                    <div class="flex items-center">
+                      <div>
+                        <span
+                          class="inline-block bg-pink-200 mr-3 px-2 py-1 rounded-full font-semibold text-pink-600 text-xs uppercase"
+                          ><i class="fab fa-html5"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4 class="text-gray-600">Amazing page examples</h4>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="py-2">
+                    <div class="flex items-center">
+                      <div>
+                        <span
+                          class="inline-block bg-pink-200 mr-3 px-2 py-1 rounded-full font-semibold text-pink-600 text-xs uppercase"
+                          ><i class="far fa-paper-plane"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4 class="text-gray-600">Dynamic components</h4>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="pt-20 pb-48">
+        <div class="mx-auto px-4 container">
+          <div class="flex flex-wrap justify-center mb-24 text-center">
+            <div class="px-4 w-full lg:w-6/12">
+              <h2 class="font-semibold text-4xl">Here are our heroes</h2>
+              <p class="m-4 text-gray-600 text-lg leading-relaxed">
+                According to the National Oceanic and Atmospheric
+                Administration, Ted, Scambos, NSIDClead scentist, puts the
+                potentially record maximum.
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="mb-12 lg:mb-0 px-4 w-full md:w-6/12 lg:w-3/12">
+              <div class="px-6">
+                <img
+                  alt="..."
+                  src="./assets/img/team-1-800x800.jpg"
+                  class="shadow-lg mx-auto rounded-full max-w-full"
+                  style="max-width: 120px"
+                />
+                <div class="pt-6 text-center">
+                  <h5 class="font-bold text-xl">Ryan Tompson</h5>
+                  <p class="mt-1 font-semibold text-gray-500 text-sm uppercase">
+                    Web Developer
+                  </p>
+                  <div class="mt-6">
+                    <button
+                      class="bg-blue-400 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-twitter"></i></button
+                    ><button
+                      class="bg-blue-600 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-facebook-f"></i></button
+                    ><button
+                      class="bg-pink-500 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-dribbble"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-12 lg:mb-0 px-4 w-full md:w-6/12 lg:w-3/12">
+              <div class="px-6">
+                <img
+                  alt="..."
+                  src="./assets/img/team-2-800x800.jpg"
+                  class="shadow-lg mx-auto rounded-full max-w-full"
+                  style="max-width: 120px"
+                />
+                <div class="pt-6 text-center">
+                  <h5 class="font-bold text-xl">Romina Hadid</h5>
+                  <p class="mt-1 font-semibold text-gray-500 text-sm uppercase">
+                    Marketing Specialist
+                  </p>
+                  <div class="mt-6">
+                    <button
+                      class="bg-red-600 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-google"></i></button
+                    ><button
+                      class="bg-blue-600 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-facebook-f"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-12 lg:mb-0 px-4 w-full md:w-6/12 lg:w-3/12">
+              <div class="px-6">
+                <img
+                  alt="..."
+                  src="./assets/img/team-3-800x800.jpg"
+                  class="shadow-lg mx-auto rounded-full max-w-full"
+                  style="max-width: 120px"
+                />
+                <div class="pt-6 text-center">
+                  <h5 class="font-bold text-xl">Alexa Smith</h5>
+                  <p class="mt-1 font-semibold text-gray-500 text-sm uppercase">
+                    UI/UX Designer
+                  </p>
+                  <div class="mt-6">
+                    <button
+                      class="bg-red-600 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-google"></i></button
+                    ><button
+                      class="bg-blue-400 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-twitter"></i></button
+                    ><button
+                      class="bg-gray-800 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-instagram"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-12 lg:mb-0 px-4 w-full md:w-6/12 lg:w-3/12">
+              <div class="px-6">
+                <img
+                  alt="..."
+                  src="./assets/img/team-4-470x470.png"
+                  class="shadow-lg mx-auto rounded-full max-w-full"
+                  style="max-width: 120px"
+                />
+                <div class="pt-6 text-center">
+                  <h5 class="font-bold text-xl">Jenna Kardi</h5>
+                  <p class="mt-1 font-semibold text-gray-500 text-sm uppercase">
+                    Founder and CEO
+                  </p>
+                  <div class="mt-6">
+                    <button
+                      class="bg-pink-500 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-dribbble"></i></button
+                    ><button
+                      class="bg-red-600 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-google"></i></button
+                    ><button
+                      class="bg-blue-400 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-twitter"></i></button
+                    ><button
+                      class="bg-gray-800 mr-1 mb-1 rounded-full outline-none focus:outline-none w-8 h-8 text-white"
+                      type="button"
+                    >
+                      <i class="fab fa-instagram"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="block relative bg-gray-900 pb-20">
+        <div
+          class="top-0 right-0 bottom-auto left-0 absolute -mt-20 w-full overflow-hidden pointer-events-none"
+          style="height: 80px; transform: translateZ(0px)"
+        >
+          <svg
+            class="bottom-0 absolute overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="fill-current text-gray-900"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+        <div class="mx-auto px-4 lg:pt-24 lg:pb-64 container">
+          <div class="flex flex-wrap justify-center text-center">
+            <div class="px-4 w-full lg:w-6/12">
+              <h2 class="font-semibold text-white text-4xl">Build something</h2>
+              <p class="mt-4 mb-4 text-gray-500 text-lg leading-relaxed">
+                Put the potentially record low maximum sea ice extent tihs year
+                down to low ice. According to the National Oceanic and
+                Atmospheric Administration, Ted, Scambos.
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-wrap justify-center mt-12">
+            <div class="px-4 w-full lg:w-3/12 text-center">
+              <div
+                class="inline-flex justify-center items-center bg-white shadow-lg p-3 rounded-full w-12 h-12 text-gray-900"
+              >
+                <i class="text-xl fas fa-medal"></i>
+              </div>
+              <h6 class="mt-5 font-semibold text-white text-xl">
+                Excelent Services
+              </h6>
+              <p class="mt-2 mb-4 text-gray-500">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+            </div>
+            <div class="px-4 w-full lg:w-3/12 text-center">
+              <div
+                class="inline-flex justify-center items-center bg-white shadow-lg p-3 rounded-full w-12 h-12 text-gray-900"
+              >
+                <i class="text-xl fas fa-poll"></i>
+              </div>
+              <h5 class="mt-5 font-semibold text-white text-xl">
+                Grow your market
+              </h5>
+              <p class="mt-2 mb-4 text-gray-500">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+            </div>
+            <div class="px-4 w-full lg:w-3/12 text-center">
+              <div
+                class="inline-flex justify-center items-center bg-white shadow-lg p-3 rounded-full w-12 h-12 text-gray-900"
+              >
+                <i class="text-xl fas fa-lightbulb"></i>
+              </div>
+              <h5 class="mt-5 font-semibold text-white text-xl">Launch time</h5>
+              <p class="mt-2 mb-4 text-gray-500">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="block relative bg-gray-900 py-24 lg:pt-0">
+        <div class="mx-auto px-4 container">
+          <div class="flex flex-wrap justify-center -mt-48 lg:-mt-64">
+            <div class="px-4 w-full lg:w-6/12">
+              <div
+                class="relative flex flex-col bg-gray-300 shadow-lg mb-6 rounded-lg w-full min-w-0 break-words"
+              >
+                <div class="flex-auto p-5 lg:p-10">
+                  <h4 class="font-semibold text-2xl">Want to work with us?</h4>
+                  <p class="mt-1 mb-4 text-gray-600 leading-relaxed">
+                    Complete this form and we will get back to you in 24 hours.
+                  </p>
+                  <div class="relative mt-8 mb-3 w-full">
+                    <label
+                      class="block mb-2 font-bold text-gray-700 text-xs uppercase"
+                      for="full-name"
+                      >Full Name</label
+                    ><input
+                      type="text"
+                      class="bg-white shadow px-3 py-3 rounded focus:outline-none focus:ring w-full text-gray-700 text-sm placeholder-gray-400"
+                      placeholder="Full Name"
+                      style="transition: all 0.15s ease 0s"
+                    />
+                  </div>
+                  <div class="relative mb-3 w-full">
+                    <label
+                      class="block mb-2 font-bold text-gray-700 text-xs uppercase"
+                      for="email"
+                      >Email</label
+                    ><input
+                      type="email"
+                      class="bg-white shadow px-3 py-3 rounded focus:outline-none focus:ring w-full text-gray-700 text-sm placeholder-gray-400"
+                      placeholder="Email"
+                      style="transition: all 0.15s ease 0s"
+                    />
+                  </div>
+                  <div class="relative mb-3 w-full">
+                    <label
+                      class="block mb-2 font-bold text-gray-700 text-xs uppercase"
+                      for="message"
+                      >Message</label
+                    ><textarea
+                      rows="4"
+                      cols="80"
+                      class="bg-white shadow px-3 py-3 rounded focus:outline-none focus:ring w-full text-gray-700 text-sm placeholder-gray-400"
+                      placeholder="Type a message..."
+                    ></textarea>
+                  </div>
+                  <div class="mt-6 text-center">
+                    <button
+                      class="bg-gray-900 active:bg-gray-700 shadow hover:shadow-lg mr-1 mb-1 px-6 py-3 rounded outline-none focus:outline-none font-bold text-white text-sm uppercase"
+                      type="button"
+                      style="transition: all 0.15s ease 0s"
+                    >
+                      Send Message
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="relative bg-gray-300 pt-8 pb-6">
+      <div
+        class="top-0 right-0 bottom-auto left-0 absolute -mt-20 w-full overflow-hidden pointer-events-none"
+        style="height: 80px; transform: translateZ(0px)"
+      >
+        <svg
+          class="bottom-0 absolute overflow-hidden"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          version="1.1"
+          viewBox="0 0 2560 100"
+          x="0"
+          y="0"
+        >
+          <polygon
+            class="fill-current text-gray-300"
+            points="2560 0 2560 100 0 100"
+          ></polygon>
+        </svg>
+      </div>
+      <div class="mx-auto px-4 container">
+        <div class="flex flex-wrap">
+          <div class="px-4 w-full lg:w-6/12">
+            <h4 class="font-semibold text-3xl">Let's keep in touch!</h4>
+            <h5 class="mt-0 mb-2 text-gray-700 text-lg">
+              Find us on any of these platforms, we respond 1-2 business days.
+            </h5>
+            <div class="mt-6">
+              <button
+                class="justify-center items-center bg-white shadow-lg mr-2 p-3 rounded-full outline-none focus:outline-none w-10 h-10 font-normal text-blue-400 align-center"
+                type="button"
+              >
+                <i class="flex fab fa-twitter"></i></button
+              ><button
+                class="justify-center items-center bg-white shadow-lg mr-2 p-3 rounded-full outline-none focus:outline-none w-10 h-10 font-normal text-blue-600 align-center"
+                type="button"
+              >
+                <i class="flex fab fa-facebook-square"></i></button
+              ><button
+                class="justify-center items-center bg-white shadow-lg mr-2 p-3 rounded-full outline-none focus:outline-none w-10 h-10 font-normal text-pink-400 align-center"
+                type="button"
+              >
+                <i class="flex fab fa-dribbble"></i></button
+              ><button
+                class="justify-center items-center bg-white shadow-lg mr-2 p-3 rounded-full outline-none focus:outline-none w-10 h-10 font-normal text-gray-900 align-center"
+                type="button"
+              >
+                <i class="flex fab fa-github"></i>
+              </button>
+            </div>
+          </div>
+          <div class="px-4 w-full lg:w-6/12">
+            <div class="flex flex-wrap items-top mb-6">
+              <div class="ml-auto px-4 w-full lg:w-4/12">
+                <span
+                  class="block mb-2 font-semibold text-gray-600 text-sm uppercase"
+                  >Useful Links</span
+                >
+                <ul class="list-unstyled">
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://www.creative-tim.com/presentation"
+                      >About Us</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://blog.creative-tim.com"
+                      >Blog</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://www.github.com/creativetimofficial"
+                      >Github</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://www.creative-tim.com/bootstrap-themes/free"
+                      >Free Products</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="px-4 w-full lg:w-4/12">
+                <span
+                  class="block mb-2 font-semibold text-gray-600 text-sm uppercase"
+                  >Other Resources</span
+                >
+                <ul class="list-unstyled">
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://github.com/creativetimofficial/argon-design-system/blob/master/LICENSE.md"
+                      >MIT License</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://creative-tim.com/terms"
+                      >Terms &amp; Conditions</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://creative-tim.com/privacy"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="block pb-2 font-semibold text-gray-700 hover:text-gray-900 text-sm"
+                      href="https://creative-tim.com/contact-us"
+                      >Contact Us</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-6 border-gray-400" />
+        <div
+          class="flex flex-wrap justify-center md:justify-between items-center"
+        >
+          <div class="mx-auto px-4 w-full md:w-4/12 text-center">
+            <div class="py-1 font-semibold text-gray-600 text-sm">
+              Copyright © 2019 Tailwind Starter Kit by
+              <a
+                href="https://www.creative-tim.com"
+                class="text-gray-600 hover:text-gray-900"
+                >Creative Tim</a
+              >.
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script type="text/javascript" src="assets/js/main.js" defer></script>
+  </body>
+</html>

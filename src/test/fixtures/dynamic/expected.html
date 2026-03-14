@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Styling Examples</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- Include Alpine.js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <!-- Tailwind CSS Examples -->
+    <div class="text-center">
+      <h2>Tailwind CSS Examples</h2>
+      <!-- Conditional Classes -->
+      <div :class="{ 'bg-blue-500': isActive, 'text-white': isActive }">
+        Dynamic Box
+      </div>
+      <!-- Conditional Classes with Angular-style syntax -->
+      <div [class.bg-blue-500]="isPrimary" [class.text-white]="isPrimary">
+        Conditional Box
+      </div>
+    </div>
+
+    <!-- Nunjucks Example -->
+    <div class="text-center">
+      <h2>Nunjucks Example</h2>
+      <!-- Dynamic Classes with Nunjucks syntax -->
+      <div
+        class="case-video-container waiting appear appear-video-playing {{ widget.size }} {{ widget.marginTop }} {{ widget.marginBottom }}"
+      >
+        Dynamic Box
+      </div>
+    </div>
+
+    <!-- Vue.js Examples -->
+    <div id="vueApp" class="text-center">
+      <h2>Vue.js Examples</h2>
+      <!-- Dynamic Classes with Vue.js syntax -->
+      <div :class="{ 'bg-blue-500': isActive, 'text-white': isActive }">
+        Dynamic Box
+      </div>
+      <!-- Conditional Classes with Vue.js syntax -->
+      <div :class="{ 'bg-blue-500': isPrimary, 'bg-gray-300': !isPrimary }">
+        Conditional Box
+      </div>
+    </div>
+
+    <!-- Angular Examples -->
+    <div *ngIf="angularReady" class="text-center">
+      <h2>Angular Examples</h2>
+      <!-- Dynamic Classes with Angular syntax -->
+      <div [ngClass]="{ 'bg-blue-500': isActive, 'text-white': isActive }">
+        Dynamic Box
+      </div>
+      <!-- Conditional Classes with Angular syntax -->
+      <div
+        [class.bg-blue-500]="isPrimary"
+        [class.text-white]="isPrimary"
+        [class.bg-gray-300]="!isPrimary"
+      >
+        Conditional Box
+      </div>
+    </div>
+
+    <!-- HTMX Example -->
+    <div class="text-center" hx-trigger="click">
+      <h2>HTMX Example</h2>
+      <!-- Dynamic Classes with HTMX syntax -->
+      <div data-htmx-class="bg-blue-500:text-white:bg-gray-300">
+        Dynamic Box
+      </div>
+    </div>
+
+    <!-- Alpine.js Examples -->
+    <div x-data="{ isActive: true, isPrimary: true }" class="text-center">
+      <h2>Alpine.js Examples</h2>
+      <!-- Dynamic Classes with Alpine.js syntax -->
+      <div :class="{ 'bg-blue-500': isActive, 'text-white': isActive }">
+        Dynamic Box
+      </div>
+      <!-- Conditional Classes with Alpine.js syntax -->
+      <div :class="{ 'bg-blue-500': isPrimary, 'bg-gray-300': !isPrimary }">
+        Conditional Box
+      </div>
+    </div>
+  </body>
+</html>

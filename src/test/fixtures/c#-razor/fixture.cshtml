@@ -1,0 +1,109 @@
+﻿@page
+@model IndexModel
+@inject MarkdownBlog BlogPosts
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container mx-auto px-5">
+    <section class="flex-col md:flex-row flex items-center md:justify-between mt-16 mb-16 md:mb-12">
+        <h1 class="text-6xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">Razor Tailwind</h1>
+        <div class="flex flex-col">
+            <h4 class="text-lg mt-5">
+                A Modern Razor Pages <a href="https://tailwindcss.com/" class="@Css.LinkUnderline">Tailwind</a> App with
+                <a href="https://vuejs.org" class="@Css.LinkUnderline">Vue.js</a> &amp; Markdown
+            </h4>
+            <div class="flex justify-between items-center">
+                <div id="hello-api" data-component="HelloApi" data-props="{ value: 'Tailwind' }" class="mt-2"></div>
+                @Html.SrcComponent("HelloApi.mjs", size: "w-8 h-8 mt-2")
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<div class="container mx-auto px-5">
+    @{
+        var posts = BlogPosts.GetPosts().Take(3).ToList();
+        var post = posts.FirstOrDefault();
+        if (post != null)
+        {
+            <section>
+                <div class="mb-8 md:mb-16">
+                    <div class="sm:mx-0">
+                        <a aria-label="@post.Title" href="@BlogPosts.GetPostLink(post)">
+                            <img src="@post.Image" alt="Cover Image for @post.Title" class="shadow-sm hover:shadow-2xl transition-shadow duration-200">
+                        </a>
+                    </div>
+                </div>
+                <div class="md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8 mb-20 md:mb-28">
+                    <div>
+                        <h3 class="mb-4 text-4xl lg:text-6xl leading-tight">
+                            <a class="hover:underline" href="@BlogPosts.GetPostLink(post)">@post.Title</a>
+                        </h3>
+                        <div class="mb-4 md:mb-0 text-lg">
+                            <time datetime="@BlogPosts.GetDateTimestamp(post.Date)">@BlogPosts.GetDateLabel(post.Date)</time>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-lg leading-relaxed mb-4">@post.Summary</p>
+                        <div class="flex items-center">
+                            <img src="@BlogPosts.GetAuthorProfileUrl(post.Author)" class="w-12 h-12 rounded-full mr-4" alt="Author">
+                            <div class="text-xl font-bold">@post.Author</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+
+        void RenderPost(MarkdownFileInfo post)
+        {
+            <div>
+                <div class="mb-5">
+                    <div class="sm:mx-0">
+                        <a aria-label="@post.Title" href="@BlogPosts.GetPostLink(post)">
+                            <img src="@post.Image" alt="Cover Image for @post.Title" class="shadow-sm hover:shadow-2xl transition-shadow duration-200">
+                        </a>
+                    </div>
+                </div>
+                <h3 class="text-3xl mb-3 leading-snug">
+                    <a class="hover:underline" href="@BlogPosts.GetPostLink(post)">@post.Title</a>
+                </h3>
+                <div class="text-lg mb-4">
+                    <time datetime="@BlogPosts.GetDateTimestamp(post.Date)">@BlogPosts.GetDateLabel(post.Date)</time>
+                </div>
+                <p class="text-lg leading-relaxed mb-4">@post.Summary</p>
+                <div class="flex items-center">
+                    <img src="@BlogPosts.GetAuthorProfileUrl(post.Author)" class="w-12 h-12 rounded-full mr-4" alt="@post.Author">
+                    <div class="text-xl font-bold">@post.Author</div>
+                </div>
+            </div>        
+        }
+
+        var morePosts = posts.Skip(1).ToList();
+        if (morePosts.Count == 2)
+        {
+            <section>
+                <h2 class="mb-8 text-6xl md:text-7xl font-bold tracking-tighter leading-tight">More Stories</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-32">
+                    @{ RenderPost(morePosts[0]); }
+                    @{ RenderPost(morePosts[1]); }
+                </div>
+            </section>        
+        }
+    }
+</div>
+
+<section>
+    <h2 class="text-4xl md:text-6xl font-bold tracking-tighter leading-tight md:pr-8 whitespace-nowrap text-center pt-8">
+        Getting Started
+    </h2>
+    <div class="mb-8 md:mb-16">
+        <div class="sm:mx-0 sm:px-4 sm:py-8 flex justify-evenly">
+            <div data-component="pages/GettingStarted.mjs" data-props="{ template:'razor' }"></div>
+        </div>
+        <div class="flex justify-center">
+            @Html.SrcPageMjs("GettingStarted.mjs")
+        </div>
+    </div>
+</section>
