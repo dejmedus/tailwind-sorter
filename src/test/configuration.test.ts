@@ -20,9 +20,10 @@ suite("VS Code Configuration", () => {
       },
       categoryOrder: { sortOrder: ["category1", "category2"] },
       pseudoClassesOrder: { sortOrder: ["pseudo2", "pseudo1"] },
+      sectionOrder: ["customClasses", "classes", "pseudoClasses"],
     });
 
-    const { classesMap, pseudoSortOrder } = getClassesMap();
+    const { classesMap, pseudoSortOrder, sectionOrder } = getClassesMap();
 
     assert.deepStrictEqual(classesMap, {
       class1: 0,
@@ -32,6 +33,11 @@ suite("VS Code Configuration", () => {
     });
 
     assert.deepStrictEqual(pseudoSortOrder, ["pseudo2", "pseudo1"]);
+    assert.deepStrictEqual(sectionOrder, [
+      "customClasses",
+      "classes",
+      "pseudoClasses",
+    ]);
   });
 
   test("getLanguages includes custom languages from config", () => {

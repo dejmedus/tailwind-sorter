@@ -15,13 +15,13 @@ Custom sort order and categories can be configured in settings
    - Navigate to `File > Preferences > Settings`
 2. Search for "Tailwind Sorter" in the search bar at the top of the settings window
 3. Modify the settings according to your preferences:
-- [Category Order](vscode://settings/tailwindSorter.categoryOrder): The order categories will be sorted.
+- [Category Order](vscode://settings/tailwindSorter.categoryOrder): The order class categories will be sorted.
 - [Categories](vscode://settings/tailwindSorter.categories): Which style classes will belong to which category and in what order.
 - [Pseudo Classes Order](vscode://settings/tailwindSorter.pseudoClassesOrder): How pseudo-classes should be ordered.
+- [Section Order](vscode://settings/tailwindSorter.sectionOrder): The order class, pseudo class, and non-Tailwind class sections will be placed after sorting.
 - [Custom Prefixes](vscode://settings/tailwindSorter.customPrefixes): Prefixes that identify class strings other than the default `class=` and `className=`.
 - [Include Languages](vscode://settings/tailwindSorter.includeLanguages): Language identifiers to add to the list of supported languages. May not sort as expected.
 - [Sort on Save](vscode://settings/tailwindSorter.sortOnSave): Whether or not classes should be sorted on save.
-
 
 **The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other.
 
@@ -49,6 +49,12 @@ Custom sort order and categories can be configured in settings
       "inset-",
     ],
 ```
+
+
+**The default section order is**: classes (bg, text, etc.) then custom classes (non-Tailwind). By default, pseudo classes (hover:, sm:, etc.) are included in the classes section unless specified otherwise.
+
+- default: `bg-white, md:bg-black, text-pink-500, customCSSclass`
+- pseudo classes first: `md:bg-black, bg-white, text-pink-500, customCSSclass`
 
 **Custom Prefixes**: Tailwind Sorter checks for `class=` and `className=` as well as any custom prefixes defined in settings. Default custom prefixes include: `twMerge(`, `cva(`, `clsx(`, and `cn(`
 

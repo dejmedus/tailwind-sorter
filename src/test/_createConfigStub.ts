@@ -7,6 +7,7 @@ import {
   defaultPseudoSortOrder,
   defaultCustomPrefixes,
   defaultSortOnSave,
+  defaultSectionOrder
 } from "../lib/defaultConfig";
 
 export default function createConfigStub(options = {}) {
@@ -16,6 +17,7 @@ export default function createConfigStub(options = {}) {
     pseudoClassesOrder: { sortOrder: defaultPseudoSortOrder },
     customPrefixes: defaultCustomPrefixes,
     sortOnSave: defaultSortOnSave,
+    sectionOrder: defaultSectionOrder,
     includeLanguages: [],
   };
 
@@ -40,6 +42,8 @@ export default function createConfigStub(options = {}) {
                 return config.includeLanguages;
               case "sortOnSave":
                 return config.sortOnSave;
+              case "sectionOrder":
+                return config.sectionOrder;
               default:
                 return undefined;
             }

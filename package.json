@@ -39,6 +39,22 @@
           "default": true,
           "description": "Sort Tailwind classes on save"
         },
+        "tailwindSorter.sectionOrder": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "classes",
+              "pseudoClasses",
+              "customClasses"
+            ]
+          },
+          "default": [
+            "classes",
+            "customClasses"
+          ],
+          "description": "Order that classes (text, bg), pseudo classes (hover:, md:), and custom classes (non-Tailwind) will be placed after sorting. By default pseudo classes are included in classes and any custom classes are placed at the end. \n\nExamples: \n - default: [\"classes\", \"customClasses\"] \n - pseudo classes split out [\"classes\", \"pseudoClasses\", \"customClasses\"] \n - custom classes to front [\"customClasses\", \"classes\"]"
+        },
         "tailwindSorter.includeLanguages": {
           "type": "array",
           "items": {

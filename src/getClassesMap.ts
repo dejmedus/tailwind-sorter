@@ -3,6 +3,7 @@ import {
   defaultCategories,
   defaultSortOrder,
   defaultPseudoSortOrder,
+  defaultSectionOrder
 } from "./lib/defaultConfig";
 
 /**
@@ -81,6 +82,14 @@ export default function getClassesMap() {
     pseudoSortOrder = defaultPseudoSortOrder;
   }
 
+  const sectionOrderConfig: string[] = config.get("sectionOrder",  defaultSectionOrder);
+
+  const sectionOrder: string[] =
+    sectionOrderConfig && sectionOrderConfig.includes("classes") && sectionOrderConfig.includes("customClasses")
+      ? sectionOrderConfig
+      : defaultSectionOrder;
+
+
   let classesMap: { [property: string]: number } = {};
 
   let index = 0;
@@ -90,5 +99,5 @@ export default function getClassesMap() {
     });
   });
 
-  return { classesMap, pseudoSortOrder };
+  return { classesMap, pseudoSortOrder, sectionOrder };
 }

@@ -3,6 +3,7 @@ import {
   defaultCategories,
   defaultSortOrder,
   defaultPseudoSortOrder,
+  defaultSectionOrder
 } from "../lib/defaultConfig";
 
 export function defaultClassesMap() {
@@ -15,5 +16,9 @@ export function defaultClassesMap() {
     });
   });
 
-  return { classesMap, pseudoSortOrder: defaultPseudoSortOrder };
+  return {
+    classesMap,
+    pseudoSortOrder: defaultPseudoSortOrder,
+    sectionOrder: defaultSectionOrder
+  };
 }

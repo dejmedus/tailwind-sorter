@@ -1,16 +1,10 @@
 import * as assert from "assert";
 import { restore } from "sinon";
-import * as vscode from "vscode";
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-import sortTailwind from "../sortTailwind";
-import { defaultClassesMap } from "./_defaultClassMap";
 import createConfigStub from "./_createConfigStub";
+import sortHelper from "./_sortHelper";
 
 suite("Sorting", () => {
-  const { classesMap, pseudoSortOrder } = defaultClassesMap();
-
   teardown(() => {
     restore();
   });
@@ -20,7 +14,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="font-semibold after:content-[''] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[''] items-center" blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -30,7 +24,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className='font-semibold after:content-[""] flex-1 flex-col gap-20 lg:bg-pink hover:bg-purple bg-gradient-to-r from-green-300 bg-black via-blue-500 to-purple-600 flex w-full font-sans before:content-[""] items-center' blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -41,7 +35,7 @@ suite("Sorting", () => {
     const sortedString = `<div class="z-50 absolute before:absolute sticky flex flex-col justify-between gap-6 md:grid grid-cols-3 bg-[radial-gradient(circle_at_top_left,#1e3a8a,#9333ea)] sm:bg-yellow-400 sm:hover:bg-[url('/noise.png')] lg:dark:bg-gradient-to-tr bg-cover bg-no-repeat bg-center bg-fixed before:opacity-50 group-hover:opacity-90 hover:shadow-2xl md:backdrop-blur-xl dark:hover:brightness-75 -mt-2 lg:mt-10 p-10 md:py-12 lg:pl-8 border-4 rounded-xl focus-within:ring-4 peer-invalid:ring-red-500 w-[calc(100%-4rem)] sm:w-1/2 md:max-w-3xl h-screen min-h-[50vh] overflow-hidden font-black text-blue-500 sm:dark:text-green-400 hover:text-white sm:text-lg text-3xl text-center underline text-balance after:content-[''] hover:focus:rotate-3 sm:hover:scale-105 hover:skew-x-6 translate-x-1/2 sm:even:translate-x-4 sm:peer-checked:translate-y-3 sm:translate-x-2 select-none hover:contrast-125" blah blah>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -51,7 +45,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className='lg:self-start -ml-5 relative justify-center custom self-center lg:ml-0 shape-wrapper w-[375px] lg:w-[568px] h-[375px] lg:h-[568px] flex'`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -61,7 +55,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="flex-col carrot flex-1 banana flex apple" blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -71,7 +65,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="banana carrot-1 flex-col carrot-1 hover:carrot flex-1 apple flex" blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -82,7 +76,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="foo bar tw-text-2xl tw:px-4"><div>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -92,7 +86,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className='flex grayscale bg-white bg-inverted/25 bg-blue-500 invert' blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -102,7 +96,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className='flex' blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -112,7 +106,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className=''></div><div className='flex-col flex' blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -122,7 +116,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className="flex-col flex"></div><div className='flex-col flex' blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -132,7 +126,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className="top-0 left-10 left-0 lg:static fixed flex justify-center left-0"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -142,7 +136,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className="top-0 hover:lg:left-10 hover:lg:left-0 lg:static fixed flex justify-center hover:lg:left-0"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -152,7 +146,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="focus-within:ring-blue-200 group-hover:text-blue-500 focus-within:ring" blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -162,7 +156,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="hover:not-xl:bg-indigo-700 bg-indigo-600 hover:not-focus:bg-indigo-700 hover:not-lg:bg-indigo-700"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -173,7 +167,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="supports-backdrop-filter:bg-black/25 supports-[display:flex]:flex supports-[display:grid]:grid">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -183,7 +177,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="[&>*:not(:first-child)]:mt-2 [&:nth-child(3)]:bg-blue-500">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -193,7 +187,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="max-6xl:not-disabled:bg-green-500 5xl:not-disabled:bg-blue-500 4xl:not-disabled:bg-pink-400">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -203,7 +197,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="md:visited:bg-red-600 lg:focus-within:bg-green-500 sm:hover:bg-blue-500 md:group-hover:bg-red-500">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -213,7 +207,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="group-hover:bg-blue-500 focus-within:bg-green-500 hover:bg-pink-500"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -223,7 +217,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="peer-hover:bg-yellow-500 2xl:hover:bg-blue-400 group-hover:bg-pink-500 hover:bg-blue-500">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -233,7 +227,7 @@ suite("Sorting", () => {
     const unsortedString = `<a class="group-hover/item:visible invisible group/edit" href="tel:{person.phone}">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -243,7 +237,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="hover:bg-red-500 aria-[expanded=true]:bg-green-500 data-[open=true]:bg-blue-500">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -253,7 +247,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="@sm:@max-lg:flex-col @sm:@max-md:flex-col flex"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -263,7 +257,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="@lg:flex group-hover:text-blue-500 flex @md:flex @sm:flex text-black"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -273,7 +267,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="min-[320px]:text-center max-[600px]:bg-sky-300 @container">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -283,7 +277,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className='h-[calc(100%-1rem)] w-[100px] bg-[#1a1a1a]' blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -293,7 +287,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="before:content-[attr(data:time)] content-['Time:_12:30_PM']">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -303,7 +297,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="w-[calc(100%-theme('spacing.2'))] grid-cols-[minmax(0,_1fr)_50px]">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -313,7 +307,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="-skew-y-3 -translate-y-full -m-2 -inset-x-4">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -323,7 +317,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="translate-x-1/2 w-2/3 gap-x-1/2 grid-cols-[1fr,2fr] grid">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -333,7 +327,7 @@ suite("Sorting", () => {
     const unsortedString = `class="text-black bg-[url('image.jpg')]"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -343,7 +337,7 @@ suite("Sorting", () => {
     const unsortedString = `<div className='-mb-5 z-10 -mt-5' blah blah`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -353,7 +347,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="text-black bg-[var(--my-color)]"></div>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -363,7 +357,7 @@ suite("Sorting", () => {
     const unsortedString = `<div data-current class="data-current:opacity-100 bg-black opacity-75">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -373,7 +367,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="not-hover:opacity-75 hover:opacity-100 bg-black">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -383,7 +377,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="banana tw-not-hover:opacity-75 apple tw-hover:opacity-100 tw:bg-black">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -393,7 +387,7 @@ suite("Sorting", () => {
     const unsortedString = `<div class="w-md w-xs w-2xl w-1/12 hover:w-md">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -403,7 +397,7 @@ suite("Sorting", () => {
     const unsortedString = `<Component className="text-yellow-800 bg-yellow-100" />`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -417,7 +411,7 @@ This is a **bold** paragraph.
 <Component className="flex-col flex">mdx</Component>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -435,7 +429,7 @@ This is a **bold** paragraph.
 `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -449,7 +443,7 @@ This is a **bold** paragraph.
       <% } %>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -459,7 +453,7 @@ This is a **bold** paragraph.
     const unsortedString = `<div class="text-white bg-blue-500"`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -489,7 +483,7 @@ This is a **bold** paragraph.
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -499,7 +493,7 @@ This is a **bold** paragraph.
     const unsortedString = `<span class="text-white bg-blue-500" id="counter"><%= @counter %></span>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -509,7 +503,7 @@ This is a **bold** paragraph.
     const unsortedString = `<button class="flex-row flex" on:click=on_click>"Welcome to Leptos!"</button>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -519,7 +513,7 @@ This is a **bold** paragraph.
     const unsortedString = `<button class="text-white bg-blue-500" onclick={ctx.link().callback(|_| Msg::Random)}>{ "Random" }</button>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -529,7 +523,7 @@ This is a **bold** paragraph.
     const unsortedString = `<button class="text-white bg-blue-500" onclick="<?php echo $link; ?>"><?php echo $label; ?></button>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -543,7 +537,7 @@ This is a **bold** paragraph.
     </button>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -557,7 +551,7 @@ This is a **bold** paragraph.
     {% endblock %}`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -572,7 +566,7 @@ This is a **bold** paragraph.
   {% endblock %}`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -588,7 +582,7 @@ This is a **bold** paragraph.
 </div>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -606,7 +600,7 @@ This is a **bold** paragraph.
 }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -623,7 +617,7 @@ This is a **bold** paragraph.
       @endsection`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -633,7 +627,7 @@ This is a **bold** paragraph.
     const unsortedString = `<div class:isActive={isActive && !isDisabled} class="bg-blue-400 text-white bg-blue-500">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -645,7 +639,7 @@ This is a **bold** paragraph.
     const unsortedString = `<%= f.label :name, class: "bg-blue-500 text-white bg-blue-400" %>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -657,7 +651,7 @@ This is a **bold** paragraph.
     const unsortedString = `<%= form_with(model: @user, class: 'text-white bg-pink-500') do |f| %>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -669,7 +663,7 @@ This is a **bold** paragraph.
     const unsortedString = `form_with model: @user, class: 'text-white bg-pink-500' do |f|`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -681,7 +675,7 @@ This is a **bold** paragraph.
     const unsortedString = `tag.svg(class: "size-full flex-col -rotate-90 flex", viewBox: "0 0 36 36", xmlns: "http://www.w3.org/2000/svg") do`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -693,7 +687,7 @@ This is a **bold** paragraph.
     const unsortedString = `form_with(model: @user, class: 'text-white bg-pink-500') do |f|`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -705,7 +699,7 @@ This is a **bold** paragraph.
     const unsortedString = `has_dom_class -> { 'text-white bg-pink-500' }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -727,7 +721,7 @@ This is a **bold** paragraph.
 </ul>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -737,7 +731,7 @@ This is a **bold** paragraph.
     const unsortedString = `<div {% if block.settings.highlight %}class="bg-yellow-100 flex-col flex"{% endif %}>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -755,7 +749,7 @@ This is a **bold** paragraph.
       "    }";
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -768,7 +762,7 @@ This is a **bold** paragraph.
       "twMerge('hover:bg-dark-red bg-red', 'p-3 bg-[#B91C1C]')";
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -779,7 +773,7 @@ This is a **bold** paragraph.
     const unsortedString = "twMerge(`lg:grid-cols-[1fr,auto] grid-cols-2`)";
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -789,7 +783,7 @@ This is a **bold** paragraph.
     const unsortedString = `<aside className={twMerge(' p-4     flex    ')}>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -799,7 +793,7 @@ This is a **bold** paragraph.
     const unsortedString = `<aside className={ twMerge(' p-4     flex    ')}>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -817,7 +811,7 @@ This is a **bold** paragraph.
     };`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -827,7 +821,7 @@ This is a **bold** paragraph.
     const unsortedString = `<div className={cn("relative overflow-auto w-full", wrapperClassName)}>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -837,7 +831,7 @@ This is a **bold** paragraph.
     const unsortedString = `  return <tfoot className={cn("bg-muted/50 border-t last:[&>tr]:border-b-0", className)} {...rest} />;`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -859,7 +853,7 @@ className
 />]`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -885,7 +879,7 @@ className
       ></span>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -898,7 +892,7 @@ className
     const unsortedString = `clsx('text-base bg-blue-500', { 'bg-blue-700 text-gray-100': isHovering })`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -908,7 +902,7 @@ className
     const unsortedString = `clsx('text-base           bg-blue-500     ')`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -918,7 +912,7 @@ className
     const unsortedString = `clsx('text-black bg-pink-500', [1 && 'bar', { baz:false, bat:null }, ['hello', ['world']]], 'cya')`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -933,7 +927,7 @@ className
     const unsortedString = `cva('text-white bg-blue-500', { 'bg-blue-700 text-gray-100': isHovering })`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -959,7 +953,7 @@ className
     })`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -969,15 +963,13 @@ className
     const unsortedString = `<div class="_shadow-2xl justify-center custom_flex gap-6 _hover:border-yellow-400 bg-white _flex-col p-8 border flex rounded-4xl w-lg">`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
 });
 
 suite("@apply Sorting", () => {
-  const { classesMap, pseudoSortOrder } = defaultClassesMap();
-
   test("css", () => {
     const unsortedString = `
     .btn {
@@ -993,7 +985,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1011,7 +1003,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1041,7 +1033,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1069,7 +1061,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1091,7 +1083,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1121,7 +1113,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1151,7 +1143,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1185,7 +1177,7 @@ suite("@apply Sorting", () => {
     `;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1201,7 +1193,7 @@ suite("@apply Sorting", () => {
     }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1217,7 +1209,7 @@ suite("@apply Sorting", () => {
     }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1235,7 +1227,7 @@ suite("@apply Sorting", () => {
       </style>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1259,7 +1251,7 @@ suite("@apply Sorting", () => {
     }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1307,7 +1299,7 @@ suite("@apply Sorting", () => {
     }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1371,7 +1363,7 @@ suite("@apply Sorting", () => {
     }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1401,7 +1393,7 @@ suite("@apply Sorting", () => {
     }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1435,7 +1427,7 @@ suite("@apply Sorting", () => {
     }`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });
@@ -1457,7 +1449,7 @@ suite("@apply Sorting", () => {
     </div>`;
 
     assert.strictEqual(
-      sortTailwind(unsortedString, classesMap, pseudoSortOrder),
+      sortHelper(unsortedString),
       sortedString
     );
   });

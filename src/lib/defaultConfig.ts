@@ -550,3 +550,4 @@ export const defaultPseudoSortOrder =
 
 export const defaultCustomPrefixes = ["twMerge(", "clsx(", "cva(", "cn("];
 export const defaultSortOnSave = true;
+export const defaultSectionOrder = ["classes", "customClasses"];
