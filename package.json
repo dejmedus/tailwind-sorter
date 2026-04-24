@@ -59,9 +59,19 @@
           "type": "array",
           "items": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "^[^.]"
           },
           "description": "Unsupported language identifiers to add to the list of supported languages. May not sort as expected. Example: plaintext"
+        },
+        "tailwindSorter.excludeLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^.]"
+          },
+          "description": "Language identifiers to remove from the list of supported languages. Files with these language identifiers will not be sorted. Example: html"
         },
         "tailwindSorter.customPrefixes": {
           "type": "array",

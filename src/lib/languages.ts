@@ -23,7 +23,7 @@ const languages = [
   "css",
   "scss",
   "razor",
-  "aspnetcorerazor",
+  "aspnetcorerazor"
 ];
 
 /**
@@ -34,7 +34,10 @@ const languages = [
  */
 export default function getLanguages() {
   const config = workspace.getConfiguration("tailwindSorter");
-  const includedLanguages = config.get("includeLanguages", []);
+  const includedLanguages = config.get<string[]>("includeLanguages", []);
+  const excludeLanguages = config.get<string[]>("excludeLanguages", []);
 
-  return [...languages, ...includedLanguages];
+  return [...languages, ...includedLanguages].filter(
+    (lang) => !excludeLanguages.includes(lang)
+  );
 }

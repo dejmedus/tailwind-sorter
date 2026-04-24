@@ -21,6 +21,7 @@ Custom sort order and categories can be configured in settings
 - [Section Order](vscode://settings/tailwindSorter.sectionOrder): The order class, pseudo class, and non-Tailwind class sections will be placed after sorting.
 - [Custom Prefixes](vscode://settings/tailwindSorter.customPrefixes): Prefixes that identify class strings other than the default `class=` and `className=`.
 - [Include Languages](vscode://settings/tailwindSorter.includeLanguages): Language identifiers to add to the list of supported languages. May not sort as expected.
+- [Exclude Languages](vscode://settings/tailwindSorter.excludeLanguages): Language identifiers to remove from the list of supported languages. Files with these language identifiers will not be sorted.
 - [Sort on Save](vscode://settings/tailwindSorter.sortOnSave): Whether or not classes should be sorted on save.
 
 **The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other.
