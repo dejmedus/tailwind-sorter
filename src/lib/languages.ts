@@ -41,3 +41,13 @@ export default function getLanguages() {
     (lang) => !excludeLanguages.includes(lang)
   );
 }
+
+/**
+ * Create a glob pattern from a simplified path
+ *
+ * @param path the path to glob
+ * @returns A normalized glob pattern
+ */
+export function normalize(path: string): string {
+  return path.endsWith("/") ? `**/${path}**` : path;
+}

@@ -3,7 +3,7 @@
 import * as vscode from "vscode";
 
 import getClassesMap from "./getClassesMap";
-import getLanguages from "./lib/languages";
+import getLanguages, { normalize } from "./lib/languages";
 import sortTailwind from "./sortTailwind";
 
 // This method is called when your extension is activated
@@ -55,9 +55,19 @@ export async function sortOnCommand() {
 export function sortOnSave(event: vscode.TextDocumentWillSaveEvent) {
   const config = vscode.workspace.getConfiguration("tailwindSorter");
   const sortOnSave = config.get<boolean>("sortOnSave", true);
+  const ignorePaths = config.get<string[]>("ignorePaths", []);
   const languages = getLanguages();
 
-  if (!sortOnSave || !languages.includes(event.document.languageId)) {
+  const shouldIgnoreFile = ignorePaths.some(
+    (path) =>
+      vscode.languages.match({ pattern: normalize(path) }, event.document) > 0
+  );
+
+  if (
+    !sortOnSave ||
+    shouldIgnoreFile ||
+    !languages.includes(event.document.languageId)
+  ) {
     return;
   }
 
@@ -80,7 +90,7 @@ export function sortOnSave(event: vscode.TextDocumentWillSaveEvent) {
           event.document.positionAt(text.length)
         ),
         sortedTailwind
-      ),
+      )
     ])
   );
 }
