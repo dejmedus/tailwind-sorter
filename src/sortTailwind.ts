@@ -1,3 +1,4 @@
+import { SortOptions } from "./types";
 import {
   createApplyRegex,
   createRegex,
@@ -10,25 +11,12 @@ import {
  * Sorts the tailwind classes in the given file text based on the provided sort config.
  *
  * @param text - The file text to be sorted.
- * @param sortConfig - The sort config object that maps style classes to their sort order index.
- * @param pseudoClasses - An array of pseudo classes to sort by.
- * @returns The file text with sorted style classes.
+ * @param sortOptions - The sort mode and config.
  */
-export default function sortTailwind(
-  text: string,
-  sortConfig: { [key: string]: number },
-  pseudoClasses: string[],
-  sectionOrder: string[]
-) {
+export default function sortTailwind(text: string, sortOptions: SortOptions) {
   const applyRegex = createApplyRegex();
   text = text.replace(applyRegex, (match, classesGroup) => {
-    return sortFoundTailwind(
-      match,
-      classesGroup,
-      sortConfig,
-      pseudoClasses,
-      sectionOrder
-    );
+    return sortFoundTailwind(match, classesGroup, sortOptions);
   });
 
   const regex = createRegex();
@@ -45,13 +33,7 @@ export default function sortTailwind(
       const quotesGroup =
         singleQuotesGroup || doubleQuotesGroup || backtickQuotesGroup;
 
-      return sortFoundTailwind(
-        match,
-        quotesGroup,
-        sortConfig,
-        pseudoClasses,
-        sectionOrder
-      );
+      return sortFoundTailwind(match, quotesGroup, sortOptions);
     }
   );
 
@@ -63,16 +45,12 @@ export default function sortTailwind(
  *
  * @param match - The full match found by regex. ex: class="bg-blue-500 text-white"
  * @param classesStr - The tailwind classes. ex: bg-blue-500 text-white
- * @param sortConfig - The sort config object that maps style classes to their sort order index.
- * @param pseudoClasses - An array of pseudo classes to sort by.
- * @param sectionOrder - The order of classes, pseudo classes, and custom classes
+ * @param sortOptions - The sort mode and config.
  */
 function sortFoundTailwind(
   match: string,
   classesStr: string,
-  sortConfig: { [key: string]: number },
-  pseudoClasses: string[],
-  sectionOrder: string[]
+  sortOptions: SortOptions
 ) {
   if (!classesStr || !classesStr.includes(" ")) {
     return match;
@@ -85,6 +63,16 @@ function sortFoundTailwind(
   if (groupContainsDynamicSyntax) {
     return match;
   }
+
+  if (sortOptions.mode === "official") {
+    const sortedClasses = sortOptions.sorter.sortClassAttributes([
+      classesStr
+    ])[0];
+
+    return match.replace(classesStr, sortedClasses);
+  }
+
+  const { classesMap, pseudoSortOrder, sectionOrder } = sortOptions;
 
   const classes = classesStr
     .split(/\s+/)
@@ -103,8 +91,8 @@ function sortFoundTailwind(
   };
 
   const sortedClasses = classes.sort((aClass: string, bClass: string) => {
-    const [aIndex, aIsPseudo] = findIndex(aClass, bases, sortConfig, classes);
-    const [bIndex, bIsPseudo] = findIndex(bClass, bases, sortConfig, classes);
+    const [aIndex, aIsPseudo] = findIndex(aClass, bases, classesMap, classes);
+    const [bIndex, bIsPseudo] = findIndex(bClass, bases, classesMap, classes);
 
     if (aIndex !== bIndex) {
       return aIndex - bIndex;
@@ -112,7 +100,7 @@ function sortFoundTailwind(
 
     if (aIsPseudo && bIsPseudo) {
       // sort pseudo classes by config order
-      return comparePseudoClasses(aClass, bClass, pseudoClasses);
+      return comparePseudoClasses(aClass, bClass, pseudoSortOrder);
     }
 
     // otherwise sort alphabetically
@@ -230,18 +218,30 @@ function comparePseudoClasses(
     let bPseudo = pseudoClasses.find((c) => bPseudoClass.includes(c));
 
     if (pseudoClasses.includes("support-")) {
-      if (aPseudoClass.includes("support-")) aPseudo = "support-";
-      if (bPseudoClass.includes("support-")) bPseudo = "support-";
+      if (aPseudoClass.includes("support-")) {
+        aPseudo = "support-";
+      }
+      if (bPseudoClass.includes("support-")) {
+        bPseudo = "support-";
+      }
     }
 
     if (pseudoClasses.includes("group-")) {
-      if (aPseudoClass.includes("group-")) aPseudo = "group-";
-      if (bPseudoClass.includes("group-")) bPseudo = "group-";
+      if (aPseudoClass.includes("group-")) {
+        aPseudo = "group-";
+      }
+      if (bPseudoClass.includes("group-")) {
+        bPseudo = "group-";
+      }
     }
 
     if (pseudoClasses.includes("peer-")) {
-      if (aPseudoClass.includes("peer-")) aPseudo = "peer-";
-      if (bPseudoClass.includes("peer-")) bPseudo = "peer-";
+      if (aPseudoClass.includes("peer-")) {
+        aPseudo = "peer-";
+      }
+      if (bPseudoClass.includes("peer-")) {
+        bPseudo = "peer-";
+      }
     }
 
     if (aPseudo && bPseudo) {
