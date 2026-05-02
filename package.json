@@ -39,6 +39,11 @@
           "default": true,
           "description": "Sort Tailwind classes on save"
         },
+        "tailwindSorter.useOfficialSort": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use the official TailwindCSS sorting API rather than native sort order and logic."
+        },
         "tailwindSorter.sectionOrder": {
           "type": "array",
           "items": {
@@ -715,5 +720,8 @@
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "prettier-plugin-tailwindcss": "^0.8.0"
   }
 }
