@@ -59,9 +59,27 @@
           "type": "array",
           "items": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "^[^.]"
           },
           "description": "Unsupported language identifiers to add to the list of supported languages. May not sort as expected. Example: plaintext"
+        },
+        "tailwindSorter.excludeLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^.]"
+          },
+          "description": "Language identifiers to remove from the list of supported languages. Files with these language identifiers will not be sorted. Example: html"
+        },
+        "tailwindSorter.ignorePaths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "File paths to ignore. File names matching these glob patterns will not be sorted. Example: lib/ or **/*.antler.html"
         },
         "tailwindSorter.customPrefixes": {
           "type": "array",
@@ -691,8 +709,8 @@
     "@typescript-eslint/parser": "^6.15.0",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.8",
-    "sinon": "^17.0.1",
     "eslint": "^8.56.0",
+    "sinon": "^17.0.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",

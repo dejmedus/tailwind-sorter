@@ -16,11 +16,11 @@ suite("VS Code Configuration", () => {
     createConfigStub({
       categories: {
         category1: ["class1", "class3"],
-        category2: ["class2", "class4"],
+        category2: ["class2", "class4"]
       },
       categoryOrder: { sortOrder: ["category1", "category2"] },
       pseudoClassesOrder: { sortOrder: ["pseudo2", "pseudo1"] },
-      sectionOrder: ["customClasses", "classes", "pseudoClasses"],
+      sectionOrder: ["customClasses", "classes", "pseudoClasses"]
     });
 
     const { classesMap, pseudoSortOrder, sectionOrder } = getClassesMap();
@@ -29,24 +29,46 @@ suite("VS Code Configuration", () => {
       class1: 0,
       class2: 2,
       class3: 1,
-      class4: 3,
+      class4: 3
     });
 
     assert.deepStrictEqual(pseudoSortOrder, ["pseudo2", "pseudo1"]);
     assert.deepStrictEqual(sectionOrder, [
       "customClasses",
       "classes",
-      "pseudoClasses",
+      "pseudoClasses"
     ]);
   });
 
   test("getLanguages includes custom languages from config", () => {
     createConfigStub({
-      includeLanguages: ["potatoscript"],
+      includeLanguages: ["potatoscript"]
     });
 
     const languages = getLanguages();
     assert.ok(languages.includes("potatoscript"));
+  });
+
+  test("getLanguages does not return languages excluded from config", () => {
+    const before = getLanguages();
+    assert.ok(before.includes("html"));
+
+    createConfigStub({
+      excludeLanguages: ["html"]
+    });
+
+    const languages = getLanguages();
+    assert.strictEqual(languages.includes("html"), false);
+  });
+
+  test("getLanguages prioritizes excludeLanguages over includeLanguages", () => {
+    createConfigStub({
+      excludeLanguages: ["jellyfish"],
+      includeLanguages: ["jellyfish"]
+    });
+
+    const languages = getLanguages();
+    assert.strictEqual(languages.includes("jellyfish"), false);
   });
 
   test("don't sort on command if language is not supported", async () => {
@@ -58,7 +80,7 @@ suite("VS Code Configuration", () => {
     const document = {
       languageId: "unsupported",
       getText: () => "<div class='hover:grid grid'></div>",
-      positionAt: (offset: number) => new vscode.Position(0, offset),
+      positionAt: (offset: number) => new vscode.Position(0, offset)
     } as vscode.TextDocument;
 
     const replaceStub = sinon.stub();
@@ -71,7 +93,7 @@ suite("VS Code Configuration", () => {
 
     const activeTextEditor = {
       document,
-      edit: editSpy,
+      edit: editSpy
     } as unknown as vscode.TextEditor;
     sinon.stub(vscode.window, "activeTextEditor").get(() => activeTextEditor);
 
@@ -91,7 +113,7 @@ suite("VS Code Configuration", () => {
     const document = {
       languageId: "html",
       getText: () => "<div class='hover:grid grid'></div>",
-      positionAt: (offset: number) => new vscode.Position(0, offset),
+      positionAt: (offset: number) => new vscode.Position(0, offset)
     } as vscode.TextDocument;
 
     const replaceStub = sinon.stub();
@@ -104,7 +126,7 @@ suite("VS Code Configuration", () => {
 
     const activeTextEditor = {
       document,
-      edit: editSpy,
+      edit: editSpy
     } as unknown as vscode.TextEditor;
     sinon.stub(vscode.window, "activeTextEditor").get(() => activeTextEditor);
 
@@ -120,7 +142,7 @@ suite("VS Code Configuration", () => {
 
   test("sort on command if language is included via config", async () => {
     createConfigStub({
-      includeLanguages: ["potatoscript"],
+      includeLanguages: ["potatoscript"]
     });
 
     const showWarningMessageStub = sinon.stub(
@@ -131,7 +153,7 @@ suite("VS Code Configuration", () => {
     const document = {
       languageId: "potatoscript",
       getText: () => "<div class='hover:grid grid'></div>",
-      positionAt: (offset: number) => new vscode.Position(0, offset),
+      positionAt: (offset: number) => new vscode.Position(0, offset)
     } as vscode.TextDocument;
 
     const replaceStub = sinon.stub();
@@ -144,7 +166,7 @@ suite("VS Code Configuration", () => {
 
     const activeTextEditor = {
       document,
-      edit: editSpy,
+      edit: editSpy
     } as unknown as vscode.TextEditor;
     sinon.stub(vscode.window, "activeTextEditor").get(() => activeTextEditor);
 
@@ -158,13 +180,11 @@ suite("VS Code Configuration", () => {
     assert.strictEqual(sortedTailwind.includes("grid hover:grid"), true);
   });
 
-  test("when file is saved, tailwind is not sorted if sortOnSave is false", async () => {
-    createConfigStub({ sortOnSave: false });
-
+  test("don't sort on save if language is not supported", async () => {
     const document = {
-      languageId: "html",
+      languageId: "unsupported",
       getText: () => "<div class='hover:grid grid'></div>",
-      positionAt: (offset: number) => new vscode.Position(0, offset),
+      positionAt: (offset: number) => new vscode.Position(0, offset)
     } as vscode.TextDocument;
 
     const waitUntilSpy = sinon.spy();
@@ -172,19 +192,19 @@ suite("VS Code Configuration", () => {
     sortOnSave({
       document,
       waitUntil: waitUntilSpy,
-      reason: vscode.TextDocumentSaveReason.Manual,
+      reason: vscode.TextDocumentSaveReason.Manual
     } as vscode.TextDocumentWillSaveEvent);
 
     sinon.assert.notCalled(waitUntilSpy);
   });
 
-  test("when file is saved, tailwind is sorted if sortOnSave is true", async () => {
-    createConfigStub({ sortOnSave: true });
+  test("don't sort on save if sortOnSave is false", async () => {
+    createConfigStub({ sortOnSave: false });
 
     const document = {
       languageId: "html",
       getText: () => "<div class='hover:grid grid'></div>",
-      positionAt: (offset: number) => new vscode.Position(0, offset),
+      positionAt: (offset: number) => new vscode.Position(0, offset)
     } as vscode.TextDocument;
 
     const waitUntilSpy = sinon.spy();
@@ -192,7 +212,99 @@ suite("VS Code Configuration", () => {
     sortOnSave({
       document,
       waitUntil: waitUntilSpy,
-      reason: vscode.TextDocumentSaveReason.Manual,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    sinon.assert.notCalled(waitUntilSpy);
+  });
+
+  test("don't sort on save if language is excluded via config", async () => {
+    createConfigStub({
+      excludeLanguages: ["html"]
+    });
+
+    const document = {
+      languageId: "html",
+      fileName: "file.html",
+      getText: () => "<div class='hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    sinon.assert.notCalled(waitUntilSpy);
+  });
+
+  test("don't sort on save if file matches an ignore path", async () => {
+    createConfigStub({
+      ignorePaths: ["**/*.antlers.html"],
+      includeLanguages: ["html"]
+    });
+
+    const document = {
+      languageId: "html",
+      fileName: "file.antlers.html",
+      uri: { fsPath: "file.antlers.html" },
+      getText: () => "<div class='hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    sinon.assert.notCalled(waitUntilSpy);
+  });
+
+  test("don't sort on save if file is in ignored directory", async () => {
+    createConfigStub({
+      ignorePaths: ["ignore/"]
+    });
+
+    const document = {
+      languageId: "html",
+      fileName: "src/deeply/nested/ignore/lib/file.html",
+      uri: { fsPath: "src/deeply/nested/ignore/lib/file.html" },
+      getText: () => "<div class='hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    sinon.assert.notCalled(waitUntilSpy);
+  });
+
+  test("sort on save if sortOnSave is true", async () => {
+    createConfigStub({ sortOnSave: true });
+
+    const document = {
+      languageId: "html",
+      getText: () => "<div class='hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
     } as vscode.TextDocumentWillSaveEvent);
 
     sinon.assert.calledOnce(waitUntilSpy);

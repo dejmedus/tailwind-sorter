@@ -19,6 +19,8 @@ export default function createConfigStub(options = {}) {
     sortOnSave: defaultSortOnSave,
     sectionOrder: defaultSectionOrder,
     includeLanguages: [],
+    excludeLanguages: [],
+    ignorePaths: []
   };
 
   const config = { ...defaults, ...options };
@@ -40,6 +42,10 @@ export default function createConfigStub(options = {}) {
                 return config.customPrefixes;
               case "includeLanguages":
                 return config.includeLanguages;
+              case "excludeLanguages":
+                return config.excludeLanguages;
+              case "ignorePaths":
+                return config.ignorePaths;
               case "sortOnSave":
                 return config.sortOnSave;
               case "sectionOrder":
@@ -47,7 +53,7 @@ export default function createConfigStub(options = {}) {
               default:
                 return undefined;
             }
-          },
+          }
         } as vscode.WorkspaceConfiguration;
       }
       return {} as vscode.WorkspaceConfiguration;
