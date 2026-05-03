@@ -116,12 +116,13 @@ export function getOfficialSorter() {
   if (!officialSorterPromise) {
     officialSorterPromise = import("prettier-plugin-tailwindcss/sorter")
       .then(({ createSorter }) => createSorter({}))
-      .catch(() => {
+      .catch((err) => {
         officialSorterPromise = null;
         vscode.window.showWarningMessage(
-          "Tailwind Sorter: Failed to load official sorter, file was not sorted."
+          "Tailwind Sorter: Failed to load official sorter, file was not sorted.",
+          err.message
         );
-        throw new Error("Failed to load official sorter");
+        throw new Error("Failed to load official sorter", err.message);
       });
   }
   return officialSorterPromise;

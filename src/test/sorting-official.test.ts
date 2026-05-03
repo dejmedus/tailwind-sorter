@@ -1,9 +1,10 @@
 import * as assert from "assert";
+import * as fs from "fs";
+import * as path from "path";
 import { restore } from "sinon";
 
 import createConfigStub from "./_createConfigStub";
 import { officialSortHelper } from "./_sortHelper";
-
 import { getOfficialSorter } from "../extension";
 
 suite("Official Tailwind Plugin Sorting", () => {
@@ -80,5 +81,30 @@ suite("Official Tailwind Plugin Sorting", () => {
       officialSortHelper(unsortedString, sorter),
       unsortedString
     );
+  });
+});
+
+suite("Bundle Guard", () => {
+  const bundlePath = path.join(__dirname, "..", "..", "dist", "extension.js");
+
+  let bundle: string;
+
+  suiteSetup(() => {
+    assert.ok(
+      fs.existsSync(bundlePath),
+      "dist/extension.js not found. Run npm run compile first."
+    );
+
+    bundle = fs.readFileSync(bundlePath, "utf8");
+  });
+
+  test("does not use webpack chunked dynamic imports", () => {
+    const hasChunkLoader = bundle.includes("__webpack_require__.e(");
+
+    assert.ok(!hasChunkLoader);
+  });
+
+  test("contains sorter module reference", () => {
+    assert.ok(bundle.includes("prettier-plugin-tailwindcss/sorter"));
   });
 });
