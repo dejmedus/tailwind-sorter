@@ -10,21 +10,23 @@ Automatically sort Tailwind classes on save or command. Use your preferred sort 
 
 Custom sort order and categories can be configured in settings
 
-1. Open settings
-   - Click the gear icon in the bottom left corner, or
-   - Navigate to `File > Preferences > Settings`
-2. Search for "Tailwind Sorter" in the search bar at the top of the settings window
+1. Open settings:
+   - Click the gear icon in the bottom left, or
+   - Go to `File > Preferences > Settings`
+2. Search for *Tailwind Sorter*
 3. Modify the settings according to your preferences:
-- [Category Order](vscode://settings/tailwindSorter.categoryOrder): The order class categories will be sorted.
-- [Categories](vscode://settings/tailwindSorter.categories): Which style classes will belong to which category and in what order.
-- [Pseudo Classes Order](vscode://settings/tailwindSorter.pseudoClassesOrder): How pseudo-classes should be ordered.
-- [Section Order](vscode://settings/tailwindSorter.sectionOrder): The order class, pseudo class, and non-Tailwind class sections will be placed after sorting.
-- [Custom Prefixes](vscode://settings/tailwindSorter.customPrefixes): Prefixes that identify class strings other than the default `class=` and `className=`.
-- [Include Languages](vscode://settings/tailwindSorter.includeLanguages): Language identifiers to add to the list of supported languages. May not sort as expected.
-- [Exclude Languages](vscode://settings/tailwindSorter.excludeLanguages): Language identifiers to remove from the list of supported languages. Files with these language identifiers will not be sorted.
-- [Ignore Paths](vscode://settings/tailwindSorter.ignorePaths): File paths to ignore. File names matching these glob patterns will not be sorted.
 - [Sort on Save](vscode://settings/tailwindSorter.sortOnSave): Whether or not classes should be sorted on save.
-- [Use Official Sort](vscode://settings/tailwindSorter.useOfficialSort): Use the [official TailwindCSS Prettier plugin](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) sort order. Overrides all other sort settings. *Experimental*
+- [Custom Prefixes](vscode://settings/tailwindSorter.customPrefixes): Prefixes that identify class strings other than the default `class=` and `className=`.
+- [Section Order](vscode://settings/tailwindSorter.sectionOrder): The order class, pseudo class, and non-Tailwind class sections will be placed after sorting. ***(Pre-release)***
+- [Category Order](vscode://settings/tailwindSorter.categoryOrder): The order class categories will be sorted.
+- [Categories](vscode://settings/tailwindSorter.categories): Which classes will belong to which category.
+- [Pseudo Classes Order](vscode://settings/tailwindSorter.pseudoClassesOrder): The order pseudo-classes will be sorted.
+- [Include Languages](vscode://settings/tailwindSorter.includeLanguages): Language identifiers to add to the list of supported languages. May not sort as expected.
+- [Exclude Languages](vscode://settings/tailwindSorter.excludeLanguages): Language identifiers to remove from the list of supported languages. Files with these language identifiers will not be sorted. ***(Pre-release)***
+- [Ignore Paths](vscode://settings/tailwindSorter.ignorePaths): File paths to ignore. File names matching these glob patterns will not be sorted. ***(Pre-release)***
+- [Use Official Sort](vscode://settings/tailwindSorter.useOfficialSort): Use the [official TailwindCSS Prettier plugin](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) sort order. Overrides all other sort settings. ***(Pre-release, Experimental)***
+
+> Settings marked ***(Pre-release)*** are only available in the pre-release version. To access: go to the extensions tab, find Tailwind Sorter, click the gear icon, and select "Install Another Version" > "Pre-release"
 
 **The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other.
 
@@ -55,14 +57,14 @@ Custom sort order and categories can be configured in settings
 
 **The default section order is**: classes (bg, text, etc.) then custom classes (non-Tailwind). By default, pseudo classes (hover:, sm:, etc.) are included in the classes section unless specified otherwise.
 
-- default: `bg-white, md:bg-black, text-pink-500, customCSSclass`
-- pseudo classes first: `md:bg-black, bg-white, text-pink-500, customCSSclass`
+- default: `bg-white, text-pink-500, md:text-black, customCSSclass`
+- pseudo classes first: `md:text-black, bg-white, text-pink-500, customCSSclass`
 
 **Custom Prefixes**: Tailwind Sorter checks for `class=` and `className=` as well as any custom prefixes defined in settings. Default custom prefixes include: `twMerge(`, `cva(`, `clsx(`, and `cn(`
 
 #### Command
 
-- `Tailwind Sorter: Sort`: Sort Tailwind classes in the current file.
+`Tailwind Sorter: Sort`: Sort Tailwind classes in the current file.
 
 #### Sorting
 

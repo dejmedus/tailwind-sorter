@@ -1,5 +1,13 @@
 ## Change Log
 
+#### 0.1.59 *Pre-release*
+- Add `sectionOrder` settings to allow:
+  - pseudo classes to be sorted separately from classes
+  - custom (non tailwind) classes to be sorted to start *or* end
+- Add `excludeLanguages` setting to prevent sorting files with certain language identifiers
+- Add `ignorePaths` setting to prevent sorting files at given paths
+- Add `useOfficialSort` setting to use the official TailwindCSS Prettier plugin sort order
+
 #### 0.1.51
 - Add `includeLanguages` setting to allow custom target languages
 - Add Django-HTML target language
