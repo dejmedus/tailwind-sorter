@@ -24,6 +24,7 @@ Custom sort order and categories can be configured in settings
 - [Exclude Languages](vscode://settings/tailwindSorter.excludeLanguages): Language identifiers to remove from the list of supported languages. Files with these language identifiers will not be sorted.
 - [Ignore Paths](vscode://settings/tailwindSorter.ignorePaths): File paths to ignore. File names matching these glob patterns will not be sorted.
 - [Sort on Save](vscode://settings/tailwindSorter.sortOnSave): Whether or not classes should be sorted on save.
+- [Use Official Sort](vscode://settings/tailwindSorter.useOfficialSort): Use the [official TailwindCSS Prettier plugin](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) sort order. Overrides all other sort settings. *Experimental*
 
 **The default category order is**: box model, grid, flex box, background, margins and padding, borders, width and height, typography, transformations, and other.
 
@@ -51,7 +52,6 @@ Custom sort order and categories can be configured in settings
       "inset-",
     ],
 ```
-
 
 **The default section order is**: classes (bg, text, etc.) then custom classes (non-Tailwind). By default, pseudo classes (hover:, sm:, etc.) are included in the classes section unless specified otherwise.
 
@@ -84,8 +84,14 @@ Alternatively, you can add additional [language identifiers](./CONTRIBUTING.md#1
 
 #### With Prettier
 
-If you don't need control over the sort order, [the prettier plugin](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) is recommended.
+> *Experimental* please [report any issues](https://github.com/dejmedus/tailwind-sorter/issues)
+
+You can override the extensions native sorting by turning on the [Use Official Sort](vscode://settings/tailwindSorter.useOfficialSort) setting, which loads the TailwindCSS Prettier plugin sort order. 
+
+---
+
+If you use prettier, [the prettier plugin](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) is recommended.
 
 - Using prettier-plugin-tailwindcss alongside Tailwind Sorter causes classes to "flash" on save.
-- To prevent this, remove `prettier-plugin-tailwindcss` from `plugins: []` in your prettier config file and reload window.
+- To prevent this, disable this extension or remove `prettier-plugin-tailwindcss` from `plugins: []` in your prettier config file and reload window.
 

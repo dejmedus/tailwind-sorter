@@ -20,7 +20,8 @@ export default function createConfigStub(options = {}) {
     sectionOrder: defaultSectionOrder,
     includeLanguages: [],
     excludeLanguages: [],
-    ignorePaths: []
+    ignorePaths: [],
+    useOfficialSort: false
   };
 
   const config = { ...defaults, ...options };
@@ -50,6 +51,8 @@ export default function createConfigStub(options = {}) {
                 return config.sortOnSave;
               case "sectionOrder":
                 return config.sectionOrder;
+              case "useOfficialSort":
+                return config.useOfficialSort;
               default:
                 return undefined;
             }

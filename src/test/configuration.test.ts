@@ -2,7 +2,11 @@ import * as vscode from "vscode";
 import * as assert from "assert";
 import * as sinon from "sinon";
 
-import { sortOnSave } from "../extension";
+import {
+  sortOnSave,
+  officialSorterPromise,
+  resetOfficialSorterPromise
+} from "../extension";
 import getClassesMap from "../getClassesMap";
 import createConfigStub from "./_createConfigStub";
 import getLanguages from "../lib/languages";
@@ -10,6 +14,7 @@ import getLanguages from "../lib/languages";
 suite("VS Code Configuration", () => {
   teardown(() => {
     sinon.restore();
+    resetOfficialSorterPromise();
   });
 
   test("getClassesMap respects config", () => {
@@ -181,28 +186,10 @@ suite("VS Code Configuration", () => {
   });
 
   test("don't sort on save if language is not supported", async () => {
+    createConfigStub({ sortOnSave: true });
+
     const document = {
       languageId: "unsupported",
-      getText: () => "<div class='hover:grid grid'></div>",
-      positionAt: (offset: number) => new vscode.Position(0, offset)
-    } as vscode.TextDocument;
-
-    const waitUntilSpy = sinon.spy();
-
-    sortOnSave({
-      document,
-      waitUntil: waitUntilSpy,
-      reason: vscode.TextDocumentSaveReason.Manual
-    } as vscode.TextDocumentWillSaveEvent);
-
-    sinon.assert.notCalled(waitUntilSpy);
-  });
-
-  test("don't sort on save if sortOnSave is false", async () => {
-    createConfigStub({ sortOnSave: false });
-
-    const document = {
-      languageId: "html",
       getText: () => "<div class='hover:grid grid'></div>",
       positionAt: (offset: number) => new vscode.Position(0, offset)
     } as vscode.TextDocument;
@@ -290,6 +277,50 @@ suite("VS Code Configuration", () => {
     sinon.assert.notCalled(waitUntilSpy);
   });
 
+  test("don't sort on save if sortOnSave is false", async () => {
+    createConfigStub({ sortOnSave: false });
+
+    const document = {
+      languageId: "html",
+      getText: () => "<div class='hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    sinon.assert.notCalled(waitUntilSpy);
+  });
+
+  test("sort on save if language is included via config", async () => {
+    createConfigStub({ sortOnSave: true, includeLanguages: ["potatoscript"] });
+
+    const document = {
+      languageId: "potatoscript",
+      getText: () => "<div class='hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    sinon.assert.calledOnce(waitUntilSpy);
+
+    const textEdit = await waitUntilSpy.firstCall.args[0];
+    const sortedTailwind = textEdit[0].newText;
+    assert.strictEqual(sortedTailwind.includes("grid hover:grid"), true);
+  });
+
   test("sort on save if sortOnSave is true", async () => {
     createConfigStub({ sortOnSave: true });
 
@@ -313,5 +344,60 @@ suite("VS Code Configuration", () => {
     const sortedTailwind = textEdit[0].newText;
 
     assert.strictEqual(sortedTailwind.includes("grid hover:grid"), true);
+  });
+
+  test("official sorter is loaded if useOfficialSort is true", async () => {
+    createConfigStub({
+      sortOnSave: true,
+      useOfficialSort: true
+    });
+
+    const document = {
+      languageId: "html",
+      getText: () => "<div class='grid grid hover:grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    assert.ok(officialSorterPromise);
+    sinon.assert.calledOnce(waitUntilSpy);
+
+    const textEdit = await waitUntilSpy.firstCall.args[0];
+    const sortedTailwind = textEdit[0].newText;
+
+    assert.strictEqual(sortedTailwind.includes("grid hover:grid"), true);
+  });
+
+  test("official sorter is not loaded if useOfficialSort is false", async () => {
+    createConfigStub({ sortOnSave: true });
+
+    const document = {
+      languageId: "html",
+      getText: () => "<div class='grid hover:grid grid'></div>",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    assert.strictEqual(officialSorterPromise, null);
+    sinon.assert.calledOnce(waitUntilSpy);
+
+    const textEdit = await waitUntilSpy.firstCall.args[0];
+    const sortedTailwind = textEdit[0].newText;
+
+    assert.strictEqual(sortedTailwind.includes("grid grid hover:grid"), true);
   });
 });
