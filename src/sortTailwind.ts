@@ -217,12 +217,12 @@ function comparePseudoClasses(
     let aPseudo = pseudoClasses.find((c) => aPseudoClass.includes(c));
     let bPseudo = pseudoClasses.find((c) => bPseudoClass.includes(c));
 
-    if (pseudoClasses.includes("support-")) {
-      if (aPseudoClass.includes("support-")) {
-        aPseudo = "support-";
+    if (pseudoClasses.includes("supports-")) {
+      if (aPseudoClass.includes("supports-")) {
+        aPseudo = "supports-";
       }
-      if (bPseudoClass.includes("support-")) {
-        bPseudo = "support-";
+      if (bPseudoClass.includes("supports-")) {
+        bPseudo = "supports-";
       }
     }
 
