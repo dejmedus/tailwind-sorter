@@ -25,6 +25,18 @@
       "description": "run tests"
     }
   ],
+  "test --full": [
+    {
+      "tab": "test",
+      "commands": [
+        "rm -rf .vscode-test",
+        "rm -rf dist",
+        "rm -rf out",
+        "npm run test"
+      ],
+      "description": "run tests"
+    }
+  ],
   "upgrade": [
     {
       "tab": "upgrade",
@@ -45,8 +57,23 @@
         "rm -rf dist",
         "rm -rf out",
         "npm run test"
+      ]
+    }
+  ],
+  "clean": [
+    {
+      "tab": "clean",
+      "hidden": true,
+      "commands": [
+        "rm -rf dist",
+        "rm -rf out",
+        "rm -rf .webpack",
+        "rm -rf .cache",
+        "npm cache clean --force",
+        "npm run compile",
+        "*alert cache cleared"
       ],
-      "description": "run tests"
+      "shell": "bash"
     }
   ]
 }
