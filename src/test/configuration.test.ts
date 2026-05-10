@@ -253,6 +253,30 @@ suite("VS Code Configuration", () => {
     sinon.assert.notCalled(waitUntilSpy);
   });
 
+  test("don't sort on save if file matches a wildcard ignore path", async () => {
+    createConfigStub({
+      ignorePaths: ["*.css"]
+    });
+
+    const document = {
+      languageId: "css",
+      fileName: "styles.css",
+      uri: { fsPath: "styles.css" },
+      getText: () => ".btn { @apply text-white bg-blue-500; }",
+      positionAt: (offset: number) => new vscode.Position(0, offset)
+    } as vscode.TextDocument;
+
+    const waitUntilSpy = sinon.spy();
+
+    sortOnSave({
+      document,
+      waitUntil: waitUntilSpy,
+      reason: vscode.TextDocumentSaveReason.Manual
+    } as vscode.TextDocumentWillSaveEvent);
+
+    sinon.assert.notCalled(waitUntilSpy);
+  });
+
   test("don't sort on save if file is in ignored directory", async () => {
     createConfigStub({
       ignorePaths: ["ignore/"]

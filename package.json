@@ -84,7 +84,7 @@
             "type": "string",
             "minLength": 1
           },
-          "description": "File paths to ignore. File names matching these glob patterns will not be sorted. Example: lib/ or **/*.antler.html"
+          "description": "File paths to ignore. File names matching these glob patterns will not be sorted. Example: lib/ or *.antler.html"
         },
         "tailwindSorter.customPrefixes": {
           "type": "array",

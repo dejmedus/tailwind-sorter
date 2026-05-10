@@ -49,5 +49,12 @@ export default function getLanguages() {
  * @returns A normalized glob pattern
  */
 export function normalize(path: string): string {
-  return path.endsWith("/") ? `**/${path}**` : path;
+  path = path.trim().replace(/\\/g, "/");
+
+  if (path === "") return "";
+  if (path.startsWith("**/")) return path;
+  if (path.startsWith("/")) path = path.slice(1);
+  if (path.endsWith("/")) return `**/${path}**`;
+  if (/^[^./*]+$/.test(path)) return `**/${path}/**`;
+  return `**/${path}`;
 }
