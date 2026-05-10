@@ -6,7 +6,7 @@ import { restore } from "sinon";
 import createConfigStub from "./_createConfigStub";
 import sortHelper from "./_sortHelper";
 
-const FIXTURES_DIR = path.join(process.cwd(), "src/test/fixtures");
+const FIXTURES_DIR = path.join(__dirname, "../../src/test/fixtures");
 
 suite("Regression tests", () => {
   teardown(() => {
@@ -45,7 +45,7 @@ suite("Regression tests", () => {
       assert.strictEqual(
         normalize(actualOutput),
         normalize(expectedOutput),
-        `Something broke: scr/test/fixtures/${lang}`,
+        `Something broke: scr/test/fixtures/${lang}`
       );
 
       configStub?.restore();
