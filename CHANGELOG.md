@@ -1,6 +1,6 @@
 ## Change Log
 
-#### 0.1.59 *Pre-release*
+#### 0.1.60 *Pre-release*
 - Add `sectionOrder` settings to allow:
   - pseudo classes to be sorted separately from classes
   - custom (non tailwind) classes to be sorted to start *or* end
